@@ -3,18 +3,18 @@ package sfm
 type Camera struct {
 	Name string
 	Transform
-	FieldOfView         float
-	ZNear               float
-	ZFar                float
-	MicDistance         float
-	EyeOffset           float
-	FocalDistance       float
-	Aperture            float
-	ShutterSpeed        float
-	ToneMapScale        float
-	SSAOBias            float
-	SSAOStrength        float
-	SSAORadius          float
+	FieldOfView         float32
+	ZNear               float32
+	ZFar                float32
+	MicDistance         float32
+	EyeOffset           float32
+	FocalDistance       float32
+	Aperture            float32
+	ShutterSpeed        float32
+	ToneMapScale        float32
+	SSAOBias            float32
+	SSAOStrength        float32
+	SSAORadius          float32
 	DepthOfFieldSamples int
 	MotionBlurSamples   int
 }

@@ -4,17 +4,22 @@ type Clip struct {
 	Name string
 	TimeFrame
 	Color
-	Text         string
-	Mute         bool
-	TrackGroups  []*TrackGroup
-	DisplayScale float
-	mapName      string
-	Camera       *Camera
-	Scene        *Scene
+	Text            string
+	Mute            bool
+	TrackGroups     []*TrackGroup
+	DisplayScale    float32
+	mapName         string
+	Camera          *Camera
+	Scene           *Scene
+	FadeIn          Time
+	FadeOut         Time
+	BackgroundColor Color
 }
 
 func newClip() *Clip {
-	return &Clip{}
+	return &Clip{
+		BackgroundColor: [...]float64{64, 64, 64, 255},
+	}
 }
 
 func (c *Clip) GetMap() string {

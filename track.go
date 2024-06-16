@@ -7,13 +7,13 @@ type Track struct {
 	Mute         bool
 	Synched      bool
 	clipType     int
-	Volume       float
-	DisplayScale float
+	Volume       float32
+	DisplayScale float32
 }
 
 func newTrack() *Track {
 	return &Track{
-		synched:      true,
+		Synched:      true,
 		clipType:     1,
 		Volume:       1,
 		DisplayScale: 1,

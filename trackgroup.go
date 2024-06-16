@@ -5,9 +5,9 @@ type TrackGroup struct {
 	tracks          []*Track
 	Visible         bool
 	Mute            bool
-	DisplayScale    float
+	DisplayScale    float32
 	Minimized       bool
-	Volume          float
+	Volume          float32
 	ForceMultiTrack bool
 }
 
