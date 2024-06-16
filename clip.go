@@ -8,10 +8,19 @@ type Clip struct {
 	Mute         bool
 	TrackGroups  []*TrackGroup
 	DisplayScale float
+	mapName    string
 }
 
 func newClip() *Clip {
 	return &Clip{}
+}
+
+func (c *Clip) GetMap() string {
+	return c.mapName
+}
+
+func (c *Clip) SetMap(name string) {
+	c.mapName = name
 }
 
 /*
