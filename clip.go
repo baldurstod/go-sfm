@@ -8,7 +8,9 @@ type Clip struct {
 	Mute         bool
 	TrackGroups  []*TrackGroup
 	DisplayScale float
-	mapName    string
+	mapName      string
+	Camera       *Camera
+	Scene        *Scene
 }
 
 func newClip() *Clip {
