@@ -4,6 +4,5 @@ type Clip struct {
 }
 
 func newClip() *Clip {
-	return &Clip{
-	}
+	return &Clip{}
 }

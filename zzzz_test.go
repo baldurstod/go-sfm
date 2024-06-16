@@ -11,3 +11,9 @@ func TestSession(t *testing.T) {
 
 	log.Println(session)
 }
+
+func TestCamera(t *testing.T) {
+	camera := sfm.Camera{}
+
+	log.Println(camera)
+}
