@@ -2,6 +2,7 @@ package sfm
 
 import (
 	"errors"
+	"github.com/baldurstod/go-dmx"
 )
 
 type Session struct {
@@ -34,4 +35,9 @@ func (s *Session) SetActiveClip(clip *Clip) error {
 	s.activeClip = clip
 
 	return nil
+}
+
+func (s *Session) ToDmElement() *dmx.DmElement {
+	e := dmx.NewDmElement()
+	return e
 }

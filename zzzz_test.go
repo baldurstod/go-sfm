@@ -8,8 +8,9 @@ import (
 
 func TestSession(t *testing.T) {
 	session := sfm.NewSession()
+	e := session.ToDmElement()
 
-	log.Println(session)
+	log.Println(session, e)
 }
 
 func TestCamera(t *testing.T) {
