@@ -1,6 +1,8 @@
 package sfm_test
 
 import (
+	"bytes"
+	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
 	"log"
 	"testing"
@@ -8,13 +10,15 @@ import (
 
 func TestSession(t *testing.T) {
 	session := sfm.NewSession()
-	e := session.ToDmElement()
+	session.CreateClip()
 
-	log.Println(session, e)
+	buf := new(bytes.Buffer)
+	dmx.SerializeText(buf, session.ToDmElement())
+	log.Println(buf)
 }
 
 func TestCamera(t *testing.T) {
-	camera := sfm.Camera{}
+	//camera := sfm.Camera{}
 
-	log.Println(camera)
+	//log.Println(camera)
 }

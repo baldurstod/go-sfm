@@ -1,5 +1,9 @@
 package sfm
 
+import (
+	"github.com/baldurstod/go-dmx"
+)
+
 type Clip struct {
 	Name string
 	TimeFrame
@@ -14,11 +18,14 @@ type Clip struct {
 	FadeIn          Time
 	FadeOut         Time
 	BackgroundColor Color
+	dmElement       *dmx.DmElement
 }
 
 func newClip() *Clip {
 	return &Clip{
+		Name:            "SFM",
 		BackgroundColor: [...]float64{64, 64, 64, 255},
+		TrackGroups:     make([]*TrackGroup, 0),
 	}
 }
 
@@ -28,6 +35,17 @@ func (c *Clip) GetMap() string {
 
 func (c *Clip) SetMap(name string) {
 	c.mapName = name
+}
+
+func (c *Clip) ToDmElement() *dmx.DmElement {
+	if c.dmElement == nil {
+		c.dmElement = dmx.NewDmElement("DmeFilmClip")
+	}
+	e := c.dmElement
+
+	e.CreateElementAttribute("timeFrame", c.TimeFrame.ToDmElement())
+
+	return e
 }
 
 /*

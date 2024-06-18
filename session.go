@@ -8,10 +8,13 @@ import (
 type Session struct {
 	clips      map[*Clip]struct{}
 	activeClip *Clip
+	dmElement  *dmx.DmElement
 }
 
 func NewSession() *Session {
-	return &Session{}
+	return &Session{
+		clips: make(map[*Clip]struct{}),
+	}
 }
 
 func (s *Session) CreateClip() *Clip {
@@ -38,6 +41,22 @@ func (s *Session) SetActiveClip(clip *Clip) error {
 }
 
 func (s *Session) ToDmElement() *dmx.DmElement {
-	e := dmx.NewDmElement()
+	if s.dmElement == nil {
+		s.dmElement = dmx.NewDmElement("DmElement")
+	}
+	e := s.dmElement
+
+	if s.activeClip != nil {
+		e.CreateElementAttribute("activeClip", s.activeClip.ToDmElement())
+	} else {
+		e.CreateElementAttribute("activeClip", nil)
+
+	}
+
+	clipBin := e.CreateAttribute("clipBin", dmx.AT_ELEMENT_ARRAY)
+	for k := range s.clips {
+		clipBin.PushElement(k.ToDmElement())
+	}
+
 	return e
 }
