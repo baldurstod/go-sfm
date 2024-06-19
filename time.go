@@ -1,3 +1,3 @@
 package sfm
 
-type Time float64
+type Time = float64

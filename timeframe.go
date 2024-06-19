@@ -8,7 +8,7 @@ type TimeFrame struct {
 	Start     Time
 	Duration  Time
 	Offset    Time
-	Scale     float32
+	Scale     float64
 	dmElement *dmx.DmElement
 }
 
@@ -25,7 +25,10 @@ func (tf *TimeFrame) ToDmElement() *dmx.DmElement {
 	}
 	e := tf.dmElement
 
-	e.CreateFloatAttribute("scale", float64(tf.Scale))
+	e.CreateFloatAttribute("start", tf.Start)
+	e.CreateFloatAttribute("duration", tf.Duration)
+	e.CreateFloatAttribute("offset", tf.Offset)
+	e.CreateFloatAttribute("scale", tf.Scale)
 
 	return e
 }

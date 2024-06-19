@@ -5,8 +5,8 @@ import (
 )
 
 type Clip struct {
-	Name string
-	TimeFrame
+	Name      string
+	TimeFrame *TimeFrame
 	Color
 	Text            string
 	Mute            bool
@@ -24,6 +24,7 @@ type Clip struct {
 func newClip() *Clip {
 	return &Clip{
 		Name:            "SFM",
+		TimeFrame:       newTimeFrame(),
 		BackgroundColor: [...]float64{64, 64, 64, 255},
 		TrackGroups:     make([]*TrackGroup, 0),
 	}
