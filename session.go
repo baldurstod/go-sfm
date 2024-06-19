@@ -6,13 +6,14 @@ import (
 )
 
 type Session struct {
+	Name       string
 	clips      map[*Clip]struct{}
 	activeClip *Clip
-	dmElement  *dmx.DmElement
 }
 
 func NewSession() *Session {
 	return &Session{
+		Name:  "session",
 		clips: make(map[*Clip]struct{}),
 	}
 }
@@ -40,14 +41,13 @@ func (s *Session) SetActiveClip(clip *Clip) error {
 	return nil
 }
 
-func (s *Session) ToDmElement() *dmx.DmElement {
-	if s.dmElement == nil {
-		s.dmElement = dmx.NewDmElement("DmElement")
-	}
-	e := s.dmElement
+func (s *Session) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement("DmElement")
+
+	e.CreateStringAttribute("name", s.Name)
 
 	if s.activeClip != nil {
-		e.CreateElementAttribute("activeClip", s.activeClip.ToDmElement())
+		e.CreateElementAttribute("activeClip", serializer.GetElement(s.activeClip))
 	} else {
 		e.CreateElementAttribute("activeClip", nil)
 
@@ -55,7 +55,7 @@ func (s *Session) ToDmElement() *dmx.DmElement {
 
 	clipBin := e.CreateAttribute("clipBin", dmx.AT_ELEMENT_ARRAY)
 	for k := range s.clips {
-		clipBin.PushElement(k.ToDmElement())
+		clipBin.PushElement(serializer.GetElement(k))
 	}
 
 	return e

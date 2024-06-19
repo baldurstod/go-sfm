@@ -1,5 +1,9 @@
 package sfm
 
+import (
+	"github.com/baldurstod/go-dmx"
+)
+
 type TrackGroup struct {
 	Name            string
 	tracks          []*Track
@@ -11,8 +15,9 @@ type TrackGroup struct {
 	ForceMultiTrack bool
 }
 
-func newTrackGroup() *TrackGroup {
+func NewTrackGroup(name string) *TrackGroup {
 	return &TrackGroup{
+		Name:         name,
 		Visible:      true,
 		DisplayScale: 1,
 	}
@@ -20,6 +25,27 @@ func newTrackGroup() *TrackGroup {
 
 func (t *TrackGroup) AddTrack(track *Track) {
 	t.tracks = append(t.tracks, track)
+}
+
+func (t *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement("DmeFilmClip")
+
+	e.CreateStringAttribute("name", t.Name)
+
+	/*
+		e.CreateElementAttribute("timeFrame", c.TimeFrame.ToDmElement())
+		e.CreateColorAttribute("color", c.Color)
+		e.CreateStringAttribute("text", c.Text)
+		e.CreateBoolAttribute("mute", c.Mute)
+
+
+		trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
+		for _, tg := range c.trackGroups {
+			trackGroups.PushElement(tg.ToDmElement())
+		}
+	*/
+
+	return e
 }
 
 /*

@@ -8,3 +8,5 @@ github.com/baldurstod/go-dmx v0.0.4 h1:gUv+g83ICEHbsfezmAYGowTv08h/D7HmBgngonWN5
 github.com/baldurstod/go-dmx v0.0.4/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
 github.com/baldurstod/go-dmx v0.0.5 h1:yYcx0DyyLL9/Pc80s5oXTxIgNj3rdr2Lvj1GXDwc1qU=
 github.com/baldurstod/go-dmx v0.0.5/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
+github.com/baldurstod/go-dmx v0.0.6 h1:YtoJmtQqqRLE2Iek/LElYEzeO/TKHsDJb82uP49axDo=
+github.com/baldurstod/go-dmx v0.0.6/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=

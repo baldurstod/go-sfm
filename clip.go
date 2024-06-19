@@ -1,16 +1,17 @@
 package sfm
 
 import (
+	"fmt"
 	"github.com/baldurstod/go-dmx"
 )
 
 type Clip struct {
-	Name      string
-	TimeFrame *TimeFrame
-	Color
+	Name            string
+	TimeFrame       *TimeFrame
+	Color           Color
 	Text            string
 	Mute            bool
-	TrackGroups     []*TrackGroup
+	trackGroups     []*TrackGroup
 	DisplayScale    float32
 	mapName         string
 	Camera          *Camera
@@ -18,15 +19,15 @@ type Clip struct {
 	FadeIn          Time
 	FadeOut         Time
 	BackgroundColor Color
-	dmElement       *dmx.DmElement
 }
 
 func newClip() *Clip {
 	return &Clip{
 		Name:            "SFM",
 		TimeFrame:       newTimeFrame(),
-		BackgroundColor: [...]float64{64, 64, 64, 255},
-		TrackGroups:     make([]*TrackGroup, 0),
+		Color:           [...]byte{0, 0, 0, 0},
+		BackgroundColor: [...]byte{64, 64, 64, 255},
+		trackGroups:     make([]*TrackGroup, 0),
 	}
 }
 
@@ -38,13 +39,23 @@ func (c *Clip) SetMap(name string) {
 	c.mapName = name
 }
 
-func (c *Clip) ToDmElement() *dmx.DmElement {
-	if c.dmElement == nil {
-		c.dmElement = dmx.NewDmElement("DmeFilmClip")
-	}
-	e := c.dmElement
+func (c *Clip) AddTrackGroup(tg *TrackGroup) {
+	c.trackGroups = append(c.trackGroups, tg)
+}
 
-	e.CreateElementAttribute("timeFrame", c.TimeFrame.ToDmElement())
+func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement("DmeFilmClip")
+
+	e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
+	e.CreateColorAttribute("color", c.Color)
+	e.CreateStringAttribute("text", c.Text)
+	e.CreateBoolAttribute("mute", c.Mute)
+
+	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
+	fmt.Println(c.trackGroups)
+	for _, tg := range c.trackGroups {
+		trackGroups.PushElement(serializer.GetElement(tg))
+	}
 
 	return e
 }

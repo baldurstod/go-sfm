@@ -1,3 +1,3 @@
 package sfm
 
-type Color [4]float64
+type Color = [4]byte
