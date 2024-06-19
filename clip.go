@@ -1,7 +1,6 @@
 package sfm
 
 import (
-	"fmt"
 	"github.com/baldurstod/go-dmx"
 )
 
@@ -52,7 +51,6 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateBoolAttribute("mute", c.Mute)
 
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
-	fmt.Println(c.trackGroups)
 	for _, tg := range c.trackGroups {
 		trackGroups.PushElement(serializer.GetElement(tg))
 	}

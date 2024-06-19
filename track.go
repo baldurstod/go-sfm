@@ -1,5 +1,9 @@
 package sfm
 
+import (
+	"github.com/baldurstod/go-dmx"
+)
+
 type Track struct {
 	Name         string
 	children     []interface{}
@@ -11,8 +15,9 @@ type Track struct {
 	DisplayScale float32
 }
 
-func newTrack() *Track {
+func newTrack(name string) *Track {
 	return &Track{
+		Name:         name,
 		Synched:      true,
 		clipType:     1,
 		Volume:       1,
@@ -22,6 +27,20 @@ func newTrack() *Track {
 
 func (t *Track) AddChildren(child interface{}) {
 	t.children = append(t.children, child)
+}
+
+func (t *Track) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement("DmeTrack")
+
+	e.CreateStringAttribute("name", t.Name)
+/*
+	tracks := e.CreateAttribute("tracks", dmx.AT_ELEMENT_ARRAY)
+	for _, tr := range t.tracks {
+		tracks.PushElement(serializer.GetElement(tr))
+	}
+		*/
+
+	return e
 }
 
 /*

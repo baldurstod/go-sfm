@@ -9,9 +9,9 @@ type TrackGroup struct {
 	tracks          []*Track
 	Visible         bool
 	Mute            bool
-	DisplayScale    float32
+	DisplayScale    float64
 	Minimized       bool
-	Volume          float32
+	Volume          float64
 	ForceMultiTrack bool
 }
 
@@ -28,9 +28,20 @@ func (t *TrackGroup) AddTrack(track *Track) {
 }
 
 func (t *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeFilmClip")
+	e := dmx.NewDmElement("DmeTrackGroup")
 
 	e.CreateStringAttribute("name", t.Name)
+	e.CreateBoolAttribute("mute", t.Mute)
+	e.CreateBoolAttribute("visible", t.Visible)
+	e.CreateBoolAttribute("minimized", t.Minimized)
+	e.CreateBoolAttribute("forcemultitrack", t.ForceMultiTrack)
+	e.CreateFloatAttribute("displayScale", t.DisplayScale)
+	e.CreateFloatAttribute("volume", t.Volume)
+
+	tracks := e.CreateAttribute("tracks", dmx.AT_ELEMENT_ARRAY)
+	for _, tr := range t.tracks {
+		tracks.PushElement(serializer.GetElement(tr))
+	}
 
 	/*
 		e.CreateElementAttribute("timeFrame", c.TimeFrame.ToDmElement())
