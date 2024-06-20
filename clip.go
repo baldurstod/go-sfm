@@ -15,10 +15,14 @@ type Clip struct {
 	mapName          string
 	Camera           *Camera
 	Scene            *Scene
+	GlobalState      Element
 	FadeIn           Time
 	FadeOut          Time
 	BackgroundColor  Color
-	backgroundFXClip Element
+	BackgroundFXClip Element
+	operators        []Element
+	animationSets    []*AnimationSet
+	bookmarkSets     []*BookmarkSet
 }
 
 func newClip() *Clip {
@@ -60,6 +64,21 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
 	for _, tg := range c.trackGroups {
 		trackGroups.PushElement(serializer.GetElement(tg))
+	}
+
+	operators := e.CreateAttribute("operators", dmx.AT_ELEMENT_ARRAY)
+	for _, o := range c.operators {
+		operators.PushElement(serializer.GetElement(o))
+	}
+
+	animationSets := e.CreateAttribute("animationSets", dmx.AT_ELEMENT_ARRAY)
+	for _, as := range c.animationSets {
+		animationSets.PushElement(serializer.GetElement(as))
+	}
+
+	bookmarkSets := e.CreateAttribute("bookmarkSets", dmx.AT_ELEMENT_ARRAY)
+	for _, bs := range c.bookmarkSets {
+		bookmarkSets.PushElement(serializer.GetElement(bs))
 	}
 
 	return e
