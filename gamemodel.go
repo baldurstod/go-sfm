@@ -5,32 +5,31 @@ import (
 )
 
 type GameModel struct {
-	Name          string
-	ModelName     string
-	Skin          int32
-	Transform     *Transform
-	Visible       bool
-	children      []Element
-	FlexWeights   []float64
-	MeshGroupMask uint64
-	bones         []*Bone
-	/*
-	   controls         []*Control
-	   presetGroups     []*PresetGroup
-	   operators        []Element
-	   RootControlGroup *ControlGroup
-	   GameModel        *GameModel
-	*/
+	Name                    string
+	ModelName               string
+	Skin                    int32
+	Transform               *Transform
+	Visible                 bool
+	children                []Element
+	FlexWeights             []float64
+	MeshGroupMask           uint64
+	bones                   []*Bone
+	globalFlexControllers   []*GlobalFlexControllerOperator
+	ComputeBounds           bool
+	EvaluateProceduralBones bool
 }
 
 func NewGameModel(name string) *GameModel {
 	return &GameModel{
-		Name:          name,
-		Skin:          0,
-		children:      make([]Element, 0),
-		FlexWeights:   make([]float64, 0),
-		bones:         make([]*Bone, 0),
-		MeshGroupMask: 0xffffffffffffffff,
+		Name:                    name,
+		Skin:                    0,
+		children:                make([]Element, 0),
+		FlexWeights:             make([]float64, 0),
+		bones:                   make([]*Bone, 0),
+		MeshGroupMask:           0xffffffffffffffff,
+		globalFlexControllers:   make([]*GlobalFlexControllerOperator, 0),
+		ComputeBounds:           true,
+		EvaluateProceduralBones: true,
 	}
 }
 
@@ -48,6 +47,16 @@ func (gm *GameModel) CreateBone(name string) *Bone {
 	return bone
 }
 
+func (gm *GameModel) AddGlobalFlexControllerOperator(o *GlobalFlexControllerOperator) {
+	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
+}
+
+func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float64) *GlobalFlexControllerOperator {
+	o := NewGlobalFlexControllerOperator(name, flexWeight, gm)
+	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
+	return o
+}
+
 func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement("DmeGameModel")
 
@@ -57,6 +66,28 @@ func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateElementAttribute("transform", serializer.GetElement(gm.Transform))
 	e.CreateBoolAttribute("visible", gm.Visible)
 	e.CreateUint64Attribute("meshGroupMask", gm.MeshGroupMask)
+	e.CreateBoolAttribute("computeBounds", gm.ComputeBounds)
+	e.CreateBoolAttribute("evaluateProceduralBones", gm.EvaluateProceduralBones)
+
+	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
+	for _, child := range gm.children {
+		children.PushElement(serializer.GetElement(child))
+	}
+
+	flexWeights := e.CreateAttribute("flexWeights", dmx.AT_FLOAT_ARRAY)
+	for _, weights := range gm.flexWeights {
+		flexWeights.PushFloat(weights)
+	}
+
+	bones := e.CreateAttribute("bones", dmx.AT_ELEMENT_ARRAY)
+	for _, bone := range gm.bones {
+		bones.PushElement(serializer.GetElement(bone))
+	}
+
+	globalFlexControllers := e.CreateAttribute("globalFlexControllers", dmx.AT_ELEMENT_ARRAY)
+	for _, gfc := range gm.globalFlexControllers {
+		globalFlexControllers.PushElement(serializer.GetElement(gfc))
+	}
 	/*
 		controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
 		for _, c := range gm.controls {
