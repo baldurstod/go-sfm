@@ -4,36 +4,24 @@ import (
 	"github.com/baldurstod/go-dmx"
 )
 
-type Serializable interface {
-	toDmElement(*Serializer) *dmx.DmElement
-}
-
 type Serializer struct {
-	elements map[Serializable]*dmx.DmElement
+	elements map[Element]*dmx.DmElement
 }
 
 func NewSerializer() *Serializer {
 	return &Serializer{
-		elements: make(map[Serializable]*dmx.DmElement),
+		elements: make(map[Element]*dmx.DmElement),
 	}
 }
 
-func (s *Serializer) GetElement(serializable Serializable) *dmx.DmElement {
-	e, ok := s.elements[serializable]
+func (s *Serializer) GetElement(element Element) *dmx.DmElement {
+	e, ok := s.elements[element]
 	if ok {
 		return e
 	}
 
-	e = serializable.toDmElement(s)
-	s.elements[serializable] = e
-	/*
-		clip := newClip()
-		s.clips[clip] = struct{}{}
-
-		if s.activeClip == nil {
-			s.activeClip = clip
-		}
-	*/
+	e = element.toDmElement(s)
+	s.elements[element] = e
 
 	return e
 }

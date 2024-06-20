@@ -5,19 +5,20 @@ import (
 )
 
 type Clip struct {
-	Name            string
-	TimeFrame       *TimeFrame
-	Color           Color
-	Text            string
-	Mute            bool
-	trackGroups     []*TrackGroup
-	DisplayScale    float32
-	mapName         string
-	Camera          *Camera
-	Scene           *Scene
-	FadeIn          Time
-	FadeOut         Time
-	BackgroundColor Color
+	Name             string
+	TimeFrame        *TimeFrame
+	Color            Color
+	Text             string
+	Mute             bool
+	trackGroups      []*TrackGroup
+	DisplayScale     float32
+	mapName          string
+	Camera           *Camera
+	Scene            *Scene
+	FadeIn           Time
+	FadeOut          Time
+	BackgroundColor  Color
+	backgroundFXClip Element
 }
 
 func newClip() *Clip {
@@ -40,6 +41,12 @@ func (c *Clip) SetMap(name string) {
 
 func (c *Clip) AddTrackGroup(tg *TrackGroup) {
 	c.trackGroups = append(c.trackGroups, tg)
+}
+
+func (c *Clip) CreateTrackGroup(name string) *TrackGroup {
+	tg := NewTrackGroup(name)
+	c.trackGroups = append(c.trackGroups, tg)
+	return tg
 }
 
 func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {

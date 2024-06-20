@@ -27,6 +27,12 @@ func (t *TrackGroup) AddTrack(track *Track) {
 	t.tracks = append(t.tracks, track)
 }
 
+func (t *TrackGroup) CreateTrack(name string) *Track {
+	track := NewTrack(name)
+	t.tracks = append(t.tracks, track)
+	return track
+}
+
 func (t *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement("DmeTrackGroup")
 

@@ -6,7 +6,7 @@ import (
 
 type Track struct {
 	Name         string
-	children     []interface{}
+	children     []Element
 	Collapsed    bool
 	Mute         bool
 	Synched      bool
@@ -15,7 +15,7 @@ type Track struct {
 	DisplayScale float32
 }
 
-func newTrack(name string) *Track {
+func NewTrack(name string) *Track {
 	return &Track{
 		Name:         name,
 		Synched:      true,
@@ -25,7 +25,7 @@ func newTrack(name string) *Track {
 	}
 }
 
-func (t *Track) AddChildren(child interface{}) {
+func (t *Track) AddChildren(child Element) {
 	t.children = append(t.children, child)
 }
 
@@ -33,12 +33,11 @@ func (t *Track) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement("DmeTrack")
 
 	e.CreateStringAttribute("name", t.Name)
-/*
-	tracks := e.CreateAttribute("tracks", dmx.AT_ELEMENT_ARRAY)
-	for _, tr := range t.tracks {
-		tracks.PushElement(serializer.GetElement(tr))
+
+	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
+	for _, child := range t.children {
+		children.PushElement(serializer.GetElement(child))
 	}
-		*/
 
 	return e
 }

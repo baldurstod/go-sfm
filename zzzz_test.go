@@ -12,8 +12,12 @@ func TestSession(t *testing.T) {
 	session := sfm.NewSession()
 	clip := session.CreateClip()
 
-	clip.AddTrackGroup(sfm.NewTrackGroup("Sound"))
-	clip.AddTrackGroup(sfm.NewTrackGroup("Overlay"))
+	sound := clip.CreateTrackGroup("Sound")
+	clip.CreateTrackGroup("Overlay")
+
+	sound.CreateTrack("Dialog")
+	sound.CreateTrack("Music")
+	sound.CreateTrack("Effects")
 
 	buf := new(bytes.Buffer)
 	dmx.SerializeText(buf, sfm.NewSerializer().GetElement(session))
