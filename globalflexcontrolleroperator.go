@@ -6,11 +6,11 @@ import (
 
 type GlobalFlexControllerOperator struct {
 	Name       string
-	FlexWeight float64
+	FlexWeight float32
 	GameModel  *GameModel
 }
 
-func NewGlobalFlexControllerOperator(name string, flexWeight float64, gameModel *GameModel) *GlobalFlexControllerOperator {
+func NewGlobalFlexControllerOperator(name string, flexWeight float32, gameModel *GameModel) *GlobalFlexControllerOperator {
 	return &GlobalFlexControllerOperator{
 		Name:       name,
 		FlexWeight: flexWeight,

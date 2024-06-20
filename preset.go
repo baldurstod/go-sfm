@@ -20,7 +20,7 @@ func (p *Preset) AddControlValue(cv *ControlValue) {
 	p.controlValues = append(p.controlValues, cv)
 }
 
-func (p *Preset) CreateControlValue(name string, value float64) *ControlValue {
+func (p *Preset) CreateControlValue(name string, value float32) *ControlValue {
 	cv := NewControlValue(name, value)
 	p.controlValues = append(p.controlValues, cv)
 	return cv

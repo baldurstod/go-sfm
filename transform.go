@@ -6,15 +6,15 @@ import (
 
 type Transform struct {
 	Name        string
-	Position    [3]float64
-	Orientation [4]float64
-	Scale       float64
+	Position    [3]float32
+	Orientation [4]float32
+	Scale       float32
 }
 
 func NewTransform(name string) *Transform {
 	return &Transform{
 		Name:        name,
-		Orientation: [...]float64{0, 0, 0, 1},
+		Orientation: [...]float32{0, 0, 0, 1},
 		Scale:       1,
 	}
 }

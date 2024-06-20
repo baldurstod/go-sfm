@@ -6,10 +6,10 @@ import (
 
 type ControlValue struct {
 	Name  string
-	Value float64
+	Value float32
 }
 
-func NewControlValue(name string, value float64) *ControlValue {
+func NewControlValue(name string, value float32) *ControlValue {
 	return &ControlValue{
 		Name:  name,
 		Value: value,

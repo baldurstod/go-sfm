@@ -11,7 +11,7 @@ type GameModel struct {
 	Transform               *Transform
 	Visible                 bool
 	children                []Element
-	FlexWeights             []float64
+	FlexWeights             []float32
 	MeshGroupMask           uint64
 	bones                   []*Bone
 	globalFlexControllers   []*GlobalFlexControllerOperator
@@ -24,7 +24,7 @@ func NewGameModel(name string) *GameModel {
 		Name:                    name,
 		Skin:                    0,
 		children:                make([]Element, 0),
-		FlexWeights:             make([]float64, 0),
+		FlexWeights:             make([]float32, 0),
 		bones:                   make([]*Bone, 0),
 		MeshGroupMask:           0xffffffffffffffff,
 		globalFlexControllers:   make([]*GlobalFlexControllerOperator, 0),
@@ -51,7 +51,7 @@ func (gm *GameModel) AddGlobalFlexControllerOperator(o *GlobalFlexControllerOper
 	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
 }
 
-func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float64) *GlobalFlexControllerOperator {
+func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float32) *GlobalFlexControllerOperator {
 	o := NewGlobalFlexControllerOperator(name, flexWeight, gm)
 	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
 	return o
@@ -75,7 +75,7 @@ func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
 	}
 
 	flexWeights := e.CreateAttribute("flexWeights", dmx.AT_FLOAT_ARRAY)
-	for _, weights := range gm.flexWeights {
+	for _, weights := range gm.FlexWeights {
 		flexWeights.PushFloat(weights)
 	}
 

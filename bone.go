@@ -6,14 +6,14 @@ import (
 
 type Bone struct {
 	Name        string
-	Position    [3]float64
-	Orientation [4]float64
+	Position    [3]float32
+	Orientation [4]float32
 }
 
 func NewBone(name string) *Bone {
 	return &Bone{
 		Name:        name,
-		Orientation: [...]float64{0, 0, 0, 1},
+		Orientation: [...]float32{0, 0, 0, 1},
 	}
 }
 

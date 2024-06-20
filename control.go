@@ -6,8 +6,8 @@ import (
 
 type Control struct {
 	Name         string
-	Value        float64
-	DefaultValue float64
+	Value        float32
+	DefaultValue float32
 	Channel      *Channel
 }
 

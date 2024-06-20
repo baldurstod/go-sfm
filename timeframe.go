@@ -8,7 +8,7 @@ type TimeFrame struct {
 	Start    Time
 	Duration Time
 	Offset   Time
-	Scale    float64
+	Scale    float32
 }
 
 func newTimeFrame() *TimeFrame {
