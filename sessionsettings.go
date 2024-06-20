@@ -8,6 +8,7 @@ type SessionSettings struct {
 	Name             string
 	TimeSelection    *TimeSelection
 	GraphEditorState *GraphEditorState
+	ProceduralPresetSettings *ProceduralPresetSettings
 }
 
 func NewSessionSettings() *SessionSettings {
@@ -15,6 +16,7 @@ func NewSessionSettings() *SessionSettings {
 		Name:             "sessionSettings",
 		TimeSelection:    NewTimeSelection(),
 		GraphEditorState: NewGraphEditorState(),
+		ProceduralPresetSettings: NewProceduralPresetSettings(),
 	}
 }
 
@@ -24,6 +26,7 @@ func (s *SessionSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateStringAttribute("name", s.Name)
 	e.CreateElementAttribute("timeSelection", serializer.GetElement(s.TimeSelection))
 	e.CreateElementAttribute("graphEditorState", serializer.GetElement(s.GraphEditorState))
+	e.CreateElementAttribute("proceduralPresets", serializer.GetElement(s.ProceduralPresetSettings))
 
 	/*
 
