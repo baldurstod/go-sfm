@@ -13,6 +13,7 @@ type GameModel struct {
 	children      []Element
 	FlexWeights   []float64
 	MeshGroupMask uint64
+	bones         []*Bone
 	/*
 	   controls         []*Control
 	   presetGroups     []*PresetGroup
@@ -28,12 +29,23 @@ func NewGameModel(name string) *GameModel {
 		Skin:          0,
 		children:      make([]Element, 0),
 		FlexWeights:   make([]float64, 0),
+		bones:         make([]*Bone, 0),
 		MeshGroupMask: 0xffffffffffffffff,
 	}
 }
 
 func (gm *GameModel) AddChildren(child Element) {
 	gm.children = append(gm.children, child)
+}
+
+func (gm *GameModel) AddBone(bone *Bone) {
+	gm.bones = append(gm.bones, bone)
+}
+
+func (gm *GameModel) CreateBone(name string) *Bone {
+	bone := NewBone(name)
+	gm.bones = append(gm.bones, bone)
+	return bone
 }
 
 func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
