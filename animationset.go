@@ -5,11 +5,12 @@ import (
 )
 
 type AnimationSet struct {
-	Name         string
-	controls     []*Control
-	presetGroups []*PresetGroup
-	operators    []Element
-	rootControlGroup *ControlGroup
+	Name             string
+	controls         []*Control
+	presetGroups     []*PresetGroup
+	operators        []Element
+	RootControlGroup *ControlGroup
+	GameModel        *GameModel
 }
 
 func NewAnimationSet(name string) *AnimationSet {
@@ -37,6 +38,8 @@ func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for _, o := range as.operators {
 		operators.PushElement(serializer.GetElement(o))
 	}
+
+	e.CreateElementAttribute("gameModel", serializer.GetElement(as.GameModel))
 
 	/*
 		e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))

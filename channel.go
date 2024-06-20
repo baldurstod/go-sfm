@@ -8,11 +8,11 @@ type Channel struct {
 	Name          string
 	FromElement   Element
 	FromAttribute string
-	FromIndex     int64
+	FromIndex     int32
 	ToElement     Element
 	ToAttribute   string
-	ToIndex       int64
-	Mode          int64
+	ToIndex       int32
+	Mode          int32
 	Log           Element
 }
 
