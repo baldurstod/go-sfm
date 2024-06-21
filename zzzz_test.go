@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
-	"log"
+	_ "log"
 	"os"
 	"path"
 	"testing"
@@ -43,7 +43,9 @@ func createClip(session *sfm.Session) *sfm.Clip {
 
 	shot1.Scene = createScene()
 
-	log.Println(shot1.Camera)
+	shot1.AddAnimationSet(createAnimationSet())
+
+	//log.Println(shot1.Camera)
 
 	return clip
 }
@@ -51,7 +53,21 @@ func createClip(session *sfm.Session) *sfm.Clip {
 func createScene() *sfm.Node {
 	scene := sfm.NewNode("scene")
 
+	model := sfm.NewGameModel("tiny_04", "models/heroes/tiny/tiny_04/tiny_04.vmdl")
+
+	scene.AddChildren(model)
+
 	return scene
+}
+
+func createAnimationSet() *sfm.AnimationSet {
+	animationSet := sfm.NewAnimationSet("test_AnimationSet")
+
+	channel := sfm.NewChannel("rootTransform_scale")
+
+	animationSet.AddOperator(channel)
+
+	return animationSet
 }
 
 func TestCamera(t *testing.T) {

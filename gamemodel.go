@@ -5,10 +5,7 @@ import (
 )
 
 type GameModel struct {
-	Name                    string
-	Transform               *Transform
-	Visible                 bool
-	children                []INode
+	*Node
 	ModelName               string
 	Skin                    int32
 	FlexWeights             []float32
@@ -21,10 +18,9 @@ type GameModel struct {
 
 func NewGameModel(name string, modelName string) *GameModel {
 	return &GameModel{
-		Name:                    name,
+		Node:                    NewNode(name),
 		ModelName:               modelName,
 		Skin:                    0,
-		children:                make([]INode, 0),
 		FlexWeights:             make([]float32, 0),
 		bones:                   make([]*Bone, 0),
 		MeshGroupMask:           0xffffffffffffffff,
