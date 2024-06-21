@@ -21,9 +21,9 @@ func newTimeFrame() *TimeFrame {
 func (tf *TimeFrame) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement("DmeTimeFrame")
 
-	e.CreateFloatAttribute("start", tf.Start)
-	e.CreateFloatAttribute("duration", tf.Duration)
-	e.CreateFloatAttribute("offset", tf.Offset)
+	e.CreateTimeAttribute("start", tf.Start)
+	e.CreateTimeAttribute("duration", tf.Duration)
+	e.CreateTimeAttribute("offset", tf.Offset)
 	e.CreateFloatAttribute("scale", tf.Scale)
 
 	return e

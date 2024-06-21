@@ -36,8 +36,9 @@ func (pps *ProceduralPresetSettings) toDmElement(serializer *Serializer) *dmx.Dm
 	e.CreateFloatAttribute("smoothscale", pps.SmoothScale)
 	e.CreateFloatAttribute("jitterscale_vector", pps.JitterScaleVector)
 	e.CreateFloatAttribute("smoothscale_vector", pps.SmoothScaleVector)
+	e.CreateIntAttribute("jitteriterations", pps.JitterIterations)
 	e.CreateIntAttribute("smoothiterations", pps.JitterIterations)
-	e.CreateTimeAttribute("jitteriterations", pps.StaggerInterval)
+	e.CreateTimeAttribute("staggerinterval", pps.StaggerInterval)
 
 	return e
 }

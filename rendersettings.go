@@ -38,7 +38,7 @@ func NewRenderSettings() *RenderSettings {
 }
 
 func (pps *RenderSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeProceduralPresetSettings")
+	e := dmx.NewDmElement("DmElement")
 
 	e.CreateStringAttribute("name", pps.Name)
 	e.CreateIntAttribute("width", pps.Width)
