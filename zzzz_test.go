@@ -30,18 +30,23 @@ func createClip(session *sfm.Session) *sfm.Clip {
 	sound := clip.CreateTrackGroup("Sound")
 	clip.CreateTrackGroup("Overlay")
 
-	sound.CreateTrack("Dialog")
-	sound.CreateTrack("Music")
-	sound.CreateTrack("Effects")
+	dialog := sound.CreateTrack("Dialog")
+	dialog.ClipType = sfm.CLIP_SOUND
+	music := sound.CreateTrack("Music")
+	music.ClipType = sfm.CLIP_SOUND
+	effects := sound.CreateTrack("Effects")
+	effects.ClipType = sfm.CLIP_SOUND
 
 	clip.SubClipTrackGroup = sfm.NewTrackGroup("subClipTrackGroup")
 	filmTrack := clip.SubClipTrackGroup.CreateTrack("Film")
+	filmTrack.ClipType = sfm.CLIP_FILM
 
 	shot1 := sfm.NewClip("shot1")
 	filmTrack.AddChildren(shot1)
 	shot1.Camera = sfm.NewCamera("camera1")
 
 	shot1.Scene = createScene()
+	//shot1.MapName = "maps/dota.vmap"
 
 	shot1.AddAnimationSet(createAnimationSet())
 
@@ -53,9 +58,13 @@ func createClip(session *sfm.Session) *sfm.Clip {
 func createScene() *sfm.Node {
 	scene := sfm.NewNode("scene")
 
-	model := sfm.NewGameModel("tiny_04", "models/heroes/tiny/tiny_04/tiny_04.vmdl")
+	model1 := sfm.NewGameModel("tiny_04", "models/heroes/tiny/tiny_04/tiny_04.vmdl")
+	scene.AddChildren(model1)
+	model1.CreateBone("test")
 
-	scene.AddChildren(model)
+	model2 := sfm.NewGameModel("tiny_astral_order_weapon", "models/items/tiny/tiny_astral_order_weapon/tiny_astral_order_weapon.vmdl")
+	scene.AddChildren(model2)
+	model2.CreateBone("test")
 
 	return scene
 }
