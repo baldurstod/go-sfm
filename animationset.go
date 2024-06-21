@@ -19,6 +19,10 @@ func NewAnimationSet(name string) *AnimationSet {
 	}
 }
 
+func (as *AnimationSet) AddOperator(o Operator) {
+	as.operators = append(as.operators, o)
+}
+
 func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement(as.Name, "DmeAnimationSet")
 
