@@ -5,18 +5,20 @@ import (
 )
 
 type SessionSettings struct {
-	Name             string
-	TimeSelection    *TimeSelection
-	GraphEditorState *GraphEditorState
+	Name                     string
+	TimeSelection            *TimeSelection
+	GraphEditorState         *GraphEditorState
 	ProceduralPresetSettings *ProceduralPresetSettings
+	RenderSettings *RenderSettings
 }
 
 func NewSessionSettings() *SessionSettings {
 	return &SessionSettings{
-		Name:             "sessionSettings",
-		TimeSelection:    NewTimeSelection(),
-		GraphEditorState: NewGraphEditorState(),
+		Name:                     "sessionSettings",
+		TimeSelection:            NewTimeSelection(),
+		GraphEditorState:         NewGraphEditorState(),
 		ProceduralPresetSettings: NewProceduralPresetSettings(),
+		RenderSettings: NewRenderSettings(),
 	}
 }
 
@@ -27,6 +29,7 @@ func (s *SessionSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateElementAttribute("timeSelection", serializer.GetElement(s.TimeSelection))
 	e.CreateElementAttribute("graphEditorState", serializer.GetElement(s.GraphEditorState))
 	e.CreateElementAttribute("proceduralPresets", serializer.GetElement(s.ProceduralPresetSettings))
+	e.CreateElementAttribute("renderSettings", serializer.GetElement(s.RenderSettings))
 
 	/*
 
