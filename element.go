@@ -10,5 +10,5 @@ type Element interface {
 
 type Operator interface {
 	toDmElement(*Serializer) *dmx.DmElement
-	isOperator() bool
+	isOperator()
 }
