@@ -19,9 +19,10 @@ type GameModel struct {
 	EvaluateProceduralBones bool
 }
 
-func NewGameModel(name string) *GameModel {
+func NewGameModel(name string, modelName string) *GameModel {
 	return &GameModel{
 		Name:                    name,
+		ModelName:                    modelName,
 		Skin:                    0,
 		children:                make([]Element, 0),
 		FlexWeights:             make([]float32, 0),
