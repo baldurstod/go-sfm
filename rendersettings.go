@@ -56,6 +56,7 @@ func (pps *RenderSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 
 	return e
 }
+
 /*
 	"renderSettings" "DmElement"
 	{
