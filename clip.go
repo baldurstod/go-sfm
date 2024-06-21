@@ -27,7 +27,7 @@ type Clip struct {
 	SubClipTrackGroup *TrackGroup
 }
 
-func newClip(name string) *Clip {
+func NewClip(name string) *Clip {
 	return &Clip{
 		Name:              name,
 		TimeFrame:         newTimeFrame(),
@@ -92,6 +92,12 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 		e.CreateElementAttribute("subClipTrackGroup", serializer.GetElement(c.SubClipTrackGroup))
 	} else {
 		e.CreateElementAttribute("subClipTrackGroup", nil)
+	}
+
+	if c.Camera != nil {
+		e.CreateElementAttribute("camera", serializer.GetElement(c.Camera))
+	} else {
+		e.CreateElementAttribute("camera", nil)
 	}
 
 	return e

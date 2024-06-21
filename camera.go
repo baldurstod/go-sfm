@@ -19,8 +19,9 @@ type Camera struct {
 	MotionBlurSamples   int
 }
 
-func newCamera() *Camera {
+func NewCamera(name string) *Camera {
 	return &Camera{
+		Name:              name,
 		FieldOfView:         45,
 		ZNear:               10,
 		ZFar:                20000,

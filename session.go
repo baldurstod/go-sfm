@@ -21,7 +21,7 @@ func NewSession() *Session {
 }
 
 func (s *Session) CreateClip(name string) *Clip {
-	clip := newClip(name)
+	clip := NewClip(name)
 	s.clips[clip] = struct{}{}
 
 	if s.activeClip == nil {
