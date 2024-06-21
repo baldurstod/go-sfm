@@ -12,6 +12,7 @@ type SessionSettings struct {
 	RenderSettings           *RenderSettings
 	PosterSettings           *PosterSettings
 	MovieSettings            *MovieSettings
+	SharedPresetGroupSettings            *SharedPresetGroupSettings
 }
 
 func NewSessionSettings() *SessionSettings {
@@ -23,6 +24,7 @@ func NewSessionSettings() *SessionSettings {
 		RenderSettings:           NewRenderSettings(),
 		PosterSettings:           NewPosterSettings(),
 		MovieSettings:            NewMovieSettings(),
+		SharedPresetGroupSettings:            NewSharedPresetGroupSettings(),
 	}
 }
 
@@ -36,6 +38,7 @@ func (s *SessionSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateElementAttribute("renderSettings", serializer.GetElement(s.RenderSettings))
 	e.CreateElementAttribute("posterSettings", serializer.GetElement(s.PosterSettings))
 	e.CreateElementAttribute("movieSettings", serializer.GetElement(s.MovieSettings))
+	e.CreateElementAttribute("sharedPresetGroupSettings", serializer.GetElement(s.SharedPresetGroupSettings))
 
 	/*
 
