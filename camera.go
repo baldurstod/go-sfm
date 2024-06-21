@@ -15,7 +15,7 @@ type Camera struct {
 	EyeOffset           float32
 	FocalDistance       float32
 	Aperture            float32
-	ShutterSpeed        float32
+	ShutterSpeed        Time
 	ToneMapScale        float32
 	SSAOBias            float32
 	SSAOStrength        float32
@@ -55,7 +55,7 @@ func (c *Camera) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateFloatAttribute("eyeOffset", c.EyeOffset)
 	e.CreateFloatAttribute("focalDistance", c.FocalDistance)
 	e.CreateFloatAttribute("aperture", c.Aperture)
-	e.CreateFloatAttribute("shutterSpeed", c.ShutterSpeed)
+	e.CreateTimeAttribute("shutterSpeed", c.ShutterSpeed)
 	e.CreateFloatAttribute("toneMapScale", c.ToneMapScale)
 	e.CreateFloatAttribute("SSAOBias", c.SSAOBias)
 	e.CreateFloatAttribute("SSAOStrength", c.SSAOStrength)
