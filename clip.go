@@ -58,6 +58,16 @@ func (c *Clip) CreateTrackGroup(name string) *TrackGroup {
 	return tg
 }
 
+func (c *Clip) AddAnimationSet(as *AnimationSet) {
+	c.animationSets = append(c.animationSets, as)
+}
+
+func (c *Clip) CreateAnimationSet(name string) *AnimationSet {
+	as := NewAnimationSet(name)
+	c.animationSets = append(c.animationSets, as)
+	return as
+}
+
 func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement(c.Name, "DmeFilmClip")
 
