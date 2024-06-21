@@ -10,7 +10,7 @@ type Track struct {
 	Collapsed    bool
 	Mute         bool
 	Synched      bool
-	clipType     int
+	ClipType     int32
 	Volume       float32
 	DisplayScale float32
 }
@@ -19,7 +19,6 @@ func NewTrack(name string) *Track {
 	return &Track{
 		Name:         name,
 		Synched:      true,
-		clipType:     1,
 		Volume:       1,
 		DisplayScale: 1,
 	}
@@ -31,6 +30,11 @@ func (t *Track) AddChildren(child Element) {
 
 func (t *Track) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement(t.Name, "DmeTrack")
+
+	e.CreateBoolAttribute("synched", t.Synched)
+	e.CreateIntAttribute("clipType", t.ClipType)
+	e.CreateFloatAttribute("volume", t.Volume)
+	e.CreateFloatAttribute("displayScale", t.DisplayScale)
 
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
 	for _, child := range t.children {
