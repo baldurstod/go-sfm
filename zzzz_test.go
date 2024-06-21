@@ -48,8 +48,8 @@ func createClip(session *sfm.Session) *sfm.Clip {
 	return clip
 }
 
-func createScene() *sfm.Scene {
-	scene := sfm.NewScene("scene")
+func createScene() *sfm.Node {
+	scene := sfm.NewNode("scene")
 
 	return scene
 }

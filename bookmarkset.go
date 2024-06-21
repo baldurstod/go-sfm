@@ -14,7 +14,7 @@ type BookmarkSet struct {
 	DisplayScale     float32
 	mapName          string
 	Camera           *Camera
-	Scene            *Scene
+	Scene            *Node
 	GlobalState      Element
 	FadeIn           Time
 	FadeOut          Time

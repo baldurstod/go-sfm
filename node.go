@@ -4,15 +4,15 @@ import (
 	"github.com/baldurstod/go-dmx"
 )
 
-type Scene struct {
+type Node struct {
 	Name      string
 	Transform *Transform
 	Visible   bool
 	children  []Element
 }
 
-func NewScene(name string) *Scene {
-	return &Scene{
+func NewNode(name string) *Node {
+	return &Node{
 		Name:      name,
 		Transform: NewTransform(""),
 		Visible:   true,
@@ -20,11 +20,11 @@ func NewScene(name string) *Scene {
 	}
 }
 
-func (s *Scene) AddChildren(child Element) {
+func (s *Node) AddChildren(child Element) {
 	s.children = append(s.children, child)
 }
 
-func (s *Scene) toDmElement(serializer *Serializer) *dmx.DmElement {
+func (s *Node) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement("DmeDag")
 
 	e.CreateStringAttribute("name", s.Name)
