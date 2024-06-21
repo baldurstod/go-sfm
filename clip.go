@@ -5,33 +5,38 @@ import (
 )
 
 type Clip struct {
-	Name             string
-	TimeFrame        *TimeFrame
-	Color            Color
-	Text             string
-	Mute             bool
-	trackGroups      []*TrackGroup
-	DisplayScale     float32
-	mapName          string
-	Camera           *Camera
-	Scene            *Scene
-	GlobalState      Element
-	FadeIn           Time
-	FadeOut          Time
-	BackgroundColor  Color
-	BackgroundFXClip Element
-	operators        []Element
-	animationSets    []*AnimationSet
-	bookmarkSets     []*BookmarkSet
+	Name              string
+	TimeFrame         *TimeFrame
+	Color             Color
+	Text              string
+	Mute              bool
+	trackGroups       []*TrackGroup
+	DisplayScale      float32
+	mapName           string
+	Camera            *Camera
+	Scene             *Scene
+	GlobalState       Element
+	FadeIn            Time
+	FadeOut           Time
+	BackgroundColor   Color
+	BackgroundFXClip  Element
+	operators         []Element
+	animationSets     []*AnimationSet
+	bookmarkSets      []*BookmarkSet
+	ActiveBookmarkSet int32
+	SubClipTrackGroup *TrackGroup
 }
 
 func newClip() *Clip {
 	return &Clip{
-		Name:            "SFM",
-		TimeFrame:       newTimeFrame(),
-		Color:           [...]byte{0, 0, 0, 0},
-		BackgroundColor: [...]byte{64, 64, 64, 255},
-		trackGroups:     make([]*TrackGroup, 0),
+		Name:              "SFM",
+		TimeFrame:         newTimeFrame(),
+		Color:             [...]byte{0, 0, 0, 0},
+		BackgroundColor:   [...]byte{64, 64, 64, 255},
+		trackGroups:       make([]*TrackGroup, 0),
+		animationSets:     make([]*AnimationSet, 0),
+		bookmarkSets:      make([]*BookmarkSet, 0),
+		ActiveBookmarkSet: -1,
 	}
 }
 
@@ -60,6 +65,7 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateColorAttribute("color", c.Color)
 	e.CreateStringAttribute("text", c.Text)
 	e.CreateBoolAttribute("mute", c.Mute)
+	e.CreateIntAttribute("activeBookmarkSet", c.ActiveBookmarkSet)
 
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
 	for _, tg := range c.trackGroups {
@@ -79,6 +85,12 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	bookmarkSets := e.CreateAttribute("bookmarkSets", dmx.AT_ELEMENT_ARRAY)
 	for _, bs := range c.bookmarkSets {
 		bookmarkSets.PushElement(serializer.GetElement(bs))
+	}
+
+	if c.SubClipTrackGroup != nil {
+		e.CreateElementAttribute("subClipTrackGroup", serializer.GetElement(c.SubClipTrackGroup))
+	} else {
+		e.CreateElementAttribute("subClipTrackGroup", nil)
 	}
 
 	return e

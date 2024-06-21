@@ -5,26 +5,26 @@ import (
 )
 
 type SessionSettings struct {
-	Name                     string
-	TimeSelection            *TimeSelection
-	GraphEditorState         *GraphEditorState
-	ProceduralPresetSettings *ProceduralPresetSettings
-	RenderSettings           *RenderSettings
-	PosterSettings           *PosterSettings
-	MovieSettings            *MovieSettings
-	SharedPresetGroupSettings            *SharedPresetGroupSettings
+	Name                      string
+	TimeSelection             *TimeSelection
+	GraphEditorState          *GraphEditorState
+	ProceduralPresetSettings  *ProceduralPresetSettings
+	RenderSettings            *RenderSettings
+	PosterSettings            *PosterSettings
+	MovieSettings             *MovieSettings
+	SharedPresetGroupSettings *SharedPresetGroupSettings
 }
 
 func NewSessionSettings() *SessionSettings {
 	return &SessionSettings{
-		Name:                     "sessionSettings",
-		TimeSelection:            NewTimeSelection(),
-		GraphEditorState:         NewGraphEditorState(),
-		ProceduralPresetSettings: NewProceduralPresetSettings(),
-		RenderSettings:           NewRenderSettings(),
-		PosterSettings:           NewPosterSettings(),
-		MovieSettings:            NewMovieSettings(),
-		SharedPresetGroupSettings:            NewSharedPresetGroupSettings(),
+		Name:                      "sessionSettings",
+		TimeSelection:             NewTimeSelection(),
+		GraphEditorState:          NewGraphEditorState(),
+		ProceduralPresetSettings:  NewProceduralPresetSettings(),
+		RenderSettings:            NewRenderSettings(),
+		PosterSettings:            NewPosterSettings(),
+		MovieSettings:             NewMovieSettings(),
+		SharedPresetGroupSettings: NewSharedPresetGroupSettings(),
 	}
 }
 
