@@ -18,3 +18,9 @@ github.com/baldurstod/go-dmx v0.0.10 h1:D2unJ9dd86o5n0seUAEYbxEuOgrJlFBJ+Og1ZsDI
 github.com/baldurstod/go-dmx v0.0.10/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
 github.com/baldurstod/go-dmx v0.0.11 h1:dwadcCCXE5a3wgqd31v7Mkmx0RWybfKpzN8eRHWn/5k=
 github.com/baldurstod/go-dmx v0.0.11/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
+github.com/baldurstod/go-dmx v0.0.12 h1:jJmjbkZzIPb+9xBHY/PZc+qKqZAUEhp95pxMOqNTC54=
+github.com/baldurstod/go-dmx v0.0.12/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
+github.com/baldurstod/go-dmx v0.0.14 h1:n2lKBnVQTwBWyuLj8GMfkV4MPhB0O8A3hgEGLx+Zfk0=
+github.com/baldurstod/go-dmx v0.0.14/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
+github.com/baldurstod/go-dmx v0.0.15 h1:IVBV/ZiH9PIxwxOKzZBWM479eGMzKijH2mzorKQTt4k=
+github.com/baldurstod/go-dmx v0.0.15/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=

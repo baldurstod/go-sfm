@@ -19,7 +19,7 @@ func newTimeFrame() *TimeFrame {
 }
 
 func (tf *TimeFrame) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeTimeFrame")
+	e := dmx.NewDmElement("", "DmeTimeFrame")
 
 	e.CreateTimeAttribute("start", tf.Start)
 	e.CreateTimeAttribute("duration", tf.Duration)

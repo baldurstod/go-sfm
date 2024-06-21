@@ -32,9 +32,8 @@ func NewProgressiveRefinementSettings() *ProgressiveRefinementSettings {
 }
 
 func (prs *ProgressiveRefinementSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmElement")
+	e := dmx.NewDmElement(prs.Name, "DmElement")
 
-	e.CreateStringAttribute("name", prs.Name)
 	e.CreateBoolAttribute("on", prs.On)
 	e.CreateBoolAttribute("useDepthOfField", prs.UseDepthOfField)
 	e.CreateBoolAttribute("overrideDepthOfFieldSamples", prs.OverrideDepthOfFieldSamples)

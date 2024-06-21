@@ -59,9 +59,8 @@ func (c *Clip) CreateTrackGroup(name string) *TrackGroup {
 }
 
 func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeFilmClip")
+	e := dmx.NewDmElement(c.Name, "DmeFilmClip")
 
-	e.CreateStringAttribute("name", c.Name)
 	e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
 	e.CreateColorAttribute("color", c.Color)
 	e.CreateStringAttribute("text", c.Text)

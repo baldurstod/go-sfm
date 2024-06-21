@@ -18,9 +18,8 @@ func NewControl(name string) *Control {
 }
 
 func (c *Control) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmElement")
+	e := dmx.NewDmElement(c.Name, "DmElement")
 
-	e.CreateStringAttribute("name", c.Name)
 	e.CreateFloatAttribute("value", c.Value)
 	e.CreateFloatAttribute("defaultValue", c.DefaultValue)
 	e.CreateElementAttribute("channel", serializer.GetElement(c.Channel))

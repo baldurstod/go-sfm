@@ -30,9 +30,7 @@ func (t *Track) AddChildren(child Element) {
 }
 
 func (t *Track) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeTrack")
-
-	e.CreateStringAttribute("name", t.Name)
+	e := dmx.NewDmElement(t.Name, "DmeTrack")
 
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
 	for _, child := range t.children {

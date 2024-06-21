@@ -25,9 +25,8 @@ func (s *Node) AddChildren(child *Node) {
 }
 
 func (s *Node) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeDag")
+	e := dmx.NewDmElement(s.Name, "DmeDag")
 
-	e.CreateStringAttribute("name", s.Name)
 	e.CreateElementAttribute("transform", serializer.GetElement(s.Transform))
 	e.CreateBoolAttribute("visible", s.Visible)
 

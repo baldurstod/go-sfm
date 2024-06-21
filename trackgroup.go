@@ -23,29 +23,28 @@ func NewTrackGroup(name string) *TrackGroup {
 	}
 }
 
-func (t *TrackGroup) AddTrack(track *Track) {
-	t.tracks = append(t.tracks, track)
+func (tg *TrackGroup) AddTrack(track *Track) {
+	tg.tracks = append(tg.tracks, track)
 }
 
-func (t *TrackGroup) CreateTrack(name string) *Track {
+func (tg *TrackGroup) CreateTrack(name string) *Track {
 	track := NewTrack(name)
-	t.tracks = append(t.tracks, track)
+	tg.tracks = append(tg.tracks, track)
 	return track
 }
 
-func (t *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeTrackGroup")
+func (tg *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement(tg.Name, "DmeTrackGroup")
 
-	e.CreateStringAttribute("name", t.Name)
-	e.CreateBoolAttribute("mute", t.Mute)
-	e.CreateBoolAttribute("visible", t.Visible)
-	e.CreateBoolAttribute("minimized", t.Minimized)
-	e.CreateBoolAttribute("forcemultitrack", t.ForceMultiTrack)
-	e.CreateFloatAttribute("displayScale", t.DisplayScale)
-	e.CreateFloatAttribute("volume", t.Volume)
+	e.CreateBoolAttribute("mute", tg.Mute)
+	e.CreateBoolAttribute("visible", tg.Visible)
+	e.CreateBoolAttribute("minimized", tg.Minimized)
+	e.CreateBoolAttribute("forcemultitrack", tg.ForceMultiTrack)
+	e.CreateFloatAttribute("displayScale", tg.DisplayScale)
+	e.CreateFloatAttribute("volume", tg.Volume)
 
 	tracks := e.CreateAttribute("tracks", dmx.AT_ELEMENT_ARRAY)
-	for _, tr := range t.tracks {
+	for _, tr := range tg.tracks {
 		tracks.PushElement(serializer.GetElement(tr))
 	}
 

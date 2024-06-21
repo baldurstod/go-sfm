@@ -36,9 +36,8 @@ func NewTimeSelection() *TimeSelection {
 }
 
 func (ts *TimeSelection) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeTimeSelection")
+	e := dmx.NewDmElement(ts.Name, "DmeTimeSelection")
 
-	e.CreateStringAttribute("name", ts.Name)
 	e.CreateBoolAttribute("enabled", ts.Enabled)
 	e.CreateBoolAttribute("relative", ts.Relative)
 	e.CreateTimeAttribute("falloff_left", ts.FalloffLeft)

@@ -17,9 +17,8 @@ func NewGraphEditorState() *GraphEditorState {
 }
 
 func (ges *GraphEditorState) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeGraphEditorState")
+	e := dmx.NewDmElement(ges.Name, "DmeGraphEditorState")
 
-	e.CreateStringAttribute("name", ges.Name)
 	e.CreateBoolAttribute("displayGrid", ges.DisplayGrid)
 
 	return e

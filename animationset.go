@@ -20,9 +20,7 @@ func NewAnimationSet(name string) *AnimationSet {
 }
 
 func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeAnimationSet")
-
-	e.CreateStringAttribute("name", as.Name)
+	e := dmx.NewDmElement(as.Name, "DmeAnimationSet")
 
 	controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
 	for _, c := range as.controls {

@@ -45,9 +45,8 @@ func NewCamera(name string) *Camera {
 }
 
 func (c *Camera) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeCamera")
+	e := dmx.NewDmElement(c.Name, "DmeCamera")
 
-	e.CreateStringAttribute("name", c.Name)
 	e.CreateElementAttribute("transform", serializer.GetElement(c.Transform))
 	e.CreateBoolAttribute("visible", c.Visible)
 	e.CreateFloatAttribute("fieldOfView", c.FieldOfView)

@@ -44,9 +44,7 @@ func (s *Session) SetActiveClip(clip *Clip) error {
 }
 
 func (s *Session) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmElement")
-
-	e.CreateStringAttribute("name", s.Name)
+	e := dmx.NewDmElement(s.Name, "DmElement")
 
 	if s.activeClip != nil {
 		e.CreateElementAttribute("activeClip", serializer.GetElement(s.activeClip))

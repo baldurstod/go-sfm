@@ -37,22 +37,21 @@ func NewRenderSettings() *RenderSettings {
 	}
 }
 
-func (pps *RenderSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmElement")
+func (rs *RenderSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement(rs.Name, "DmElement")
 
-	e.CreateStringAttribute("name", pps.Name)
-	e.CreateIntAttribute("width", pps.Width)
-	e.CreateIntAttribute("height", pps.Height)
-	e.CreateFloatAttribute("frameRate", pps.FrameRate)
-	e.CreateIntAttribute("ambientOcclusionMode", pps.AmbientOcclusionMode)
-	e.CreateIntAttribute("showAmbientOcclusion", pps.ShowAmbientOcclusion)
-	e.CreateIntAttribute("drawGameRenderablesMask", pps.DrawGameRenderablesMask)
-	e.CreateIntAttribute("drawToolRenderablesMask", pps.DrawToolRenderablesMask)
-	e.CreateFloatAttribute("toneMapScale", pps.ToneMapScale)
-	e.CreateBoolAttribute("globalLightShadowEnabled", pps.GlobalLightShadowEnabled)
-	e.CreateIntAttribute("playbackClampFrameCount", pps.PlaybackClampFrameCount)
-	e.CreateBoolAttribute("ignoreAlphaFade", pps.IgnoreAlphaFade)
-	e.CreateElementAttribute("ProgressiveRefinement", serializer.GetElement(pps.ProgressiveRefinement))
+	e.CreateIntAttribute("width", rs.Width)
+	e.CreateIntAttribute("height", rs.Height)
+	e.CreateFloatAttribute("frameRate", rs.FrameRate)
+	e.CreateIntAttribute("ambientOcclusionMode", rs.AmbientOcclusionMode)
+	e.CreateIntAttribute("showAmbientOcclusion", rs.ShowAmbientOcclusion)
+	e.CreateIntAttribute("drawGameRenderablesMask", rs.DrawGameRenderablesMask)
+	e.CreateIntAttribute("drawToolRenderablesMask", rs.DrawToolRenderablesMask)
+	e.CreateFloatAttribute("toneMapScale", rs.ToneMapScale)
+	e.CreateBoolAttribute("globalLightShadowEnabled", rs.GlobalLightShadowEnabled)
+	e.CreateIntAttribute("playbackClampFrameCount", rs.PlaybackClampFrameCount)
+	e.CreateBoolAttribute("ignoreAlphaFade", rs.IgnoreAlphaFade)
+	e.CreateElementAttribute("ProgressiveRefinement", serializer.GetElement(rs.ProgressiveRefinement))
 
 	return e
 }

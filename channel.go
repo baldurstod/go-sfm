@@ -23,9 +23,7 @@ func NewChannel(name string) *Channel {
 }
 
 func (c *Channel) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeChannel")
-
-	e.CreateStringAttribute("name", c.Name)
+	e := dmx.NewDmElement(c.Name, "DmeChannel")
 
 	e.CreateElementAttribute("fromElement", serializer.GetElement(c.FromElement))
 	e.CreateStringAttribute("fromAttribute", c.FromAttribute)

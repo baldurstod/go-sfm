@@ -29,9 +29,8 @@ func NewSessionSettings() *SessionSettings {
 }
 
 func (s *SessionSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmElement")
+	e := dmx.NewDmElement(s.Name, "DmElement")
 
-	e.CreateStringAttribute("name", s.Name)
 	e.CreateElementAttribute("timeSelection", serializer.GetElement(s.TimeSelection))
 	e.CreateElementAttribute("graphEditorState", serializer.GetElement(s.GraphEditorState))
 	e.CreateElementAttribute("proceduralPresets", serializer.GetElement(s.ProceduralPresetSettings))

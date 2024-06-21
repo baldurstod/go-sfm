@@ -39,9 +39,7 @@ func (cg *ControlGroup) CreateControl(name string) *Control {
 }
 
 func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeTrack")
-
-	e.CreateStringAttribute("name", cg.Name)
+	e := dmx.NewDmElement(cg.Name, "DmeTrack")
 
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
 	for _, child := range cg.children {

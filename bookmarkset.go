@@ -31,8 +31,8 @@ func NewBookmarkSet(name string) *BookmarkSet {
 	}
 }
 
-func (c *BookmarkSet) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeAnimationSet")
+func (bs *BookmarkSet) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement("", "DmeAnimationSet")
 	/*
 		e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
 		e.CreateColorAttribute("color", c.Color)

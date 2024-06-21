@@ -29,9 +29,7 @@ func (pgi *PresetGroupInfo) CreatePresetGroup(name string) *PresetGroup {
 }
 
 func (pgi *PresetGroupInfo) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmePresetGroupInfo")
-
-	e.CreateStringAttribute("name", pgi.Name)
+	e := dmx.NewDmElement(pgi.Name, "DmePresetGroupInfo")
 
 	presetGroupInfos := e.CreateAttribute("presetGroupInfos", dmx.AT_ELEMENT_ARRAY)
 	for _, pgi := range pgi.presetGroups {

@@ -27,9 +27,8 @@ func (p *Preset) CreateControlValue(name string, value float32) *ControlValue {
 }
 
 func (p *Preset) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmePreset")
+	e := dmx.NewDmElement(p.Name, "DmePreset")
 
-	e.CreateStringAttribute("name", p.Name)
 	e.CreateStringAttribute("description", p.Description)
 
 	controlValues := e.CreateAttribute("controlValues", dmx.AT_ELEMENT_ARRAY)

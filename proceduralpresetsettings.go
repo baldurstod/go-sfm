@@ -29,9 +29,8 @@ func NewProceduralPresetSettings() *ProceduralPresetSettings {
 }
 
 func (pps *ProceduralPresetSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeProceduralPresetSettings")
+	e := dmx.NewDmElement(pps.Name, "DmeProceduralPresetSettings")
 
-	e.CreateStringAttribute("name", pps.Name)
 	e.CreateFloatAttribute("jitterscale", pps.JitterScale)
 	e.CreateFloatAttribute("smoothscale", pps.SmoothScale)
 	e.CreateFloatAttribute("jitterscale_vector", pps.JitterScaleVector)

@@ -17,12 +17,11 @@ func NewBone(name string) *Bone {
 	}
 }
 
-func (t *Bone) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeAnimationSet")
+func (b *Bone) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement(b.Name, "DmeAnimationSet")
 
-	e.CreateStringAttribute("name", t.Name)
-	e.CreateVector3Attribute("position", t.Position)
-	e.CreateQuaternionAttribute("orientation", t.Orientation)
+	e.CreateVector3Attribute("position", b.Position)
+	e.CreateQuaternionAttribute("orientation", b.Orientation)
 
 	return e
 }

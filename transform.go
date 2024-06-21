@@ -20,9 +20,8 @@ func NewTransform(name string) *Transform {
 }
 
 func (t *Transform) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeTransform")
+	e := dmx.NewDmElement(t.Name, "DmeTransform")
 
-	e.CreateStringAttribute("name", t.Name)
 	e.CreateVector3Attribute("position", t.Position)
 	e.CreateQuaternionAttribute("orientation", t.Orientation)
 	e.CreateFloatAttribute("scale", t.Scale)

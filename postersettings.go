@@ -28,9 +28,8 @@ func NewPosterSettings() *PosterSettings {
 }
 
 func (ps *PosterSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmElement")
+	e := dmx.NewDmElement(ps.Name, "DmElement")
 
-	e.CreateStringAttribute("name", ps.Name)
 	e.CreateIntAttribute("width", ps.Width)
 	e.CreateIntAttribute("height", ps.Height)
 	e.CreateIntAttribute("DPI", ps.DPI)

@@ -19,9 +19,8 @@ func NewGlobalFlexControllerOperator(name string, flexWeight float32, gameModel 
 }
 
 func (o *GlobalFlexControllerOperator) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("DmeGlobalFlexControllerOperator")
+	e := dmx.NewDmElement(o.Name, "DmeGlobalFlexControllerOperator")
 
-	e.CreateStringAttribute("name", o.Name)
 	e.CreateFloatAttribute("position", o.FlexWeight)
 	e.CreateElementAttribute("gameModel", serializer.GetElement(o.GameModel))
 
