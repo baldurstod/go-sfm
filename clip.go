@@ -14,7 +14,7 @@ type Clip struct {
 	DisplayScale      float32
 	mapName           string
 	Camera            *Camera
-	Scene             *Node
+	Scene             INode
 	GlobalState       Element
 	FadeIn            Time
 	FadeOut           Time

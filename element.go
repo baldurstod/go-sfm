@@ -12,3 +12,9 @@ type Operator interface {
 	toDmElement(*Serializer) *dmx.DmElement
 	isOperator()
 }
+
+type INode interface {
+	toDmElement(*Serializer) *dmx.DmElement
+	isNode()
+	AddChildren(child INode)
+}

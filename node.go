@@ -8,7 +8,10 @@ type Node struct {
 	Name      string
 	Transform *Transform
 	Visible   bool
-	children  []*Node
+	children  []INode
+}
+
+func (n *Node) isNode() {
 }
 
 func NewNode(name string) *Node {
@@ -16,11 +19,11 @@ func NewNode(name string) *Node {
 		Name:      name,
 		Transform: NewTransform(""),
 		Visible:   true,
-		children:  make([]*Node, 0),
+		children:  make([]INode, 0),
 	}
 }
 
-func (s *Node) AddChildren(child *Node) {
+func (s *Node) AddChildren(child INode) {
 	s.children = append(s.children, child)
 }
 
