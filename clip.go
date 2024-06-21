@@ -12,7 +12,7 @@ type Clip struct {
 	Mute              bool
 	trackGroups       []*TrackGroup
 	DisplayScale      float32
-	mapName           string
+	MapName           string
 	Camera            *Camera
 	Scene             INode
 	GlobalState       Element
@@ -38,14 +38,6 @@ func NewClip(name string) *Clip {
 		bookmarkSets:      make([]*BookmarkSet, 0),
 		ActiveBookmarkSet: -1,
 	}
-}
-
-func (c *Clip) GetMap() string {
-	return c.mapName
-}
-
-func (c *Clip) SetMap(name string) {
-	c.mapName = name
 }
 
 func (c *Clip) AddTrackGroup(tg *TrackGroup) {
@@ -76,6 +68,7 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateStringAttribute("text", c.Text)
 	e.CreateBoolAttribute("mute", c.Mute)
 	e.CreateIntAttribute("activeBookmarkSet", c.ActiveBookmarkSet)
+	e.CreateStringAttribute("mapname", c.MapName)
 
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
 	for _, tg := range c.trackGroups {
