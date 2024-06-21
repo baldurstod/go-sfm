@@ -15,6 +15,16 @@ const outputFolder = "./var/"
 func TestSession(t *testing.T) {
 	session := sfm.NewSession()
 
+	createClip(session)
+
+	buf := new(bytes.Buffer)
+	dmx.SerializeText(buf, sfm.NewSerializer().GetElement(session))
+	//log.Println(buf)
+
+	os.WriteFile(path.Join(outputFolder, "test_session.dmx"), buf.Bytes(), 0666)
+}
+
+func createClip(session *sfm.Session) *sfm.Clip {
 	clip := session.CreateClip("SFM")
 
 	sound := clip.CreateTrackGroup("Sound")
@@ -24,11 +34,16 @@ func TestSession(t *testing.T) {
 	sound.CreateTrack("Music")
 	sound.CreateTrack("Effects")
 
-	buf := new(bytes.Buffer)
-	dmx.SerializeText(buf, sfm.NewSerializer().GetElement(session))
-	log.Println(buf)
+	clip.SubClipTrackGroup = sfm.NewTrackGroup("subClipTrackGroup")
+	filmTrack := clip.SubClipTrackGroup.CreateTrack("Film")
 
-	os.WriteFile(path.Join(outputFolder, "test_session.dmx"), buf.Bytes(), 0666)
+	shot1 := sfm.NewClip("shot1")
+	filmTrack.AddChildren(shot1)
+	shot1.Camera = sfm.NewCamera("camera1")
+
+	log.Println(shot1.Camera)
+
+	return clip
 }
 
 func TestCamera(t *testing.T) {
