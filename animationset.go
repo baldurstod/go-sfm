@@ -8,7 +8,7 @@ type AnimationSet struct {
 	Name             string
 	controls         []*Control
 	presetGroups     []*PresetGroup
-	operators        []Element
+	operators        []Operator
 	RootControlGroup *ControlGroup
 	GameModel        *GameModel
 }
@@ -37,7 +37,11 @@ func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 		operators.PushElement(serializer.GetElement(o))
 	}
 
-	e.CreateElementAttribute("gameModel", serializer.GetElement(as.GameModel))
+	if as.GameModel != nil {
+		e.CreateElementAttribute("gameModel", serializer.GetElement(as.GameModel))
+	} else {
+		e.CreateElementAttribute("gameModel", nil)
+	}
 
 	/*
 		e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
