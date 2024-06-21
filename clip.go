@@ -100,6 +100,12 @@ func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 		e.CreateElementAttribute("camera", nil)
 	}
 
+	if c.Scene != nil {
+		e.CreateElementAttribute("scene", serializer.GetElement(c.Scene))
+	} else {
+		e.CreateElementAttribute("scene", nil)
+	}
+
 	return e
 }
 

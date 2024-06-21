@@ -1,20 +1,42 @@
 package sfm
 
+import (
+	"github.com/baldurstod/go-dmx"
+)
+
 type Scene struct {
-	Name string
-	Transform
-	Visible  bool
-	children []interface{}
+	Name      string
+	Transform *Transform
+	Visible   bool
+	children  []Element
 }
 
-func newScene() *Scene {
+func NewScene(name string) *Scene {
 	return &Scene{
-		Visible: true,
+		Name:      name,
+		Transform: NewTransform(""),
+		Visible:   true,
+		children:  make([]Element, 0),
 	}
 }
 
-func (s *Scene) AddChildren(child interface{}) {
+func (s *Scene) AddChildren(child Element) {
 	s.children = append(s.children, child)
+}
+
+func (s *Scene) toDmElement(serializer *Serializer) *dmx.DmElement {
+	e := dmx.NewDmElement("DmeDag")
+
+	e.CreateStringAttribute("name", s.Name)
+	e.CreateElementAttribute("transform", serializer.GetElement(s.Transform))
+	e.CreateBoolAttribute("visible", s.Visible)
+
+	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
+	for _, child := range s.children {
+		children.PushElement(serializer.GetElement(child))
+	}
+
+	return e
 }
 
 /*

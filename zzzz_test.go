@@ -41,9 +41,17 @@ func createClip(session *sfm.Session) *sfm.Clip {
 	filmTrack.AddChildren(shot1)
 	shot1.Camera = sfm.NewCamera("camera1")
 
+	shot1.Scene = createScene()
+
 	log.Println(shot1.Camera)
 
 	return clip
+}
+
+func createScene() *sfm.Scene {
+	scene := sfm.NewScene("scene")
+
+	return scene
 }
 
 func TestCamera(t *testing.T) {
