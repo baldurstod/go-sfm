@@ -17,7 +17,7 @@ func (n *Node) isNode() {
 func NewNode(name string) *Node {
 	return &Node{
 		Name:      name,
-		Transform: NewTransform(""),
+		Transform: NewTransform(name),
 		Visible:   true,
 		children:  make([]INode, 0),
 	}

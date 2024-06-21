@@ -1,22 +1,22 @@
 package sfm
 
 import (
-	"github.com/baldurstod/go-dmx"
+	//"github.com/baldurstod/go-dmx"
 )
 
 type Bone struct {
-	Name        string
-	Position    [3]float32
-	Orientation [4]float32
+	*Node
+}
+
+func (n *Bone) isNode() {
 }
 
 func NewBone(name string) *Bone {
 	return &Bone{
-		Name:        name,
-		Orientation: [...]float32{0, 0, 0, 1},
+		Node: NewNode(name),
 	}
 }
-
+/*
 func (b *Bone) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement(b.Name, "DmeAnimationSet")
 
@@ -24,7 +24,7 @@ func (b *Bone) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateQuaternionAttribute("orientation", b.Orientation)
 
 	return e
-}
+}*/
 
 /*
 "DmeTransform"
