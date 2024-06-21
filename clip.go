@@ -27,9 +27,9 @@ type Clip struct {
 	SubClipTrackGroup *TrackGroup
 }
 
-func newClip() *Clip {
+func newClip(name string) *Clip {
 	return &Clip{
-		Name:              "SFM",
+		Name:              name,
 		TimeFrame:         newTimeFrame(),
 		Color:             [...]byte{0, 0, 0, 0},
 		BackgroundColor:   [...]byte{64, 64, 64, 255},
@@ -61,6 +61,7 @@ func (c *Clip) CreateTrackGroup(name string) *TrackGroup {
 func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement("DmeFilmClip")
 
+	e.CreateStringAttribute("name", c.Name)
 	e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
 	e.CreateColorAttribute("color", c.Color)
 	e.CreateStringAttribute("text", c.Text)

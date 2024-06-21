@@ -5,12 +5,17 @@ import (
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
 	"log"
+	"os"
+	"path"
 	"testing"
 )
 
+const outputFolder = "./var/"
+
 func TestSession(t *testing.T) {
 	session := sfm.NewSession()
-	clip := session.CreateClip()
+
+	clip := session.CreateClip("SFM")
 
 	sound := clip.CreateTrackGroup("Sound")
 	clip.CreateTrackGroup("Overlay")
@@ -22,6 +27,8 @@ func TestSession(t *testing.T) {
 	buf := new(bytes.Buffer)
 	dmx.SerializeText(buf, sfm.NewSerializer().GetElement(session))
 	log.Println(buf)
+
+	os.WriteFile(path.Join(outputFolder, "test_session.dmx"), buf.Bytes(), 0666)
 }
 
 func TestCamera(t *testing.T) {

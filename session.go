@@ -20,8 +20,8 @@ func NewSession() *Session {
 	}
 }
 
-func (s *Session) CreateClip() *Clip {
-	clip := newClip()
+func (s *Session) CreateClip(name string) *Clip {
+	clip := newClip(name)
 	s.clips[clip] = struct{}{}
 
 	if s.activeClip == nil {
