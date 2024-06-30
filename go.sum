@@ -1,7 +1,7 @@
 github.com/baldurstod/go-dmx v0.0.15 h1:IVBV/ZiH9PIxwxOKzZBWM479eGMzKijH2mzorKQTt4k=
 github.com/baldurstod/go-dmx v0.0.15/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
-github.com/baldurstod/go-source2-tools v0.0.4 h1:BQEnzCRr9xUdISJwW0qlRsryi6Rvj2+W53uLl4rEzN8=
-github.com/baldurstod/go-source2-tools v0.0.4/go.mod h1:nszVGXg/PfmF+dEbheETlV8nX4Ez23KU+VZUJMycFW0=
+github.com/baldurstod/go-source2-tools v0.0.5 h1:G82/c2+u93bAt/NTLaNNlLQym4cS7D4iz2AHQYVDF+8=
+github.com/baldurstod/go-source2-tools v0.0.5/go.mod h1:nszVGXg/PfmF+dEbheETlV8nX4Ez23KU+VZUJMycFW0=
 github.com/baldurstod/go-vector v0.0.3 h1:uFPicSH7nerE6p5HzhNnmBWfT4yUk7pPjy3gll4eQRA=
 github.com/baldurstod/go-vector v0.0.3/go.mod h1:B1yNl2t+n/Zf+pR/hdLCYpUvd+FAHt/Cx9kqVKNsN1o=
 github.com/klauspost/compress v1.17.9 h1:6KIumPrER1LHsvBVuDa0r5xaG0Es51mhhB9BQB2qeMA=
