@@ -72,9 +72,6 @@ func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for _, child := range gm.children {
 		children.PushElement(serializer.GetElement(child))
 	}
-	for _, bone := range gm.bones {
-		children.PushElement(serializer.GetElement(bone))
-	}
 
 	flexWeights := e.CreateAttribute("flexWeights", dmx.AT_FLOAT_ARRAY)
 	for _, weights := range gm.FlexWeights {
@@ -85,7 +82,6 @@ func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for _, bone := range gm.bones {
 		bones.PushElement(serializer.GetElement(bone.Transform))
 	}
-
 
 	globalFlexControllers := e.CreateAttribute("globalFlexControllers", dmx.AT_ELEMENT_ARRAY)
 	for _, gfc := range gm.globalFlexControllers {

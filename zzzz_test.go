@@ -89,10 +89,22 @@ func createScene() (*sfm.Node, error) {
 		return scene, nil
 	}
 
+	bones := make(map[*model.Bone]*sfm.Bone)
+
 	for k, v := range skel.GetBones() {
-		bone := model1.CreateBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
+		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
 		bone.Transform.Position = v.PosParent
 		bone.Transform.Orientation = v.RotParent
+		bones[v] = bone
+		model1.AddBone(bone)
+	}
+	for _, v := range skel.GetBones() {
+		bone := bones[v]
+		if v.ParentBone == nil {
+			model1.AddChildren(bone)
+		} else {
+			bones[v.ParentBone].AddChildren(bone)
+		}
 	}
 
 	/*
