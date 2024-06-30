@@ -2,12 +2,13 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-vector"
 )
 
 type Transform struct {
 	Name        string
-	Position    [3]float32
-	Orientation [4]float32
+	Position    vector.Vector3[float32]
+	Orientation vector.Quaternion[float32]
 	Scale       float32
 }
 

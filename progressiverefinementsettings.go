@@ -27,7 +27,7 @@ func NewProgressiveRefinementSettings() *ProgressiveRefinementSettings {
 		UseMotionBlur:                    true,
 		OverrideMotionBlurSamplesValue:   8,
 		UseAntialiasing:                  true,
-		OverrideShutterSpeedValue:        1 / 48,
+		OverrideShutterSpeedValue:        1. / 48,
 	}
 }
 

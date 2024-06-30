@@ -2,29 +2,39 @@ package sfm_test
 
 import (
 	"bytes"
-	"github.com/baldurstod/go-dmx"
-	"github.com/baldurstod/go-sfm"
+	"fmt"
+	"log"
 	_ "log"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-sfm"
+	"github.com/baldurstod/go-source2-tools/model"
+	"github.com/baldurstod/go-source2-tools/parser"
 )
 
-const outputFolder = "./var/"
+const varFolder = "./var/"
 
 func TestSession(t *testing.T) {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
-	createClip(session)
+	_, err := createClip(session)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	buf := new(bytes.Buffer)
 	dmx.SerializeText(buf, sfm.NewSerializer().GetElement(session))
 	//log.Println(buf)
 
-	os.WriteFile(path.Join(outputFolder, "test_session.dmx"), buf.Bytes(), 0666)
+	os.WriteFile(path.Join(varFolder, "test_session.dmx"), buf.Bytes(), 0666)
 }
 
-func createClip(session *sfm.Session) *sfm.Clip {
+func createClip(session *sfm.Session) (*sfm.Clip, error) {
 	clip := session.CreateClip("SFM")
 
 	sound := clip.CreateTrackGroup("Sound")
@@ -45,28 +55,52 @@ func createClip(session *sfm.Session) *sfm.Clip {
 	filmTrack.AddChildren(shot1)
 	shot1.Camera = sfm.NewCamera("camera1")
 
-	shot1.Scene = createScene()
+	var err error
+	scene, err := createScene()
+	if err != nil {
+		return nil, err
+	}
+	shot1.Scene = scene
 	//shot1.MapName = "maps/dota.vmap"
 
 	shot1.AddAnimationSet(createAnimationSet())
 
 	//log.Println(shot1.Camera)
 
-	return clip
+	return clip, nil
 }
 
-func createScene() *sfm.Node {
+func createScene() (*sfm.Node, error) {
 	scene := sfm.NewNode("scene")
 
-	model1 := sfm.NewGameModel("tiny_04", "models/heroes/tiny/tiny_04/tiny_04.vmdl")
+	model1 := sfm.NewGameModel("tiny_04", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
 	scene.AddChildren(model1)
-	model1.CreateBone("test")
 
-	model2 := sfm.NewGameModel("tiny_astral_order_weapon", "models/items/tiny/tiny_astral_order_weapon/tiny_astral_order_weapon.vmdl")
-	scene.AddChildren(model2)
-	model2.CreateBone("test")
+	s2Model, err := getModel("tiny_01.vmdl_c")
+	//defer return scene, nil
 
-	return scene
+	if err != nil {
+		return scene, nil
+	}
+
+	log.Println(s2Model.GetSkeleton())
+	skel, err := s2Model.GetSkeleton()
+	if err != nil {
+		return scene, nil
+	}
+
+	for k, v := range skel.GetBones() {
+		bone := model1.CreateBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
+		bone.Transform.Position = v.PosParent
+		bone.Transform.Orientation = v.RotParent
+	}
+
+	/*
+		model2 := sfm.NewGameModel("tiny_astral_order_weapon", "models/items/tiny/tiny_astral_order_weapon/tiny_astral_order_weapon.vmdl")
+		scene.AddChildren(model2)
+		model2.CreateBone("test")*/
+
+	return scene, nil
 }
 
 func createAnimationSet() *sfm.AnimationSet {
@@ -83,4 +117,22 @@ func TestCamera(t *testing.T) {
 	//camera := sfm.Camera{}
 
 	//log.Println(camera)
+}
+
+func getModel(filename string) (*model.Model, error) {
+	b, err := os.ReadFile(path.Join(varFolder, filename))
+	if err != nil {
+		return nil, err
+	}
+	file, err := parser.Parse(b)
+	if err != nil {
+		return nil, err
+	}
+
+	model := model.NewModel()
+	model.SetFile(file)
+
+	return model, nil
+
+	//log.Println(model.GetSkeleton())
 }
