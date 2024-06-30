@@ -15,6 +15,9 @@ func NewSerializer() *Serializer {
 }
 
 func (s *Serializer) GetElement(element Element) *dmx.DmElement {
+	if element == nil {
+		return nil
+	}
 	e, ok := s.elements[element]
 	if ok {
 		return e
