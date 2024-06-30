@@ -36,9 +36,3 @@ func TestSession(t *testing.T) {
 
 	os.WriteFile(path.Join(varFolder, "test_session.dmx"), buf.Bytes(), 0666)
 }
-
-func TestCamera(t *testing.T) {
-	//camera := sfm.Camera{}
-
-	//log.Println(camera)
-}

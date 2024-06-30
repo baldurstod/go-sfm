@@ -52,45 +52,7 @@ func CreateClip(session *sfm.Session) (*sfm.Clip, *sfm.Node, error) {
 func createScene() (*sfm.Node, error) {
 	scene := sfm.NewNode("scene")
 
-	//model1 := sfm.NewGameModel("tiny_04", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
-	//scene.AddChildren(model1)
-
 	return scene, nil
-	/*
-	   s2Model, err := getModel("tiny_01.vmdl_c")
-
-	   	if err != nil {
-	   		return scene, nil
-	   	}
-
-	   log.Println(s2Model.GetSkeleton())
-	   skel, err := s2Model.GetSkeleton()
-
-	   	if err != nil {
-	   		return scene, nil
-	   	}
-
-	   bones := make(map[*model.Bone]*sfm.Bone)
-
-	   	for k, v := range skel.GetBones() {
-	   		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
-	   		bone.Transform.Position = v.PosParent
-	   		bone.Transform.Orientation = v.RotParent
-	   		bones[v] = bone
-	   		model1.AddBone(bone)
-	   	}
-
-	   	for _, v := range skel.GetBones() {
-	   		bone := bones[v]
-	   		if v.ParentBone == nil {
-	   			model1.AddChildren(bone)
-	   		} else {
-	   			bones[v.ParentBone].AddChildren(bone)
-	   		}
-	   	}
-
-	   return scene, nil
-	*/
 }
 
 func createAnimationSet() *sfm.AnimationSet {
@@ -104,8 +66,11 @@ func createAnimationSet() *sfm.AnimationSet {
 }
 
 func AddModel(parent *sfm.Node, filename string, f2 string) error {
+	dag := sfm.NewNode("model dag")
+
 	model1 := sfm.NewGameModel("model", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
-	parent.AddChildren(model1)
+	dag.AddChildren(model1)
+	parent.AddChildren(dag)
 
 	s2Model, err := getModel(f2)
 
