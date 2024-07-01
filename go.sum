@@ -4,6 +4,10 @@ github.com/baldurstod/go-source2-tools v0.0.5 h1:G82/c2+u93bAt/NTLaNNlLQym4cS7D4
 github.com/baldurstod/go-source2-tools v0.0.5/go.mod h1:nszVGXg/PfmF+dEbheETlV8nX4Ez23KU+VZUJMycFW0=
 github.com/baldurstod/go-vector v0.0.3 h1:uFPicSH7nerE6p5HzhNnmBWfT4yUk7pPjy3gll4eQRA=
 github.com/baldurstod/go-vector v0.0.3/go.mod h1:B1yNl2t+n/Zf+pR/hdLCYpUvd+FAHt/Cx9kqVKNsN1o=
+github.com/baldurstod/go-vector v0.0.4 h1:xYtCvtft8zgoni3kw2irNt2I0yARaWSj1C3r7Lc7PCQ=
+github.com/baldurstod/go-vector v0.0.4/go.mod h1:B1yNl2t+n/Zf+pR/hdLCYpUvd+FAHt/Cx9kqVKNsN1o=
+github.com/baldurstod/go-vector v0.0.5 h1:ED6rM+homVhEv/GZ9ApZtB44ASkyzenGt/LImAPhy1E=
+github.com/baldurstod/go-vector v0.0.5/go.mod h1:B1yNl2t+n/Zf+pR/hdLCYpUvd+FAHt/Cx9kqVKNsN1o=
 github.com/klauspost/compress v1.17.9 h1:6KIumPrER1LHsvBVuDa0r5xaG0Es51mhhB9BQB2qeMA=
 github.com/klauspost/compress v1.17.9/go.mod h1:Di0epgTjJY877eYKx5yC51cX2A2Vl2ibi7bDH9ttBbw=
 github.com/pierrec/lz4/v4 v4.1.21 h1:yOVMLb6qSIDP67pl/5F7RepeKYu/VmTyEXvuMI5d9mQ=
