@@ -2,19 +2,30 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-vector"
 )
 
 type ControlGroup struct {
-	Name     string
-	children []*ControlGroup
-	controls []*Control
+	Name         string
+	children     []*ControlGroup
+	controls     []*Control
+	GroupColor   vector.Vector4[uint8]
+	ControlColor vector.Vector4[uint8]
+	Visible      bool
+	Selectable   bool
+	Snappable    bool
 }
 
 func NewControlGroup(name string) *ControlGroup {
 	return &ControlGroup{
-		Name:     name,
-		children: make([]*ControlGroup, 0),
-		controls: make([]*Control, 0),
+		Name:         name,
+		children:     make([]*ControlGroup, 0),
+		controls:     make([]*Control, 0),
+		GroupColor:   [4]uint8{200, 200, 200, 255},
+		ControlColor: [4]uint8{200, 200, 200, 255},
+		Visible:      true,
+		Selectable:   true,
+		Snappable:    true,
 	}
 }
 
@@ -39,7 +50,7 @@ func (cg *ControlGroup) CreateControl(name string) *Control {
 }
 
 func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(cg.Name, "DmeTrack")
+	e := dmx.NewDmElement(cg.Name, "DmeControlGroup")
 
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
 	for _, child := range cg.children {
@@ -50,6 +61,13 @@ func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for _, control := range cg.controls {
 		controls.PushElement(serializer.GetElement(control))
 	}
+
+	e.CreateColorAttribute("groupColor", cg.GroupColor)
+	e.CreateColorAttribute("controlColor", cg.ControlColor)
+
+	e.CreateBoolAttribute("visible", cg.Visible)
+	e.CreateBoolAttribute("selectable", cg.Selectable)
+	e.CreateBoolAttribute("snappable", cg.Snappable)
 
 	return e
 }
