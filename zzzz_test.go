@@ -32,6 +32,11 @@ func TestSession(t *testing.T) {
 		t.Error(err)
 		return
 	}
+	err = utils.AddModel(shot1, "models/heroes/marci/marci_base.vmdl", "marci_base.vmdl_c")
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	camera.Transform.Orientation.RotateZ(math.Pi)
 	camera.Transform.Position.Set(200, 0, 60)
@@ -47,10 +52,6 @@ func TestAnimationGroups(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	group := sfm.GetAnimationGroup("bigToe_R_1")
-	if group == nil {
-		t.Error("group not found")
-		return
-	}
 
 	log.Println(group)
 }

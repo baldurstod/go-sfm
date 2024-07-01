@@ -10,24 +10,30 @@ import (
 )
 
 type group struct {
-	Name  string
 	Color vector.Vector4[uint8]
 	root  []string
 }
 
-var groups map[string]*group
+var groups map[string]group
 
-func GetAnimationGroup(name string) *group {
+var unknownGroup = group{root: []string{"Unknown"}, Color: [4]uint8{0, 128, 255, 255}}
+
+func GetAnimationGroup(name string) group {
 	if groups == nil {
 		parseAnimationGroups()
 	}
 
-	return groups[name]
+	group, ok := groups[name]
+	if !ok {
+		return unknownGroup
+	}
+
+	return group
 }
 
 func parseAnimationGroups() error {
 	if groups == nil {
-		groups = make(map[string]*group)
+		groups = make(map[string]group)
 	}
 
 	var resourcesFs = &Resources
@@ -106,8 +112,7 @@ func addAnimationGroup(gr *vdf.KeyValue, st []string) error {
 		if !ok {
 			return errors.New("value is not of type string")
 		}
-		groups[s] = &group{root: st}
-		groups[s].Color.Set(r, g, b, a)
+		groups[s] = group{root: st, Color: [4]uint8{r, g, b, a}}
 	}
 	return nil
 }

@@ -57,13 +57,10 @@ func (cg *ControlGroup) CreateTransformControl(name string) *TransformControl {
 func (cg *ControlGroup) GetSubGroup(controlName string) *ControlGroup {
 	group := GetAnimationGroup(controlName)
 
-	if group == nil {
-		return cg
-	}
-
 	current := cg
 	for _, v := range group.root {
 		current = current.CreateChildren(v)
+		current.GroupColor.Set(64, 200, 64, 255)
 	}
 	current.GroupColor = group.Color
 

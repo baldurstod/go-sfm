@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path"
 
@@ -68,7 +67,7 @@ func createAnimationSet() *sfm.AnimationSet {
 func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 	dag := sfm.NewNode("model dag")
 
-	model1 := sfm.NewGameModel("model", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
+	model1 := sfm.NewGameModel("model", filename)
 	dag.AddChildren(model1)
 	clip.Scene.AddChildren(dag)
 
@@ -78,7 +77,6 @@ func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 		return err
 	}
 
-	log.Println(s2Model.GetSkeleton())
 	skel, err := s2Model.GetSkeleton()
 
 	if err != nil {
