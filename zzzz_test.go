@@ -45,11 +45,12 @@ func TestSession(t *testing.T) {
 
 func TestAnimationGroups(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	err := utils.InitAnimationGroups()
-	if err != nil {
-		t.Error(err)
+
+	group := utils.GetGroup("bigToe_R_1")
+	if group == nil {
+		t.Error("group not found")
 		return
 	}
 
-	log.Println(utils.GetGroup("bigToe_R_1"))
+	log.Println(group)
 }

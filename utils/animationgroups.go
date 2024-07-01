@@ -18,12 +18,15 @@ type group struct {
 
 var groups map[string]*group
 
-func GetGroup(name string) (*group, bool) {
-	g, ok := groups[name]
-	return g, ok
+func GetGroup(name string) *group {
+	if groups == nil {
+		parseAnimationGroups()
+	}
+
+	return groups[name]
 }
 
-func InitAnimationGroups() error {
+func parseAnimationGroups() error {
 	if groups == nil {
 		groups = make(map[string]*group)
 	}
@@ -80,8 +83,19 @@ func initAnimationGroup(group *vdf.KeyValue, st []string) error {
 	return nil
 }
 
-func addAnimationGroup(g *vdf.KeyValue, st []string) error {
-	controls, _ := g.GetAll("control")
+func addAnimationGroup(gr *vdf.KeyValue, st []string) error {
+	var r, g, b, a uint8
+	if color, ok := gr.GetString("groupColor"); ok {
+		_, err := fmt.Sscanf(color, "%d %d %d %d", &r, &g, &b, &a)
+		if err != nil {
+			r = 0
+			g = 0
+			b = 0
+			a = 255
+		}
+	}
+
+	controls, _ := gr.GetAll("control")
 
 	for _, val := range controls {
 		s, ok := val.ToString()
@@ -89,6 +103,7 @@ func addAnimationGroup(g *vdf.KeyValue, st []string) error {
 			return errors.New("value is not of type string")
 		}
 		groups[s] = &group{root: st}
+		groups[s].Color.Set(r, g, b, a)
 	}
 	return nil
 }
