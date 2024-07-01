@@ -42,3 +42,14 @@ func TestSession(t *testing.T) {
 
 	os.WriteFile(path.Join(varFolder, "test_session.dmx"), buf.Bytes(), 0666)
 }
+
+func TestAnimationGroups(t *testing.T) {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	err := utils.InitAnimationGroups()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	log.Println(utils.GetGroup("bigToe_R_1"))
+}
