@@ -11,6 +11,8 @@ type Control struct {
 	Channel      *Channel
 }
 
+func (*Control) isControl() {}
+
 func NewControl(name string) *Control {
 	return &Control{
 		Name: name,

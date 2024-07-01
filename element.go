@@ -18,3 +18,8 @@ type INode interface {
 	isNode()
 	AddChildren(child INode)
 }
+
+type IControl interface {
+	isControl()
+	toDmElement(*Serializer) *dmx.DmElement
+}
