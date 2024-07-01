@@ -6,16 +6,18 @@ import (
 
 type AnimationSet struct {
 	Name             string
-	controls         []*Control
+	controls         map[IControl]struct{}
 	presetGroups     []*PresetGroup
 	operators        []Operator
-	RootControlGroup *ControlGroup
+	RootControlGroup ControlGroup
 	GameModel        *GameModel
 }
 
 func NewAnimationSet(name string) *AnimationSet {
 	return &AnimationSet{
-		Name: name,
+		Name:             name,
+		controls:         make(map[IControl]struct{}),
+		RootControlGroup: *NewControlGroup(""),
 	}
 }
 
@@ -23,11 +25,20 @@ func (as *AnimationSet) AddOperator(o Operator) {
 	as.operators = append(as.operators, o)
 }
 
+func (as *AnimationSet) AddControl(c IControl) {
+	as.controls[c] = struct{}{}
+}
+
+func (as *AnimationSet) CreateTransformControl(name string) {
+	c := as.RootControlGroup.CreateTransformControl(name)
+	as.AddControl(c)
+}
+
 func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := dmx.NewDmElement(as.Name, "DmeAnimationSet")
 
 	controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
-	for _, c := range as.controls {
+	for c := range as.controls {
 		controls.PushElement(serializer.GetElement(c))
 	}
 
@@ -41,11 +52,7 @@ func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 		operators.PushElement(serializer.GetElement(o))
 	}
 
-	if as.RootControlGroup != nil {
-		e.CreateElementAttribute("rootControlGroup", serializer.GetElement(as.RootControlGroup))
-	} else {
-		e.CreateElementAttribute("rootControlGroup", nil)
-	}
+	e.CreateElementAttribute("rootControlGroup", serializer.GetElement(&as.RootControlGroup))
 
 	if as.GameModel != nil {
 		e.CreateElementAttribute("gameModel", serializer.GetElement(as.GameModel))

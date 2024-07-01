@@ -8,7 +8,7 @@ import (
 type ControlGroup struct {
 	Name         string
 	children     []*ControlGroup
-	controls     []*Control
+	controls     map[IControl]struct{}
 	GroupColor   vector.Vector4[uint8]
 	ControlColor vector.Vector4[uint8]
 	Visible      bool
@@ -20,7 +20,7 @@ func NewControlGroup(name string) *ControlGroup {
 	return &ControlGroup{
 		Name:         name,
 		children:     make([]*ControlGroup, 0),
-		controls:     make([]*Control, 0),
+		controls:     make(map[IControl]struct{}),
 		GroupColor:   [4]uint8{200, 200, 200, 255},
 		ControlColor: [4]uint8{200, 200, 200, 255},
 		Visible:      true,
@@ -39,14 +39,20 @@ func (cg *ControlGroup) CreateChildren(name string) *ControlGroup {
 	return child
 }
 
-func (cg *ControlGroup) AddControl(controls *Control) {
-	cg.controls = append(cg.controls, controls)
+func (cg *ControlGroup) AddControl(control IControl) {
+	cg.controls[control] = struct{}{}
 }
 
 func (cg *ControlGroup) CreateControl(name string) *Control {
-	controls := NewControl(name)
-	cg.controls = append(cg.controls, controls)
-	return controls
+	control := NewControl(name)
+	cg.AddControl(control)
+	return control
+}
+
+func (cg *ControlGroup) CreateTransformControl(name string) *TransformControl {
+	control := NewTransformControl(name)
+	cg.AddControl(control)
+	return control
 }
 
 func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
@@ -58,7 +64,7 @@ func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
 	}
 
 	controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
-	for _, control := range cg.controls {
+	for control := range cg.controls {
 		controls.PushElement(serializer.GetElement(control))
 	}
 

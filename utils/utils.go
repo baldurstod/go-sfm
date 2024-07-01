@@ -62,8 +62,6 @@ func createAnimationSet() *sfm.AnimationSet {
 
 	animationSet.AddOperator(channel)
 
-	animationSet.RootControlGroup = sfm.NewControlGroup("all")
-
 	return animationSet
 }
 
@@ -88,6 +86,7 @@ func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 	}
 
 	bones := make(map[*model.Bone]*sfm.Bone)
+	as := createAnimationSet()
 
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
@@ -95,6 +94,7 @@ func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 		bone.Transform.Orientation = v.RotParent
 		bones[v] = bone
 		model1.AddBone(bone)
+		as.CreateTransformControl(v.Name)
 	}
 
 	for _, v := range skel.GetBones() {
@@ -106,7 +106,6 @@ func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 		}
 	}
 
-	as := createAnimationSet()
 	clip.AddAnimationSet(as)
 	as.GameModel = model1
 
