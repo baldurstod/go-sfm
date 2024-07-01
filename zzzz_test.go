@@ -3,6 +3,7 @@ package sfm_test
 import (
 	"bytes"
 	"log"
+	"math"
 	"os"
 	"path"
 	"testing"
@@ -18,17 +19,22 @@ func TestSession(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
-	_, scene, err := utils.CreateClip(session)
+	shot1, err := utils.CreateClip(session)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	err = utils.AddModel(scene, "models/heroes/tiny/tiny_01/tiny_01.vmdl", "tiny_01.vmdl_c")
+	camera := shot1.Camera
+
+	err = utils.AddModel(shot1, "models/heroes/tiny/tiny_01/tiny_01.vmdl", "tiny_01.vmdl_c")
 	if err != nil {
 		t.Error(err)
 		return
 	}
+
+	camera.Transform.Orientation.RotateZ(math.Pi)
+	camera.Transform.Position.Set(200, 0, 60)
 
 	//log.Println(buf)
 	buf := new(bytes.Buffer)

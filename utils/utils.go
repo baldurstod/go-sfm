@@ -13,7 +13,7 @@ import (
 
 const varFolder = "./var/"
 
-func CreateClip(session *sfm.Session) (*sfm.Clip, *sfm.Node, error) {
+func CreateClip(session *sfm.Session) (*sfm.Clip, error) {
 	clip := session.CreateClip("SFM")
 
 	sound := clip.CreateTrackGroup("Sound")
@@ -37,7 +37,7 @@ func CreateClip(session *sfm.Session) (*sfm.Clip, *sfm.Node, error) {
 	var err error
 	scene, err := createScene()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	shot1.Scene = scene
 	//shot1.MapName = "maps/dota.vmap"
@@ -46,7 +46,7 @@ func CreateClip(session *sfm.Session) (*sfm.Clip, *sfm.Node, error) {
 
 	//log.Println(shot1.Camera)
 
-	return clip, scene, nil
+	return shot1, nil
 }
 
 func createScene() (*sfm.Node, error) {
@@ -62,15 +62,17 @@ func createAnimationSet() *sfm.AnimationSet {
 
 	animationSet.AddOperator(channel)
 
+	animationSet.RootControlGroup = sfm.NewControlGroup("all")
+
 	return animationSet
 }
 
-func AddModel(parent *sfm.Node, filename string, f2 string) error {
+func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 	dag := sfm.NewNode("model dag")
 
 	model1 := sfm.NewGameModel("model", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
 	dag.AddChildren(model1)
-	parent.AddChildren(dag)
+	clip.Scene.AddChildren(dag)
 
 	s2Model, err := getModel(f2)
 
@@ -103,6 +105,10 @@ func AddModel(parent *sfm.Node, filename string, f2 string) error {
 			bones[v.ParentBone].AddChildren(bone)
 		}
 	}
+
+	as := createAnimationSet()
+	clip.AddAnimationSet(as)
+	as.GameModel = model1
 
 	return nil
 }
