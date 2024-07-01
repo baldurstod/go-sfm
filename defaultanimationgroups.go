@@ -87,11 +87,16 @@ func addAnimationGroup(gr *vdf.KeyValue, st []string) error {
 	if color, ok := gr.GetString("groupColor"); ok {
 		_, err := fmt.Sscanf(color, "%d %d %d %d", &r, &g, &b, &a)
 		if err != nil {
-			r = 0
-			g = 0
-			b = 0
+			r = 255
+			g = 255
+			b = 255
 			a = 255
 		}
+	} else {
+		r = 0
+		g = 128
+		b = 255
+		a = 255
 	}
 
 	controls, _ := gr.GetAll("control")

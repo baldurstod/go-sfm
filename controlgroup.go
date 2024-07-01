@@ -65,6 +65,8 @@ func (cg *ControlGroup) GetSubGroup(controlName string) *ControlGroup {
 	for _, v := range group.root {
 		current = current.CreateChildren(v)
 	}
+	current.GroupColor = group.Color
+
 	return current
 }
 
