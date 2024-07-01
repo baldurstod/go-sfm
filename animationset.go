@@ -41,6 +41,12 @@ func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 		operators.PushElement(serializer.GetElement(o))
 	}
 
+	if as.RootControlGroup != nil {
+		e.CreateElementAttribute("rootControlGroup", serializer.GetElement(as.RootControlGroup))
+	} else {
+		e.CreateElementAttribute("rootControlGroup", nil)
+	}
+
 	if as.GameModel != nil {
 		e.CreateElementAttribute("gameModel", serializer.GetElement(as.GameModel))
 	} else {
