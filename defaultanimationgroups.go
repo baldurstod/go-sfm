@@ -1,11 +1,10 @@
-package utils
+package sfm
 
 import (
 	"errors"
 	"fmt"
 	"io/fs"
 
-	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-vector"
 	"github.com/baldurstod/vdf"
 )
@@ -18,7 +17,7 @@ type group struct {
 
 var groups map[string]*group
 
-func GetGroup(name string) *group {
+func GetAnimationGroup(name string) *group {
 	if groups == nil {
 		parseAnimationGroups()
 	}
@@ -31,7 +30,7 @@ func parseAnimationGroups() error {
 		groups = make(map[string]*group)
 	}
 
-	var resourcesFs = &sfm.Resources
+	var resourcesFs = &Resources
 
 	buf, err := fs.ReadFile(fs.FS(resourcesFs), "resources/sfm_default_animation_groups.vcfg")
 	if err != nil {

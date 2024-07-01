@@ -46,7 +46,7 @@ func TestSession(t *testing.T) {
 func TestAnimationGroups(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	group := utils.GetGroup("bigToe_R_1")
+	group := sfm.GetAnimationGroup("bigToe_R_1")
 	if group == nil {
 		t.Error("group not found")
 		return

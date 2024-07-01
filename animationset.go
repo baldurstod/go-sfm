@@ -30,7 +30,8 @@ func (as *AnimationSet) AddControl(c IControl) {
 }
 
 func (as *AnimationSet) CreateTransformControl(name string) {
-	c := as.RootControlGroup.CreateTransformControl(name)
+	cg := as.RootControlGroup.GetSubGroup(name)
+	c := cg.CreateTransformControl(name)
 	as.AddControl(c)
 }
 

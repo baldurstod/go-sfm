@@ -7,7 +7,7 @@ import (
 
 type ControlGroup struct {
 	Name         string
-	children     []*ControlGroup
+	children     map[string]*ControlGroup
 	controls     map[IControl]struct{}
 	GroupColor   vector.Vector4[uint8]
 	ControlColor vector.Vector4[uint8]
@@ -19,7 +19,7 @@ type ControlGroup struct {
 func NewControlGroup(name string) *ControlGroup {
 	return &ControlGroup{
 		Name:         name,
-		children:     make([]*ControlGroup, 0),
+		children:     make(map[string]*ControlGroup),
 		controls:     make(map[IControl]struct{}),
 		GroupColor:   [4]uint8{200, 200, 200, 255},
 		ControlColor: [4]uint8{200, 200, 200, 255},
@@ -29,13 +29,12 @@ func NewControlGroup(name string) *ControlGroup {
 	}
 }
 
-func (cg *ControlGroup) AddChildren(child *ControlGroup) {
-	cg.children = append(cg.children, child)
-}
-
 func (cg *ControlGroup) CreateChildren(name string) *ControlGroup {
-	child := NewControlGroup(name)
-	cg.children = append(cg.children, child)
+	child, ok := cg.children[name]
+	if !ok {
+		child = NewControlGroup(name)
+		cg.children[name] = child
+	}
 	return child
 }
 
@@ -53,6 +52,20 @@ func (cg *ControlGroup) CreateTransformControl(name string) *TransformControl {
 	control := NewTransformControl(name)
 	cg.AddControl(control)
 	return control
+}
+
+func (cg *ControlGroup) GetSubGroup(controlName string) *ControlGroup {
+	group := GetAnimationGroup(controlName)
+
+	if group == nil {
+		return cg
+	}
+
+	current := cg
+	for _, v := range group.root {
+		current = current.CreateChildren(v)
+	}
+	return current
 }
 
 func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
