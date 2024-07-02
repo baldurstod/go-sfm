@@ -12,6 +12,7 @@ type FilmClip struct {
 	animationSets     map[*AnimationSet]struct{}
 	bookmarkSets      []*BookmarkSet
 	ActiveBookmarkSet int32
+	operators         []Element
 }
 
 func (*FilmClip) isClip() {}
@@ -60,6 +61,11 @@ func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	bookmarkSets := e.CreateAttribute("bookmarkSets", dmx.AT_ELEMENT_ARRAY)
 	for _, bs := range fc.bookmarkSets {
 		bookmarkSets.PushElement(serializer.GetElement(bs))
+	}
+
+	operators := e.CreateAttribute("operators", dmx.AT_ELEMENT_ARRAY)
+	for _, o := range fc.operators {
+		operators.PushElement(serializer.GetElement(o))
 	}
 }
 

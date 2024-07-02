@@ -17,7 +17,6 @@ type Clip struct {
 	FadeOut           Time
 	BackgroundColor   Color
 	BackgroundFXClip  Element
-	operators         []Element
 	SubClipTrackGroup *TrackGroup
 }
 
@@ -56,11 +55,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
 	for _, tg := range c.trackGroups {
 		trackGroups.PushElement(serializer.GetElement(tg))
-	}
-
-	operators := e.CreateAttribute("operators", dmx.AT_ELEMENT_ARRAY)
-	for _, o := range c.operators {
-		operators.PushElement(serializer.GetElement(o))
 	}
 
 	if c.SubClipTrackGroup != nil {
