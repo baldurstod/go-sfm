@@ -29,10 +29,11 @@ func (as *AnimationSet) AddControl(c IControl) {
 	as.controls[c] = struct{}{}
 }
 
-func (as *AnimationSet) CreateTransformControl(name string) {
+func (as *AnimationSet) CreateTransformControl(name string) *TransformControl {
 	cg := as.RootControlGroup.GetSubGroup(name)
 	c := cg.CreateTransformControl(name)
 	as.AddControl(c)
+	return c
 }
 
 func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
