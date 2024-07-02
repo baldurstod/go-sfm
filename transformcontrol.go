@@ -22,10 +22,14 @@ func NewTransformControl(name string) *TransformControl {
 		OrientationChannel: *NewChannel(name + "_o"),
 	}
 
+	tc.ValueOrientation.Identity()
+
 	tc.PositionChannel.FromElement = tc
 	tc.PositionChannel.FromAttribute = "valuePosition"
+	tc.PositionChannel.Mode = 3
 	tc.OrientationChannel.FromElement = tc
 	tc.OrientationChannel.FromAttribute = "valueOrientation"
+	tc.OrientationChannel.Mode = 3
 
 	return tc
 }
@@ -35,8 +39,8 @@ func (tc *TransformControl) createDmElement(serializer *Serializer) *dmx.DmEleme
 }
 
 func (tc *TransformControl) toDmElement(serializer *Serializer, e *dmx.DmElement) {
-	e.CreateVector3Attribute("value", tc.ValuePosition)
-	e.CreateQuaternionAttribute("defaultValue", tc.ValueOrientation)
+	e.CreateVector3Attribute("valuePosition", tc.ValuePosition)
+	e.CreateQuaternionAttribute("valueOrientation", tc.ValueOrientation)
 	e.CreateElementAttribute("positionChannel", serializer.GetElement(&tc.PositionChannel))
 	e.CreateElementAttribute("orientationChannel", serializer.GetElement(&tc.OrientationChannel))
 }

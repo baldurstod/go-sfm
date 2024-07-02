@@ -58,7 +58,6 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 	animationSet := sfm.NewAnimationSet(name)
 
 	channel := sfm.NewChannel("rootTransform_scale")
-
 	animationSet.AddOperator(channel)
 
 	return animationSet
@@ -85,10 +84,18 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 
 	bones := make(map[*model.Bone]*sfm.Bone)
 	as := createAnimationSet(name)
-	as.CreateTransformControl("rootTransform")
 
 	channelsClip := sfm.NewChannelsClip(name)
 	animSetEditorChannels.AddChildren(channelsClip)
+	tc := as.CreateTransformControl("rootTransform")
+
+	tc.PositionChannel.ToElement = model1.Transform
+	tc.PositionChannel.ToAttribute = "position"
+	tc.OrientationChannel.ToElement = model1.Transform
+	tc.OrientationChannel.ToAttribute = "orientation"
+
+	channelsClip.AddChannel(&tc.OrientationChannel)
+	channelsClip.AddChannel(&tc.PositionChannel)
 
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
@@ -98,9 +105,9 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 		model1.AddBone(bone)
 		tc := as.CreateTransformControl(v.Name)
 
-		tc.PositionChannel.ToElement = bone
+		tc.PositionChannel.ToElement = bone.Transform
 		tc.PositionChannel.ToAttribute = "position"
-		tc.OrientationChannel.ToElement = bone
+		tc.OrientationChannel.ToElement = bone.Transform
 		tc.OrientationChannel.ToAttribute = "orientation"
 
 		channelsClip.AddChannel(&tc.OrientationChannel)
