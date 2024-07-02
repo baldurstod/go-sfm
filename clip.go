@@ -21,7 +21,6 @@ type Clip struct {
 	BackgroundColor   Color
 	BackgroundFXClip  Element
 	operators         []Element
-	animationSets     map[*AnimationSet]struct{}
 	SubClipTrackGroup *TrackGroup
 }
 
@@ -32,7 +31,6 @@ func newClip(name string) *Clip {
 		Color:           [...]byte{0, 0, 0, 0},
 		BackgroundColor: [...]byte{64, 64, 64, 255},
 		trackGroups:     make([]*TrackGroup, 0),
-		animationSets:   make(map[*AnimationSet]struct{}),
 	}
 }
 
@@ -44,16 +42,6 @@ func (c *Clip) CreateTrackGroup(name string) *TrackGroup {
 	tg := NewTrackGroup(name)
 	c.trackGroups = append(c.trackGroups, tg)
 	return tg
-}
-
-func (c *Clip) AddAnimationSet(as *AnimationSet) {
-	c.animationSets[as] = struct{}{}
-}
-
-func (c *Clip) CreateAnimationSet(name string) *AnimationSet {
-	as := NewAnimationSet(name)
-	c.AddAnimationSet(as)
-	return as
 }
 
 func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
@@ -77,11 +65,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 	operators := e.CreateAttribute("operators", dmx.AT_ELEMENT_ARRAY)
 	for _, o := range c.operators {
 		operators.PushElement(serializer.GetElement(o))
-	}
-
-	animationSets := e.CreateAttribute("animationSets", dmx.AT_ELEMENT_ARRAY)
-	for as := range c.animationSets {
-		animationSets.PushElement(serializer.GetElement(as))
 	}
 
 	if c.SubClipTrackGroup != nil {

@@ -6,6 +6,7 @@ import (
 
 type FilmClip struct {
 	*Clip
+	animationSets     map[*AnimationSet]struct{}
 	bookmarkSets      []*BookmarkSet
 	ActiveBookmarkSet int32
 }
@@ -15,9 +16,20 @@ func (*FilmClip) isClip() {}
 func NewFilmClip(name string) *FilmClip {
 	return &FilmClip{
 		Clip:              newClip(name),
+		animationSets:     make(map[*AnimationSet]struct{}),
 		bookmarkSets:      make([]*BookmarkSet, 0),
 		ActiveBookmarkSet: -1,
 	}
+}
+
+func (fc *FilmClip) AddAnimationSet(as *AnimationSet) {
+	fc.animationSets[as] = struct{}{}
+}
+
+func (fc *FilmClip) CreateAnimationSet(name string) *AnimationSet {
+	as := NewAnimationSet(name)
+	fc.AddAnimationSet(as)
+	return as
 }
 
 func (fc *FilmClip) createDmElement(serializer *Serializer) *dmx.DmElement {
@@ -25,6 +37,11 @@ func (fc *FilmClip) createDmElement(serializer *Serializer) *dmx.DmElement {
 }
 
 func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
+	animationSets := e.CreateAttribute("animationSets", dmx.AT_ELEMENT_ARRAY)
+	for as := range fc.animationSets {
+		animationSets.PushElement(serializer.GetElement(as))
+	}
+
 	e.CreateIntAttribute("activeBookmarkSet", fc.ActiveBookmarkSet)
 
 	bookmarkSets := e.CreateAttribute("bookmarkSets", dmx.AT_ELEMENT_ARRAY)
