@@ -110,6 +110,9 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 		tc.OrientationChannel.ToElement = bone.Transform
 		tc.OrientationChannel.ToAttribute = "orientation"
 
+		tc.ValuePosition = v.PosParent
+		tc.ValueOrientation = v.RotParent
+
 		channelsClip.AddChannel(&tc.OrientationChannel)
 		channelsClip.AddChannel(&tc.PositionChannel)
 	}
