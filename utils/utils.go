@@ -54,8 +54,8 @@ func createScene() (*sfm.Node, error) {
 	return scene, nil
 }
 
-func createAnimationSet() *sfm.AnimationSet {
-	animationSet := sfm.NewAnimationSet("test_AnimationSet")
+func createAnimationSet(name string) *sfm.AnimationSet {
+	animationSet := sfm.NewAnimationSet(name)
 
 	channel := sfm.NewChannel("rootTransform_scale")
 
@@ -64,10 +64,10 @@ func createAnimationSet() *sfm.AnimationSet {
 	return animationSet
 }
 
-func AddModel(clip *sfm.Clip, filename string, f2 string) error {
-	dag := sfm.NewNode("model dag")
+func AddModel(clip *sfm.Clip, name string, filename string, f2 string) error {
+	dag := sfm.NewNode(name)
 
-	model1 := sfm.NewGameModel("model", filename)
+	model1 := sfm.NewGameModel(name, filename)
 	dag.AddChildren(model1)
 	clip.Scene.AddChildren(dag)
 
@@ -84,7 +84,8 @@ func AddModel(clip *sfm.Clip, filename string, f2 string) error {
 	}
 
 	bones := make(map[*model.Bone]*sfm.Bone)
-	as := createAnimationSet()
+	as := createAnimationSet(name)
+	as.CreateTransformControl("rootTransform")
 
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))

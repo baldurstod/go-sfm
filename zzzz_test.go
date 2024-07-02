@@ -27,12 +27,12 @@ func TestSession(t *testing.T) {
 
 	camera := shot1.Camera
 
-	err = utils.AddModel(shot1, "models/heroes/tiny/tiny_01/tiny_01.vmdl", "tiny_01.vmdl_c")
+	err = utils.AddModel(shot1, "Tiny", "models/heroes/tiny/tiny_01/tiny_01.vmdl", "tiny_01.vmdl_c")
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	err = utils.AddModel(shot1, "models/heroes/marci/marci_base.vmdl", "marci_base.vmdl_c")
+	err = utils.AddModel(shot1, "Marci", "models/heroes/marci/marci_base.vmdl", "marci_base.vmdl_c")
 	if err != nil {
 		t.Error(err)
 		return
