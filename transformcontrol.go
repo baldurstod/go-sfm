@@ -16,11 +16,18 @@ type TransformControl struct {
 func (*TransformControl) isControl() {}
 
 func NewTransformControl(name string) *TransformControl {
-	return &TransformControl{
+	tc := &TransformControl{
 		Name:               name,
 		PositionChannel:    *NewChannel(name + "_p"),
 		OrientationChannel: *NewChannel(name + "_o"),
 	}
+
+	tc.PositionChannel.FromElement = tc
+	tc.PositionChannel.FromAttribute = "valuePosition"
+	tc.OrientationChannel.FromElement = tc
+	tc.OrientationChannel.FromAttribute = "valueOrientation"
+
+	return tc
 }
 
 func (tc *TransformControl) toDmElement(serializer *Serializer) *dmx.DmElement {

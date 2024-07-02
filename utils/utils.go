@@ -98,6 +98,11 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 		model1.AddBone(bone)
 		tc := as.CreateTransformControl(v.Name)
 
+		tc.PositionChannel.ToElement = bone
+		tc.PositionChannel.ToAttribute = "position"
+		tc.OrientationChannel.ToElement = bone
+		tc.OrientationChannel.ToAttribute = "orientation"
+
 		channelsClip.AddChannel(&tc.OrientationChannel)
 		channelsClip.AddChannel(&tc.PositionChannel)
 	}
