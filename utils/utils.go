@@ -87,13 +87,19 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 	as := createAnimationSet(name)
 	as.CreateTransformControl("rootTransform")
 
+	channelsClip := sfm.NewChannelsClip(name)
+	animSetEditorChannels.AddChildren(channelsClip)
+
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
 		bone.Transform.Position = v.PosParent
 		bone.Transform.Orientation = v.RotParent
 		bones[v] = bone
 		model1.AddBone(bone)
-		as.CreateTransformControl(v.Name)
+		tc := as.CreateTransformControl(v.Name)
+
+		channelsClip.AddChannel(&tc.OrientationChannel)
+		channelsClip.AddChannel(&tc.PositionChannel)
 	}
 
 	for _, v := range skel.GetBones() {

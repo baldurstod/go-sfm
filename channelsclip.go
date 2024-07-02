@@ -6,18 +6,29 @@ import (
 
 type ChannelsClip struct {
 	*Clip
+	channels map[*Channel]struct{}
 }
 
 func (*ChannelsClip) isClip() {}
 
 func NewChannelsClip(name string) *ChannelsClip {
 	return &ChannelsClip{
-		Clip: newClip(name),
+		Clip:     newClip(name),
+		channels: make(map[*Channel]struct{}),
 	}
+}
+
+func (cc *ChannelsClip) AddChannel(ch *Channel) {
+	cc.channels[ch] = struct{}{}
 }
 
 func (cc *ChannelsClip) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e := cc.Clip.getDmElement(serializer, "DmeChannelsClip")
+
+	channels := e.CreateAttribute("channels", dmx.AT_ELEMENT_ARRAY)
+	for ch := range cc.channels {
+		channels.PushElement(serializer.GetElement(ch))
+	}
 
 	return e
 }
