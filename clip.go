@@ -22,21 +22,17 @@ type Clip struct {
 	BackgroundFXClip  Element
 	operators         []Element
 	animationSets     map[*AnimationSet]struct{}
-	bookmarkSets      []*BookmarkSet
-	ActiveBookmarkSet int32
 	SubClipTrackGroup *TrackGroup
 }
 
 func newClip(name string) *Clip {
 	return &Clip{
-		Name:              name,
-		TimeFrame:         newTimeFrame(),
-		Color:             [...]byte{0, 0, 0, 0},
-		BackgroundColor:   [...]byte{64, 64, 64, 255},
-		trackGroups:       make([]*TrackGroup, 0),
-		animationSets:     make(map[*AnimationSet]struct{}),
-		bookmarkSets:      make([]*BookmarkSet, 0),
-		ActiveBookmarkSet: -1,
+		Name:            name,
+		TimeFrame:       newTimeFrame(),
+		Color:           [...]byte{0, 0, 0, 0},
+		BackgroundColor: [...]byte{64, 64, 64, 255},
+		trackGroups:     make([]*TrackGroup, 0),
+		animationSets:   make(map[*AnimationSet]struct{}),
 	}
 }
 
@@ -71,7 +67,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 	e.CreateColorAttribute("color", c.Color)
 	e.CreateStringAttribute("text", c.Text)
 	e.CreateBoolAttribute("mute", c.Mute)
-	e.CreateIntAttribute("activeBookmarkSet", c.ActiveBookmarkSet)
 	e.CreateStringAttribute("mapname", c.MapName)
 
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
@@ -87,11 +82,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 	animationSets := e.CreateAttribute("animationSets", dmx.AT_ELEMENT_ARRAY)
 	for as := range c.animationSets {
 		animationSets.PushElement(serializer.GetElement(as))
-	}
-
-	bookmarkSets := e.CreateAttribute("bookmarkSets", dmx.AT_ELEMENT_ARRAY)
-	for _, bs := range c.bookmarkSets {
-		bookmarkSets.PushElement(serializer.GetElement(bs))
 	}
 
 	if c.SubClipTrackGroup != nil {

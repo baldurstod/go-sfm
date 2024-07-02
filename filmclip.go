@@ -6,13 +6,17 @@ import (
 
 type FilmClip struct {
 	*Clip
+	bookmarkSets      []*BookmarkSet
+	ActiveBookmarkSet int32
 }
 
 func (*FilmClip) isClip() {}
 
 func NewFilmClip(name string) *FilmClip {
 	return &FilmClip{
-		Clip: newClip(name),
+		Clip:              newClip(name),
+		bookmarkSets:      make([]*BookmarkSet, 0),
+		ActiveBookmarkSet: -1,
 	}
 }
 
@@ -21,6 +25,12 @@ func (fc *FilmClip) createDmElement(serializer *Serializer) *dmx.DmElement {
 }
 
 func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
+	e.CreateIntAttribute("activeBookmarkSet", fc.ActiveBookmarkSet)
+
+	bookmarkSets := e.CreateAttribute("bookmarkSets", dmx.AT_ELEMENT_ARRAY)
+	for _, bs := range fc.bookmarkSets {
+		bookmarkSets.PushElement(serializer.GetElement(bs))
+	}
 }
 
 /*
