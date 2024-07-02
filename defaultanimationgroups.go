@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"io/fs"
 
-	"github.com/baldurstod/go-vector"
 	"github.com/baldurstod/vdf"
 )
 
 type group struct {
-	Color vector.Vector4[uint8]
-	root  []string
+	Color
+	root []string
 }
 
 var groups map[string]group

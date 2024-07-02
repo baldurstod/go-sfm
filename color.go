@@ -1,3 +1,5 @@
 package sfm
 
-type Color = [4]byte
+import "github.com/baldurstod/go-vector"
+
+type Color = vector.Vector4[uint8]

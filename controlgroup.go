@@ -2,15 +2,14 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
-	"github.com/baldurstod/go-vector"
 )
 
 type ControlGroup struct {
 	Name         string
 	children     map[string]*ControlGroup
 	controls     map[IControl]struct{}
-	GroupColor   vector.Vector4[uint8]
-	ControlColor vector.Vector4[uint8]
+	GroupColor   Color
+	ControlColor Color
 	Visible      bool
 	Selectable   bool
 	Snappable    bool
