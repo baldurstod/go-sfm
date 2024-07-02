@@ -27,9 +27,11 @@ func NewPosterSettings() *PosterSettings {
 	}
 }
 
-func (ps *PosterSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(ps.Name, "DmElement")
+func (ps *PosterSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(ps.Name, "DmElement")
+}
 
+func (ps *PosterSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateIntAttribute("width", ps.Width)
 	e.CreateIntAttribute("height", ps.Height)
 	e.CreateIntAttribute("DPI", ps.DPI)
@@ -37,8 +39,6 @@ func (ps *PosterSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateBoolAttribute("constrainAspect", ps.ConstrainAspect)
 	e.CreateBoolAttribute("heightInPixels", ps.HeightInPixels)
 	e.CreateBoolAttribute("widthInPixels", ps.WidthInPixels)
-
-	return e
 }
 
 /*

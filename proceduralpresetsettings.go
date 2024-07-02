@@ -28,9 +28,11 @@ func NewProceduralPresetSettings() *ProceduralPresetSettings {
 	}
 }
 
-func (pps *ProceduralPresetSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(pps.Name, "DmeProceduralPresetSettings")
+func (pps *ProceduralPresetSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(pps.Name, "DmeProceduralPresetSettings")
+}
 
+func (pps *ProceduralPresetSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("jitterscale", pps.JitterScale)
 	e.CreateFloatAttribute("smoothscale", pps.SmoothScale)
 	e.CreateFloatAttribute("jitterscale_vector", pps.JitterScaleVector)
@@ -38,8 +40,6 @@ func (pps *ProceduralPresetSettings) toDmElement(serializer *Serializer) *dmx.Dm
 	e.CreateIntAttribute("jitteriterations", pps.JitterIterations)
 	e.CreateIntAttribute("smoothiterations", pps.JitterIterations)
 	e.CreateTimeAttribute("staggerinterval", pps.StaggerInterval)
-
-	return e
 }
 
 /*

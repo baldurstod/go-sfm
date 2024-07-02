@@ -28,15 +28,15 @@ func (pg *PresetGroup) CreatePreset(name string) *Preset {
 	return p
 }
 
-func (pg *PresetGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(pg.Name, "DmeChannel")
+func (pg *PresetGroup) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(pg.Name, "DmeChannel")
+}
 
+func (pg *PresetGroup) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	presets := e.CreateAttribute("presets", dmx.AT_ELEMENT_ARRAY)
 	for _, p := range pg.presets {
 		presets.PushElement(serializer.GetElement(p))
 	}
-
-	return e
 }
 
 /*

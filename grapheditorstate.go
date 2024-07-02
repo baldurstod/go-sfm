@@ -16,12 +16,12 @@ func NewGraphEditorState() *GraphEditorState {
 	}
 }
 
-func (ges *GraphEditorState) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(ges.Name, "DmeGraphEditorState")
+func (ges *GraphEditorState) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(ges.Name, "DmeGraphEditorState")
+}
 
+func (ges *GraphEditorState) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("displayGrid", ges.DisplayGrid)
-
-	return e
 }
 
 /*

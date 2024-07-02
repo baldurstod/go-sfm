@@ -31,8 +31,11 @@ func NewBookmarkSet(name string) *BookmarkSet {
 	}
 }
 
-func (bs *BookmarkSet) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement("", "DmeAnimationSet")
+func (bs *BookmarkSet) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement("", "DmeAnimationSet")
+}
+
+func (bs *BookmarkSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	/*
 		e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
 		e.CreateColorAttribute("color", c.Color)
@@ -44,5 +47,4 @@ func (bs *BookmarkSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 			trackGroups.PushElement(serializer.GetElement(tg))
 		}*/
 
-	return e
 }

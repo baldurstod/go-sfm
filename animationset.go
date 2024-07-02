@@ -36,9 +36,11 @@ func (as *AnimationSet) CreateTransformControl(name string) *TransformControl {
 	return c
 }
 
-func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(as.Name, "DmeAnimationSet")
+func (as *AnimationSet) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(as.Name, "DmeAnimationSet")
+}
 
+func (as *AnimationSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
 	for c := range as.controls {
 		controls.PushElement(serializer.GetElement(c))
@@ -72,8 +74,6 @@ func (as *AnimationSet) toDmElement(serializer *Serializer) *dmx.DmElement {
 		for _, tg := range c.trackGroups {
 			trackGroups.PushElement(serializer.GetElement(tg))
 		}*/
-
-	return e
 }
 
 /*

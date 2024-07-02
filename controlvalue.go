@@ -16,12 +16,12 @@ func NewControlValue(name string, value float32) *ControlValue {
 	}
 }
 
-func (cv *ControlValue) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(cv.Name, "DmElement")
+func (cv *ControlValue) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(cv.Name, "DmElement")
+}
 
+func (cv *ControlValue) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("value", cv.Value)
-
-	return e
 }
 
 /*

@@ -29,9 +29,11 @@ func (t *Track) AddChildren(child Element) {
 	t.children = append(t.children, child)
 }
 
-func (t *Track) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(t.Name, "DmeTrack")
+func (t *Track) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(t.Name, "DmeTrack")
+}
 
+func (t *Track) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("synched", t.Synched)
 	e.CreateIntAttribute("clipType", t.ClipType)
 	e.CreateFloatAttribute("volume", t.Volume)
@@ -41,8 +43,6 @@ func (t *Track) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for _, child := range t.children {
 		children.PushElement(serializer.GetElement(child))
 	}
-
-	return e
 }
 
 /*

@@ -35,9 +35,11 @@ func NewTimeSelection() *TimeSelection {
 	}
 }
 
-func (ts *TimeSelection) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(ts.Name, "DmeTimeSelection")
+func (ts *TimeSelection) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(ts.Name, "DmeTimeSelection")
+}
 
+func (ts *TimeSelection) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("enabled", ts.Enabled)
 	e.CreateBoolAttribute("relative", ts.Relative)
 	e.CreateTimeAttribute("falloff_left", ts.FalloffLeft)
@@ -49,8 +51,6 @@ func (ts *TimeSelection) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateFloatAttribute("threshold", ts.Threshold)
 	e.CreateTimeAttribute("resampleinterval", ts.ResampleInterval)
 	e.CreateIntAttribute("recordingstate", ts.RecordingState)
-
-	return e
 }
 
 /*

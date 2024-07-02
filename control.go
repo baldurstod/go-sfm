@@ -19,14 +19,14 @@ func NewControl(name string) *Control {
 	}
 }
 
-func (c *Control) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(c.Name, "DmElement")
+func (c *Control) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(c.Name, "DmElement")
+}
 
+func (c *Control) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("value", c.Value)
 	e.CreateFloatAttribute("defaultValue", c.DefaultValue)
 	e.CreateElementAttribute("channel", serializer.GetElement(c.Channel))
-
-	return e
 }
 
 /*

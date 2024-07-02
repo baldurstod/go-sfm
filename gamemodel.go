@@ -57,9 +57,11 @@ func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight 
 	return o
 }
 
-func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(gm.Name, "DmeGameModel")
+func (gm *GameModel) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(gm.Name, "DmeGameModel")
+}
 
+func (gm *GameModel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateStringAttribute("modelName", gm.ModelName)
 	e.CreateIntAttribute("skin", gm.Skin)
 	e.CreateElementAttribute("transform", serializer.GetElement(gm.Transform))
@@ -102,8 +104,6 @@ func (gm *GameModel) toDmElement(serializer *Serializer) *dmx.DmElement {
 		for _, o := range gm.operators {
 			operators.PushElement(serializer.GetElement(o))
 		}*/
-
-	return e
 }
 
 /*

@@ -26,9 +26,11 @@ func NewMovieSettings() *MovieSettings {
 	}
 }
 
-func (ms *MovieSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(ms.Name, "DmElement")
+func (ms *MovieSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(ms.Name, "DmElement")
+}
 
+func (ms *MovieSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateIntAttribute("videoTarget", ms.VideoTarget)
 	e.CreateIntAttribute("audioTarget", ms.AudioTarget)
 	e.CreateBoolAttribute("stereoscopic", ms.Stereoscopic)
@@ -37,8 +39,6 @@ func (ms *MovieSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateIntAttribute("width", ms.Width)
 	e.CreateIntAttribute("height", ms.Height)
 	e.CreateStringAttribute("filename", ms.Filename)
-
-	return e
 }
 
 /*

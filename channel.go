@@ -25,9 +25,11 @@ func NewChannel(name string) *Channel {
 func (c *Channel) isOperator() {
 }
 
-func (c *Channel) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(c.Name, "DmeChannel")
+func (c *Channel) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(c.Name, "DmeChannel")
+}
 
+func (c *Channel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	if c.FromElement != nil {
 		e.CreateElementAttribute("fromElement", serializer.GetElement(c.FromElement))
 	}
@@ -44,8 +46,6 @@ func (c *Channel) toDmElement(serializer *Serializer) *dmx.DmElement {
 	if c.Log != nil {
 		e.CreateElementAttribute("log", serializer.GetElement(c.Log))
 	}
-
-	return e
 }
 
 /*

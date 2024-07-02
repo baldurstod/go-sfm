@@ -67,9 +67,10 @@ func (cg *ControlGroup) GetSubGroup(controlName string) *ControlGroup {
 	return current
 }
 
-func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(cg.Name, "DmeControlGroup")
-
+func (cg *ControlGroup) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(cg.Name, "DmeControlGroup")
+}
+func (cg *ControlGroup) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
 	for _, child := range cg.children {
 		children.PushElement(serializer.GetElement(child))
@@ -86,8 +87,6 @@ func (cg *ControlGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateBoolAttribute("visible", cg.Visible)
 	e.CreateBoolAttribute("selectable", cg.Selectable)
 	e.CreateBoolAttribute("snappable", cg.Snappable)
-
-	return e
 }
 
 /*

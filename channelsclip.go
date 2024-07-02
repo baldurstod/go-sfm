@@ -22,15 +22,15 @@ func (cc *ChannelsClip) AddChannel(ch *Channel) {
 	cc.channels[ch] = struct{}{}
 }
 
-func (cc *ChannelsClip) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := cc.Clip.getDmElement(serializer, "DmeChannelsClip")
+func (cc *ChannelsClip) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return cc.Clip.getDmElement(serializer, "DmeChannelsClip")
+}
 
+func (cc *ChannelsClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	channels := e.CreateAttribute("channels", dmx.AT_ELEMENT_ARRAY)
 	for ch := range cc.channels {
 		channels.PushElement(serializer.GetElement(ch))
 	}
-
-	return e
 }
 
 /*

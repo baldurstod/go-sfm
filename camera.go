@@ -44,9 +44,11 @@ func NewCamera(name string) *Camera {
 	}
 }
 
-func (c *Camera) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(c.Name, "DmeCamera")
+func (c *Camera) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(c.Name, "DmeCamera")
+}
 
+func (c *Camera) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("transform", serializer.GetElement(c.Transform))
 	e.CreateBoolAttribute("visible", c.Visible)
 	e.CreateFloatAttribute("fieldOfView", c.FieldOfView)
@@ -62,8 +64,6 @@ func (c *Camera) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateFloatAttribute("SSAORadius", c.SSAORadius)
 	e.CreateIntAttribute("depthOfFieldSamples", c.DepthOfFieldSamples)
 	e.CreateIntAttribute("motionBlurSamples", c.MotionBlurSamples)
-
-	return e
 }
 
 /*

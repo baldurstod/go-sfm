@@ -26,17 +26,17 @@ func (p *Preset) CreateControlValue(name string, value float32) *ControlValue {
 	return cv
 }
 
-func (p *Preset) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(p.Name, "DmePreset")
+func (p *Preset) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(p.Name, "DmePreset")
+}
 
+func (p *Preset) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateStringAttribute("description", p.Description)
 
 	controlValues := e.CreateAttribute("controlValues", dmx.AT_ELEMENT_ARRAY)
 	for _, cv := range p.controlValues {
 		controlValues.PushElement(serializer.GetElement(cv))
 	}
-
-	return e
 }
 
 /*

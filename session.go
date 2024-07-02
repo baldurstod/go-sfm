@@ -44,9 +44,11 @@ func (s *Session) SetActiveClip(clip IClip) error {
 	return nil
 }
 
-func (s *Session) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(s.Name, "DmElement")
+func (s *Session) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(s.Name, "DmElement")
+}
 
+func (s *Session) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	if s.activeClip != nil {
 		e.CreateElementAttribute("activeClip", serializer.GetElement(s.activeClip))
 	} else {
@@ -58,6 +60,4 @@ func (s *Session) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for k := range s.clips {
 		clipBin.PushElement(serializer.GetElement(k))
 	}
-
-	return e
 }

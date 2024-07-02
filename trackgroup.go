@@ -33,9 +33,11 @@ func (tg *TrackGroup) CreateTrack(name string, clipType DmeClipType) *Track {
 	return track
 }
 
-func (tg *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(tg.Name, "DmeTrackGroup")
+func (tg *TrackGroup) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(tg.Name, "DmeTrackGroup")
+}
 
+func (tg *TrackGroup) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("mute", tg.Mute)
 	e.CreateBoolAttribute("visible", tg.Visible)
 	e.CreateBoolAttribute("minimized", tg.Minimized)
@@ -60,8 +62,6 @@ func (tg *TrackGroup) toDmElement(serializer *Serializer) *dmx.DmElement {
 			trackGroups.PushElement(tg.ToDmElement())
 		}
 	*/
-
-	return e
 }
 
 /*

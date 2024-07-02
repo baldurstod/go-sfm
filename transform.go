@@ -20,14 +20,14 @@ func NewTransform(name string) *Transform {
 	}
 }
 
-func (t *Transform) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(t.Name, "DmeTransform")
+func (t *Transform) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(t.Name, "DmeTransform")
+}
 
+func (t *Transform) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateVector3Attribute("position", t.Position)
 	e.CreateQuaternionAttribute("orientation", t.Orientation)
 	e.CreateFloatAttribute("scale", t.Scale)
-
-	return e
 }
 
 /*

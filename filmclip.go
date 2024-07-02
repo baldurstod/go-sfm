@@ -16,10 +16,11 @@ func NewFilmClip(name string) *FilmClip {
 	}
 }
 
-func (fc *FilmClip) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := fc.Clip.getDmElement(serializer, "DmeFilmClip") //dmx.NewDmElement(fc.Name, "DmeChannelsClip")
+func (fc *FilmClip) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return fc.Clip.getDmElement(serializer, "DmeFilmClip")
+}
 
-	return e
+func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 }
 
 /*

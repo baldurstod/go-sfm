@@ -26,15 +26,15 @@ func (spgs *SharedPresetGroupSettings) CreatePresetGroupInfo(name string, filena
 	return pgi
 }
 
-func (spgs *SharedPresetGroupSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(spgs.Name, "DmElement")
+func (spgs *SharedPresetGroupSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(spgs.Name, "DmElement")
+}
 
+func (spgs *SharedPresetGroupSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	presetGroupInfos := e.CreateAttribute("presetGroupInfos", dmx.AT_ELEMENT_ARRAY)
 	for _, pgi := range spgs.presetGroupInfos {
 		presetGroupInfos.PushElement(serializer.GetElement(pgi))
 	}
-
-	return e
 }
 
 /*

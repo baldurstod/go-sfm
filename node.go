@@ -27,9 +27,11 @@ func (s *Node) AddChildren(child INode) {
 	s.children = append(s.children, child)
 }
 
-func (s *Node) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(s.Name, "DmeDag")
+func (s *Node) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(s.Name, "DmeDag")
+}
 
+func (s *Node) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("transform", serializer.GetElement(s.Transform))
 	e.CreateBoolAttribute("visible", s.Visible)
 
@@ -37,8 +39,6 @@ func (s *Node) toDmElement(serializer *Serializer) *dmx.DmElement {
 	for _, child := range s.children {
 		children.PushElement(serializer.GetElement(child))
 	}
-
-	return e
 }
 
 /*

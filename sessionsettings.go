@@ -28,9 +28,11 @@ func NewSessionSettings() *SessionSettings {
 	}
 }
 
-func (s *SessionSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(s.Name, "DmElement")
+func (s *SessionSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(s.Name, "DmElement")
+}
 
+func (s *SessionSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("timeSelection", serializer.GetElement(s.TimeSelection))
 	e.CreateElementAttribute("graphEditorState", serializer.GetElement(s.GraphEditorState))
 	e.CreateElementAttribute("proceduralPresets", serializer.GetElement(s.ProceduralPresetSettings))
@@ -53,6 +55,4 @@ func (s *SessionSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 			clipBin.PushElement(serializer.GetElement(k))
 		}
 	*/
-
-	return e
 }

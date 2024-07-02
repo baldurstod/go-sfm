@@ -37,9 +37,11 @@ func NewRenderSettings() *RenderSettings {
 	}
 }
 
-func (rs *RenderSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(rs.Name, "DmElement")
+func (rs *RenderSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(rs.Name, "DmElement")
+}
 
+func (rs *RenderSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateIntAttribute("width", rs.Width)
 	e.CreateIntAttribute("height", rs.Height)
 	e.CreateFloatAttribute("frameRate", rs.FrameRate)
@@ -52,8 +54,6 @@ func (rs *RenderSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
 	e.CreateIntAttribute("playbackClampFrameCount", rs.PlaybackClampFrameCount)
 	e.CreateBoolAttribute("ignoreAlphaFade", rs.IgnoreAlphaFade)
 	e.CreateElementAttribute("ProgressiveRefinement", serializer.GetElement(rs.ProgressiveRefinement))
-
-	return e
 }
 
 /*

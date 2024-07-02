@@ -30,15 +30,15 @@ func NewTransformControl(name string) *TransformControl {
 	return tc
 }
 
-func (tc *TransformControl) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(tc.Name, "DmeTransformControl")
+func (tc *TransformControl) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(tc.Name, "DmeTransformControl")
+}
 
+func (tc *TransformControl) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateVector3Attribute("value", tc.ValuePosition)
 	e.CreateQuaternionAttribute("defaultValue", tc.ValueOrientation)
 	e.CreateElementAttribute("positionChannel", serializer.GetElement(&tc.PositionChannel))
 	e.CreateElementAttribute("orientationChannel", serializer.GetElement(&tc.OrientationChannel))
-
-	return e
 }
 
 /*

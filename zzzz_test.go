@@ -43,7 +43,7 @@ func TestSession(t *testing.T) {
 
 	//log.Println(buf)
 	buf := new(bytes.Buffer)
-	dmx.SerializeText(buf, sfm.NewSerializer().GetElement(session))
+	dmx.SerializeText(buf, sfm.NewSerializer().Serialize(session))
 
 	os.WriteFile(path.Join(varFolder, "test_session.dmx"), buf.Bytes(), 0666)
 }

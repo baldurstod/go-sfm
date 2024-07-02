@@ -31,9 +31,11 @@ func NewProgressiveRefinementSettings() *ProgressiveRefinementSettings {
 	}
 }
 
-func (prs *ProgressiveRefinementSettings) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(prs.Name, "DmElement")
+func (prs *ProgressiveRefinementSettings) createDmElement(serializer *Serializer) *dmx.DmElement {
+	return dmx.NewDmElement(prs.Name, "DmElement")
+}
 
+func (prs *ProgressiveRefinementSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("on", prs.On)
 	e.CreateBoolAttribute("useDepthOfField", prs.UseDepthOfField)
 	e.CreateBoolAttribute("overrideDepthOfFieldSamples", prs.OverrideDepthOfFieldSamples)
@@ -44,8 +46,6 @@ func (prs *ProgressiveRefinementSettings) toDmElement(serializer *Serializer) *d
 	e.CreateBoolAttribute("useAntialiasing", prs.UseAntialiasing)
 	e.CreateBoolAttribute("overrideShutterSpeed", prs.OverrideShutterSpeed)
 	e.CreateFloatAttribute("overrideShutterSpeedValue", prs.OverrideShutterSpeedValue)
-
-	return e
 }
 
 /*
