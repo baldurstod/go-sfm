@@ -17,7 +17,9 @@ func (*TransformControl) isControl() {}
 
 func NewTransformControl(name string) *TransformControl {
 	return &TransformControl{
-		Name: name,
+		Name:               name,
+		PositionChannel:    *NewChannel(name + "_p"),
+		OrientationChannel: *NewChannel(name + "_o"),
 	}
 }
 
