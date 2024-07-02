@@ -12,8 +12,6 @@ type Clip struct {
 	Mute              bool
 	trackGroups       []*TrackGroup
 	DisplayScale      float32
-	MapName           string
-	Camera            *Camera
 	GlobalState       Element
 	FadeIn            Time
 	FadeOut           Time
@@ -54,7 +52,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 	e.CreateColorAttribute("color", c.Color)
 	e.CreateStringAttribute("text", c.Text)
 	e.CreateBoolAttribute("mute", c.Mute)
-	e.CreateStringAttribute("mapname", c.MapName)
 
 	trackGroups := e.CreateAttribute("trackGroups", dmx.AT_ELEMENT_ARRAY)
 	for _, tg := range c.trackGroups {
@@ -70,12 +67,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 		e.CreateElementAttribute("subClipTrackGroup", serializer.GetElement(c.SubClipTrackGroup))
 	} else {
 		e.CreateElementAttribute("subClipTrackGroup", nil)
-	}
-
-	if c.Camera != nil {
-		e.CreateElementAttribute("camera", serializer.GetElement(c.Camera))
-	} else {
-		e.CreateElementAttribute("camera", nil)
 	}
 
 	return e

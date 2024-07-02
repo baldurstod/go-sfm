@@ -7,6 +7,8 @@ import (
 type FilmClip struct {
 	*Clip
 	Scene             INode
+	Camera            *Camera
+	MapName           string
 	animationSets     map[*AnimationSet]struct{}
 	bookmarkSets      []*BookmarkSet
 	ActiveBookmarkSet int32
@@ -39,6 +41,14 @@ func (fc *FilmClip) createDmElement(serializer *Serializer) *dmx.DmElement {
 
 func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("scene", serializer.GetElement(fc.Scene))
+
+	if fc.Camera != nil {
+		e.CreateElementAttribute("camera", serializer.GetElement(fc.Camera))
+	} else {
+		e.CreateElementAttribute("camera", nil)
+	}
+
+	e.CreateStringAttribute("mapname", fc.MapName)
 
 	animationSets := e.CreateAttribute("animationSets", dmx.AT_ELEMENT_ARRAY)
 	for as := range fc.animationSets {
