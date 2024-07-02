@@ -7,7 +7,6 @@ import (
 type Element interface {
 	toDmElement(*Serializer, *dmx.DmElement)
 	createDmElement(*Serializer) *dmx.DmElement
-	//populateDmElement(*Serializer, *dmx.DmElement)
 }
 
 type Operator interface {
@@ -31,6 +30,12 @@ type IControl interface {
 
 type IClip interface {
 	isClip()
+	toDmElement(*Serializer, *dmx.DmElement)
+	createDmElement(*Serializer) *dmx.DmElement
+}
+
+type ILog interface {
+	isLog()
 	toDmElement(*Serializer, *dmx.DmElement)
 	createDmElement(*Serializer) *dmx.DmElement
 }

@@ -57,7 +57,7 @@ func createScene() (*sfm.Node, error) {
 func createAnimationSet(name string) *sfm.AnimationSet {
 	animationSet := sfm.NewAnimationSet(name)
 
-	channel := sfm.NewChannel("rootTransform_scale")
+	channel := sfm.NewChannel[float32]("rootTransform_scale")
 	animationSet.AddOperator(channel)
 
 	return animationSet

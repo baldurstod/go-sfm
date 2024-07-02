@@ -18,8 +18,8 @@ func (*TransformControl) isControl() {}
 func NewTransformControl(name string) *TransformControl {
 	tc := &TransformControl{
 		Name:               name,
-		PositionChannel:    *NewChannel(name + "_p"),
-		OrientationChannel: *NewChannel(name + "_o"),
+		PositionChannel:    *NewChannel[vector.Vector3[float32]](name + "_p"),
+		OrientationChannel: *NewChannel[vector.Quaternion[float32]](name + "_o"),
 	}
 
 	tc.ValueOrientation.Identity()
@@ -27,6 +27,7 @@ func NewTransformControl(name string) *TransformControl {
 	tc.PositionChannel.FromElement = tc
 	tc.PositionChannel.FromAttribute = "valuePosition"
 	tc.PositionChannel.Mode = 3
+
 	tc.OrientationChannel.FromElement = tc
 	tc.OrientationChannel.FromAttribute = "valueOrientation"
 	tc.OrientationChannel.Mode = 3

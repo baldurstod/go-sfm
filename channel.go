@@ -13,12 +13,13 @@ type Channel struct {
 	ToAttribute   string
 	ToIndex       int32
 	Mode          int32
-	Log           Element
+	Log           ILog
 }
 
-func NewChannel(name string) *Channel {
+func NewChannel[T Loggable](name string) *Channel {
 	return &Channel{
 		Name: name,
+		Log:  newLog[T](),
 	}
 }
 
