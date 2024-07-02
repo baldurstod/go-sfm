@@ -1,5 +1,9 @@
 github.com/baldurstod/go-dmx v0.0.15 h1:IVBV/ZiH9PIxwxOKzZBWM479eGMzKijH2mzorKQTt4k=
 github.com/baldurstod/go-dmx v0.0.15/go.mod h1:G22Yz0z4rGpilFSLla0gvOFPPUMtZt7mm0YBddlCNk8=
+github.com/baldurstod/go-dmx v0.0.17 h1:HYu7rcE3x6CIA7S/kfCJPkTD/E/Fpbil1BiFwXQsQX4=
+github.com/baldurstod/go-dmx v0.0.17/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
+github.com/baldurstod/go-dmx v0.0.18 h1:Alcah7NMPJPHKPsbXiWJKkvmCn0p2vlumqY+gBxyCWk=
+github.com/baldurstod/go-dmx v0.0.18/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
 github.com/baldurstod/go-source2-tools v0.0.5 h1:G82/c2+u93bAt/NTLaNNlLQym4cS7D4iz2AHQYVDF+8=
 github.com/baldurstod/go-source2-tools v0.0.5/go.mod h1:nszVGXg/PfmF+dEbheETlV8nX4Ez23KU+VZUJMycFW0=
 github.com/baldurstod/go-vector v0.0.5 h1:ED6rM+homVhEv/GZ9ApZtB44ASkyzenGt/LImAPhy1E=

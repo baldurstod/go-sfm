@@ -6,7 +6,7 @@ import (
 )
 
 type Log[T Loggable] struct {
-	Name string
+	layers []*LogLayer[T]
 	/*
 
 		CDmaElementArray< CDmeLogLayer >	m_Layers;
@@ -15,10 +15,18 @@ type Log[T Loggable] struct {
 }
 
 func newLog[T Loggable]() *Log[T] {
-	return &Log[T]{}
+	return &Log[T]{
+		layers: make([]*LogLayer[T], 0),
+	}
 }
 
 func (*Log[T]) isLog() {}
+
+func (l *Log[T]) AddLayer() ILogLayer {
+	layer := newLogLayer[T]()
+	l.layers = append(l.layers, layer)
+	return layer
+}
 
 func (l *Log[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 	switch any(l).(type) {
@@ -36,5 +44,8 @@ func (l *Log[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 }
 
 func (l *Log[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
-	//panic("todo")
+	layers := e.CreateAttribute("layers", dmx.AT_ELEMENT_ARRAY)
+	for _, layer := range l.layers {
+		layers.PushElement(serializer.GetElement(layer))
+	}
 }

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path"
 
@@ -96,6 +97,9 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 
 	channelsClip.AddChannel(&tc.OrientationChannel)
 	channelsClip.AddChannel(&tc.PositionChannel)
+
+	layer := tc.PositionChannel.Log.AddLayer()
+	log.Println(layer)
 
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))

@@ -38,4 +38,11 @@ type ILog interface {
 	isLog()
 	toDmElement(*Serializer, *dmx.DmElement)
 	createDmElement(*Serializer) *dmx.DmElement
+	AddLayer() ILogLayer
+}
+
+type ILogLayer interface {
+	isLogLayer()
+	toDmElement(*Serializer, *dmx.DmElement)
+	createDmElement(*Serializer) *dmx.DmElement
 }
