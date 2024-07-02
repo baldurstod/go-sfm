@@ -27,8 +27,8 @@ func (tg *TrackGroup) AddTrack(track *Track) {
 	tg.tracks = append(tg.tracks, track)
 }
 
-func (tg *TrackGroup) CreateTrack(name string) *Track {
-	track := NewTrack(name)
+func (tg *TrackGroup) CreateTrack(name string, clipType DmeClipType) *Track {
+	track := NewTrack(name, clipType)
 	tg.tracks = append(tg.tracks, track)
 	return track
 }

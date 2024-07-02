@@ -27,7 +27,7 @@ type Clip struct {
 	SubClipTrackGroup *TrackGroup
 }
 
-func NewClip(name string) *Clip {
+func newClip(name string) *Clip {
 	return &Clip{
 		Name:              name,
 		TimeFrame:         newTimeFrame(),
@@ -61,7 +61,11 @@ func (c *Clip) CreateAnimationSet(name string) *AnimationSet {
 }
 
 func (c *Clip) toDmElement(serializer *Serializer) *dmx.DmElement {
-	e := dmx.NewDmElement(c.Name, "DmeFilmClip")
+	panic("do not use toDmElement, derived structs must use getDmElement instead")
+}
+
+func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmElement {
+	e := dmx.NewDmElement(c.Name, elementType)
 
 	e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))
 	e.CreateColorAttribute("color", c.Color)

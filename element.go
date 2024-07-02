@@ -23,3 +23,8 @@ type IControl interface {
 	isControl()
 	toDmElement(*Serializer) *dmx.DmElement
 }
+
+type IClip interface {
+	isClip()
+	toDmElement(*Serializer) *dmx.DmElement
+}

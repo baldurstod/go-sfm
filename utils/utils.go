@@ -12,24 +12,24 @@ import (
 
 const varFolder = "./var/"
 
-func CreateClip(session *sfm.Session) (*sfm.Clip, error) {
-	clip := session.CreateClip("SFM")
+var animSetEditorChannels *sfm.Track
+
+func CreateClip(session *sfm.Session) (*sfm.FilmClip, error) {
+	clip := session.CreateFilmClip("SFM")
 
 	sound := clip.CreateTrackGroup("Sound")
 	clip.CreateTrackGroup("Overlay")
 
-	dialog := sound.CreateTrack("Dialog")
-	dialog.ClipType = sfm.CLIP_SOUND
-	music := sound.CreateTrack("Music")
-	music.ClipType = sfm.CLIP_SOUND
-	effects := sound.CreateTrack("Effects")
-	effects.ClipType = sfm.CLIP_SOUND
+	sound.CreateTrack("Dialog", sfm.CLIP_SOUND)
+	sound.CreateTrack("Music", sfm.CLIP_SOUND)
+	sound.CreateTrack("Effects", sfm.CLIP_SOUND)
 
 	clip.SubClipTrackGroup = sfm.NewTrackGroup("subClipTrackGroup")
-	filmTrack := clip.SubClipTrackGroup.CreateTrack("Film")
-	filmTrack.ClipType = sfm.CLIP_FILM
+	filmTrack := clip.SubClipTrackGroup.CreateTrack("Film", sfm.CLIP_FILM)
 
-	shot1 := sfm.NewClip("shot1")
+	shot1 := sfm.NewFilmClip("shot1")
+	channelTrackGroup := shot1.CreateTrackGroup("channelTrackGroup")
+	animSetEditorChannels = channelTrackGroup.CreateTrack("animSetEditorChannels", sfm.CLIP_CHANNEL)
 	filmTrack.AddChildren(shot1)
 	shot1.Camera = sfm.NewCamera("camera1")
 
@@ -64,7 +64,7 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 	return animationSet
 }
 
-func AddModel(clip *sfm.Clip, name string, filename string, f2 string) error {
+func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error {
 	dag := sfm.NewNode(name)
 
 	model1 := sfm.NewGameModel(name, filename)

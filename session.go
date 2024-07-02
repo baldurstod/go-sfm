@@ -2,26 +2,27 @@ package sfm
 
 import (
 	"errors"
+
 	"github.com/baldurstod/go-dmx"
 )
 
 type Session struct {
 	Name       string
-	clips      map[*Clip]struct{}
-	activeClip *Clip
+	clips      map[IClip]struct{}
+	activeClip IClip
 	settings   *SessionSettings
 }
 
 func NewSession() *Session {
 	return &Session{
 		Name:     "session",
-		clips:    make(map[*Clip]struct{}),
+		clips:    make(map[IClip]struct{}),
 		settings: NewSessionSettings(),
 	}
 }
 
-func (s *Session) CreateClip(name string) *Clip {
-	clip := NewClip(name)
+func (s *Session) CreateFilmClip(name string) *FilmClip {
+	clip := NewFilmClip(name)
 	s.clips[clip] = struct{}{}
 
 	if s.activeClip == nil {
@@ -31,7 +32,7 @@ func (s *Session) CreateClip(name string) *Clip {
 	return clip
 }
 
-func (s *Session) SetActiveClip(clip *Clip) error {
+func (s *Session) SetActiveClip(clip IClip) error {
 	_, ok := s.clips[clip]
 
 	if !ok {

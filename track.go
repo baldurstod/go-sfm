@@ -10,17 +10,18 @@ type Track struct {
 	Collapsed    bool
 	Mute         bool
 	Synched      bool
-	ClipType     int32
+	ClipType     DmeClipType
 	Volume       float32
 	DisplayScale float32
 }
 
-func NewTrack(name string) *Track {
+func NewTrack(name string, clipType DmeClipType) *Track {
 	return &Track{
 		Name:         name,
 		Synched:      true,
 		Volume:       1,
 		DisplayScale: 1,
+		ClipType:     clipType,
 	}
 }
 
