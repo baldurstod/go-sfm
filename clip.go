@@ -14,7 +14,6 @@ type Clip struct {
 	DisplayScale      float32
 	MapName           string
 	Camera            *Camera
-	Scene             INode
 	GlobalState       Element
 	FadeIn            Time
 	FadeOut           Time
@@ -78,8 +77,6 @@ func (c *Clip) getDmElement(serializer *Serializer, elementType string) *dmx.DmE
 	} else {
 		e.CreateElementAttribute("camera", nil)
 	}
-
-	e.CreateElementAttribute("scene", serializer.GetElement(c.Scene))
 
 	return e
 }
