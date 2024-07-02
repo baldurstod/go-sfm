@@ -9,6 +9,7 @@ import (
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-source2-tools/parser"
+	"github.com/baldurstod/go-vector"
 )
 
 const varFolder = "./var/"
@@ -98,8 +99,12 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 	channelsClip.AddChannel(&tc.OrientationChannel)
 	channelsClip.AddChannel(&tc.PositionChannel)
 
-	layer := tc.PositionChannel.Log.AddLayer()
+	layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
 	log.Println(layer)
+
+	for i := 0; i < 100; i++ {
+		layer.AddValue(int32(i), vector.Vector3[float32]{float32(i), 0, 0})
+	}
 
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))

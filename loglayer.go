@@ -32,6 +32,11 @@ func newLogLayer[T Loggable]() *LogLayer[T] {
 
 func (*LogLayer[T]) isLogLayer() {}
 
+func (ll *LogLayer[T]) AddValue(time int32, value T) {
+	ll.times = append(ll.times, time)
+	ll.values = append(ll.values, value)
+}
+
 func (ll *LogLayer[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 	switch any(ll).(type) {
 	case *LogLayer[bool]:
@@ -48,9 +53,9 @@ func (ll *LogLayer[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 }
 
 func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
-	times := e.CreateAttribute("times", dmx.AT_INT_ARRAY)
+	times := e.CreateAttribute("times", dmx.AT_TIME_ARRAY)
 	for _, time := range ll.times {
-		times.PushInt(time)
+		times.PushTime(float32(time) / 20.0)
 	}
 
 	switch any(ll).(type) {
