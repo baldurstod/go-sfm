@@ -3,8 +3,7 @@ package utils
 import (
 	"fmt"
 	"log"
-	"os"
-	"path"
+	"strings"
 
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-source2-tools/model"
@@ -65,14 +64,14 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 	return animationSet
 }
 
-func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error {
+func AddModel(clip *sfm.FilmClip, name string, repository string, filename string) error {
 	dag := sfm.NewNode(name)
 
 	model1 := sfm.NewGameModel(name, filename)
 	dag.AddChildren(model1)
 	clip.Scene.AddChildren(dag)
 
-	s2Model, err := getModel(f2)
+	s2Model, err := getModel(repository, filename)
 
 	if err != nil {
 		return err
@@ -141,12 +140,16 @@ func AddModel(clip *sfm.FilmClip, name string, filename string, f2 string) error
 	return nil
 }
 
-func getModel(filename string) (*model.Model, error) {
-	b, err := os.ReadFile(path.Join(varFolder, filename))
+func getModel(repository string, filename string) (*model.Model, error) {
+	/*b, err := os.ReadFile(path.Join(varFolder, filename))
 	if err != nil {
 		return nil, err
-	}
-	file, err := parser.Parse(b)
+	}*/
+
+	filename = strings.TrimSuffix(filename, "vmdl_c")
+	filename = strings.TrimSuffix(filename, "vmdl")
+
+	file, err := parser.Parse(repository, filename+"vmdl_c")
 	if err != nil {
 		return nil, err
 	}

@@ -11,12 +11,19 @@ import (
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
+	"github.com/baldurstod/go-source2-tools/repository"
+	"github.com/baldurstod/go-source2-tools/vpk"
 )
 
 const varFolder = "./var/"
 
+func initRepo() {
+	repository.AddRepository("dota2", vpk.NewVpkFS("R:\\SteamLibrary\\steamapps\\common\\dota 2 beta\\game\\dota\\pak01_dir.vpk"))
+}
+
 func TestSession(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	initRepo()
 	session := sfm.NewSession()
 
 	shot1, err := utils.CreateClip(session)
@@ -27,12 +34,12 @@ func TestSession(t *testing.T) {
 
 	camera := shot1.Camera
 
-	err = utils.AddModel(shot1, "Tiny", "models/heroes/tiny/tiny_01/tiny_01.vmdl", "tiny_01.vmdl_c")
+	err = utils.AddModel(shot1, "Tiny", "dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	err = utils.AddModel(shot1, "Marci", "models/heroes/marci/marci_base.vmdl", "marci_base.vmdl_c")
+	err = utils.AddModel(shot1, "Marci", "dota2", "models/heroes/marci/marci_base.vmdl")
 	if err != nil {
 		t.Error(err)
 		return
