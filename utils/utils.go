@@ -2,16 +2,12 @@ package utils
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-source2-tools/parser"
-	"github.com/baldurstod/go-vector"
 )
-
-const varFolder = "./var/"
 
 var animSetEditorChannels *sfm.Track
 
@@ -98,12 +94,12 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	channelsClip.AddChannel(&tc.OrientationChannel)
 	channelsClip.AddChannel(&tc.PositionChannel)
 
-	layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
-	log.Println(layer)
+	//layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
+	//log.Println(layer)
 
-	for i := 0; i < 100; i++ {
+	/*for i := 0; i < 100; i++ {
 		layer.AddValue(int32(i), vector.Vector3[float32]{float32(i), 0, 0})
-	}
+	}*/
 
 	for k, v := range skel.GetBones() {
 		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
@@ -141,11 +137,6 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 }
 
 func getModel(repository string, filename string) (*model.Model, error) {
-	/*b, err := os.ReadFile(path.Join(varFolder, filename))
-	if err != nil {
-		return nil, err
-	}*/
-
 	filename = strings.TrimSuffix(filename, "vmdl_c")
 	filename = strings.TrimSuffix(filename, "vmdl")
 
