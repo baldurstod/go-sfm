@@ -67,7 +67,7 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	dag.AddChildren(model1)
 	clip.Scene.AddChildren(dag)
 
-	s2Model, err := getModel(repository, filename)
+	s2Model, err := GetModel(repository, filename)
 
 	if err != nil {
 		return nil, err
@@ -136,19 +136,51 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	return as, nil
 }
 
-func getModel(repository string, filename string) (*model.Model, error) {
+var models = func() map[string]map[string]*model.Model { return make(map[string]map[string]*model.Model) }()
+
+func findModel(repository string, filename string) *model.Model {
+	r, ok := models[repository]
+	if !ok {
+		return nil
+	}
+	m, ok := r[filename]
+	if !ok {
+		return nil
+	}
+	return m
+}
+
+func addModel(repository string, filename string, m *model.Model) {
+	r, ok := models[repository]
+	if !ok {
+		r = make(map[string]*model.Model)
+		models[repository] = r
+	}
+
+	r[filename] = m
+}
+
+func GetModel(repository string, filename string) (*model.Model, error) {
 	filename = strings.TrimSuffix(filename, "vmdl_c")
 	filename = strings.TrimSuffix(filename, "vmdl")
+	filename += "vmdl_c"
 
-	file, err := parser.Parse(repository, filename+"vmdl_c")
+	m := findModel(repository, filename)
+	if m != nil {
+		return m, nil
+	}
+
+	file, err := parser.Parse(repository, filename)
 	if err != nil {
 		return nil, err
 	}
 
-	model := model.NewModel()
-	model.SetFile(file)
+	m = model.NewModel()
+	m.SetFile(file)
 
-	return model, nil
+	addModel(repository, filename, m)
+
+	return m, nil
 
 	//log.Println(model.GetSkeleton())
 }
