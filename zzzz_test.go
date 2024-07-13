@@ -76,16 +76,66 @@ func TestMovement(t *testing.T) {
 		return
 	}
 
-	tc := as.GetTransformControl("clavicle_R")
-	if tc != nil {
-		log.Println(tc)
-		layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
-		log.Println(layer)
+	tiny, err := utils.GetModel("dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
-		for i := 0; i < 100; i++ {
-			layer.AddValue(int32(i), vector.Vector3[float32]{float32(i), 0, 0})
+	seq, err := tiny.GetSequence("ACT_DOTA_RUN", nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	frames := seq.GetFrameCount()
+	//fps := seq.GetFps()
+
+	for frameId := 0; frameId < frames; frameId++ {
+		frame, err := seq.GetFrame(frameId)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		//log.Println(frame)
+		positionChannel := frame.GetChannel("BoneChannel", "Position")
+		for _, element := range positionChannel.Datas {
+
+			tc := as.GetTransformControl(element.Name)
+			if tc != nil {
+				//log.Println(tc)
+				layer := any(tc.PositionChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Vector3[float32]])
+				//log.Println(layer)
+
+				//layer.AddValue(0, vector.Vector3[float32]{})
+				layer.AddValue(int32(frameId), element.Datas.(vector.Vector3[float32]))
+			}
+		}
+		orientationChannel := frame.GetChannel("BoneChannel", "Angle")
+		for _, element := range orientationChannel.Datas {
+
+			tc := as.GetTransformControl(element.Name)
+			if tc != nil {
+				//log.Println(tc)
+				layer := any(tc.OrientationChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Quaternion[float32]])
+				//log.Println(layer)
+
+				//layer.AddValue(0, vector.Quaternion[float32]{})
+				layer.AddValue(int32(frameId), (element.Datas.(vector.Quaternion[float32])))
+			}
 		}
 	}
+	/*
+		tc := as.GetTransformControl("clavicle_R")
+		if tc != nil {
+			log.Println(tc)
+			layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
+			log.Println(layer)
+
+			for i := 0; i < 100; i++ {
+				layer.AddValue(int32(i), vector.Vector3[float32]{float32(i), 0, 0})
+			}
+		}*/
 
 	buf := new(bytes.Buffer)
 	dmx.SerializeText(buf, sfm.NewSerializer().Serialize(session))
