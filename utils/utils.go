@@ -60,7 +60,7 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 	return animationSet
 }
 
-func AddModel(clip *sfm.FilmClip, name string, repository string, filename string) error {
+func AddModel(clip *sfm.FilmClip, name string, repository string, filename string) (*sfm.AnimationSet, error) {
 	dag := sfm.NewNode(name)
 
 	model1 := sfm.NewGameModel(name, filename)
@@ -70,13 +70,13 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	s2Model, err := getModel(repository, filename)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	skel, err := s2Model.GetSkeleton()
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	bones := make(map[*model.Bone]*sfm.Bone)
@@ -133,7 +133,7 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	clip.AddAnimationSet(as)
 	as.GameModel = model1
 
-	return nil
+	return as, nil
 }
 
 func getModel(repository string, filename string) (*model.Model, error) {
