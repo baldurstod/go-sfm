@@ -6,7 +6,7 @@ import (
 )
 
 type Log[T Loggable] struct {
-	layers []*LogLayer[T]
+	layers map[string]*LogLayer[T]
 	/*
 
 		CDmaElementArray< CDmeLogLayer >	m_Layers;
@@ -16,15 +16,22 @@ type Log[T Loggable] struct {
 
 func newLog[T Loggable]() *Log[T] {
 	return &Log[T]{
-		layers: make([]*LogLayer[T], 0),
+		layers: make(map[string]*LogLayer[T]),
 	}
 }
 
 func (*Log[T]) isLog() {}
 
-func (l *Log[T]) AddLayer() ILogLayer {
+func (l *Log[T]) AddLayer(name string) ILogLayer {
 	layer := newLogLayer[T]()
-	l.layers = append(l.layers, layer)
+	l.layers[name] = layer
+	return layer
+}
+func (l *Log[T]) GetLayer(name string) ILogLayer {
+	layer, ok := l.layers[name]
+	if !ok {
+		return l.AddLayer(name)
+	}
 	return layer
 }
 
