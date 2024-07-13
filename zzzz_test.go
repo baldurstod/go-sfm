@@ -126,17 +126,14 @@ func TestMovement(t *testing.T) {
 			}
 		}
 	}
-	/*
-		tc := as.GetTransformControl("clavicle_R")
-		if tc != nil {
-			log.Println(tc)
-			layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
-			log.Println(layer)
 
-			for i := 0; i < 100; i++ {
-				layer.AddValue(int32(i), vector.Vector3[float32]{float32(i), 0, 0})
-			}
-		}*/
+	tc := as.GetTransformControl("rootTransform")
+	if tc != nil {
+		posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
+		posLayer.AddValue(0, vector.Vector3[float32]{})
+		rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
+		rotLayer.AddValue(0, vector.Quaternion[float32]{})
+	}
 
 	buf := new(bytes.Buffer)
 	dmx.SerializeText(buf, sfm.NewSerializer().Serialize(session))
