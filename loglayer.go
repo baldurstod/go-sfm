@@ -10,7 +10,7 @@ type Loggable interface {
 }
 
 type LogLayer[T Loggable] struct {
-	times      []int32
+	times      []float32
 	curveTypes []int
 	values     []T
 	/*
@@ -24,7 +24,7 @@ type LogLayer[T Loggable] struct {
 
 func newLogLayer[T Loggable]() *LogLayer[T] {
 	return &LogLayer[T]{
-		times:      make([]int32, 0),
+		times:      make([]float32, 0),
 		curveTypes: make([]int, 0),
 		values:     make([]T, 0),
 	}
@@ -32,7 +32,7 @@ func newLogLayer[T Loggable]() *LogLayer[T] {
 
 func (*LogLayer[T]) isLogLayer() {}
 
-func (ll *LogLayer[T]) AddValue(time int32, value T) {
+func (ll *LogLayer[T]) AddValue(time float32, value T) {
 	ll.times = append(ll.times, time)
 	ll.values = append(ll.values, value)
 }
@@ -55,7 +55,7 @@ func (ll *LogLayer[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	times := e.CreateAttribute("times", dmx.AT_TIME_ARRAY)
 	for _, time := range ll.times {
-		times.PushTime(float32(time) / 20.0)
+		times.PushTime(time)
 	}
 
 	switch any(ll).(type) {

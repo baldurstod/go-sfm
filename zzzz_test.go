@@ -89,10 +89,11 @@ func TestMovement(t *testing.T) {
 	}
 
 	frames := seq.GetFrameCount()
-	//fps := seq.GetFps()
+	fps := seq.GetFps()
 
 	for frameId := 0; frameId < frames; frameId++ {
 		frame, err := seq.GetFrame(frameId)
+		frameTime := float32(frameId) / float32(fps)
 		if err != nil {
 			t.Error(err)
 			return
@@ -108,7 +109,7 @@ func TestMovement(t *testing.T) {
 				//log.Println(layer)
 
 				//layer.AddValue(0, vector.Vector3[float32]{})
-				layer.AddValue(int32(frameId), element.Datas.(vector.Vector3[float32]))
+				layer.AddValue(frameTime, element.Datas.(vector.Vector3[float32]))
 			}
 		}
 		orientationChannel := frame.GetChannel("BoneChannel", "Angle")
@@ -121,7 +122,7 @@ func TestMovement(t *testing.T) {
 				//log.Println(layer)
 
 				//layer.AddValue(0, vector.Quaternion[float32]{})
-				layer.AddValue(int32(frameId), (element.Datas.(vector.Quaternion[float32])))
+				layer.AddValue(frameTime, (element.Datas.(vector.Quaternion[float32])))
 			}
 		}
 	}
