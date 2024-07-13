@@ -68,6 +68,11 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 		for _, value := range ll.values {
 			values.PushVector3(any(value).(vector.Vector3[float32]))
 		}
+	case *LogLayer[vector.Quaternion[float32]]:
+		values := e.CreateAttribute("values", dmx.AT_QUATERNION_ARRAY)
+		for _, value := range ll.values {
+			values.PushQuaternion(any(value).(vector.Quaternion[float32]))
+		}
 	/*case *Log[vector.Quaternion[float32]]:
 	return dmx.NewDmElement("quaternion log", "DmeQuaternionLog")*/
 	default:
