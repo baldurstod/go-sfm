@@ -62,6 +62,10 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 }
 
 func AddModel(clip *sfm.FilmClip, name string, repository string, filename string) (*sfm.AnimationSet, error) {
+	filename = strings.TrimSuffix(filename, ".vmdl_c")
+	filename = strings.TrimSuffix(filename, ".vmdl")
+	filename += ".vmdl"
+
 	dag := sfm.NewNode(name)
 
 	model1 := sfm.NewGameModel(name, filename)
@@ -172,9 +176,9 @@ func addModel(repository string, filename string, m *model.Model) {
 }
 
 func GetModel(repository string, filename string) (*model.Model, error) {
-	filename = strings.TrimSuffix(filename, "vmdl_c")
-	filename = strings.TrimSuffix(filename, "vmdl")
-	filename += "vmdl_c"
+	filename = strings.TrimSuffix(filename, ".vmdl_c")
+	filename = strings.TrimSuffix(filename, ".vmdl")
+	filename += ".vmdl_c"
 
 	m := findModel(repository, filename)
 	if m != nil {
