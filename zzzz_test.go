@@ -105,7 +105,7 @@ func TestMovement(t *testing.T) {
 			tc := as.GetTransformControl(element.Name)
 			if tc != nil {
 				//log.Println(tc)
-				layer := any(tc.PositionChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Vector3[float32]])
+				layer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
 				//log.Println(layer)
 
 				//layer.AddValue(0, vector.Vector3[float32]{})
@@ -118,7 +118,7 @@ func TestMovement(t *testing.T) {
 			tc := as.GetTransformControl(element.Name)
 			if tc != nil {
 				//log.Println(tc)
-				layer := any(tc.OrientationChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Quaternion[float32]])
+				layer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
 				//log.Println(layer)
 
 				//layer.AddValue(0, vector.Quaternion[float32]{})
