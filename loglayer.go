@@ -61,7 +61,7 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	}*/
 
 	keys := make([]float32, 0, len(ll.values))
-	for k, _ := range ll.values {
+	for k := range ll.values {
 		keys = append(keys, k)
 	}
 	slices.Sort(keys)
