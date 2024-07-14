@@ -104,12 +104,8 @@ func TestMovement(t *testing.T) {
 
 			tc := as.GetTransformControl(element.Name)
 			if tc != nil {
-				//log.Println(tc)
 				layer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-				//log.Println(layer)
-
-				//layer.AddValue(0, vector.Vector3[float32]{})
-				layer.AddValue(frameTime, element.Datas.(vector.Vector3[float32]))
+				layer.SetValue(frameTime, element.Datas.(vector.Vector3[float32]))
 			}
 		}
 		orientationChannel := frame.GetChannel("BoneChannel", "Angle")
@@ -117,22 +113,10 @@ func TestMovement(t *testing.T) {
 
 			tc := as.GetTransformControl(element.Name)
 			if tc != nil {
-				//log.Println(tc)
 				layer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-				//log.Println(layer)
-
-				//layer.AddValue(0, vector.Quaternion[float32]{})
-				layer.AddValue(frameTime, (element.Datas.(vector.Quaternion[float32])))
+				layer.SetValue(frameTime, (element.Datas.(vector.Quaternion[float32])))
 			}
 		}
-	}
-
-	tc := as.GetTransformControl("rootTransform")
-	if tc != nil {
-		posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-		posLayer.AddValue(0, vector.Vector3[float32]{})
-		rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-		rotLayer.AddValue(0, vector.Quaternion[float32]{})
 	}
 
 	buf := new(bytes.Buffer)

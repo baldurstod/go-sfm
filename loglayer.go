@@ -1,6 +1,8 @@
 package sfm
 
 import (
+	"slices"
+
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-vector"
 )
@@ -12,7 +14,7 @@ type Loggable interface {
 type LogLayer[T Loggable] struct {
 	times      []float32
 	curveTypes []int
-	values     []T
+	values     map[float32]T
 	/*
 			CDmeLog *m_pOwnerLog;
 
@@ -26,15 +28,15 @@ func newLogLayer[T Loggable]() *LogLayer[T] {
 	return &LogLayer[T]{
 		times:      make([]float32, 0),
 		curveTypes: make([]int, 0),
-		values:     make([]T, 0),
+		values:     make(map[float32]T, 0),
 	}
 }
 
 func (*LogLayer[T]) isLogLayer() {}
 
-func (ll *LogLayer[T]) AddValue(time float32, value T) {
+func (ll *LogLayer[T]) SetValue(time float32, value T) {
 	ll.times = append(ll.times, time)
-	ll.values = append(ll.values, value)
+	ll.values[time] = value
 }
 
 func (ll *LogLayer[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
@@ -54,9 +56,18 @@ func (ll *LogLayer[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 
 func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	times := e.CreateAttribute("times", dmx.AT_TIME_ARRAY)
-	for _, time := range ll.times {
+	/*for time := range ll.values {
 		times.PushTime(time)
+	}*/
+
+	keys := make([]float32, 0, len(ll.values))
+	for k, _ := range ll.values {
+		keys = append(keys, k)
 	}
+	slices.Sort(keys)
+	/*for _, k := range keys {
+		//fmt.Println(k, romanNumeralDict[k])
+	}*/
 
 	switch any(ll).(type) {
 	/*case *Log[bool]:
@@ -65,13 +76,15 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 		return dmx.NewDmElement("float log", "DmeFloatLog")*/
 	case *LogLayer[vector.Vector3[float32]]:
 		values := e.CreateAttribute("values", dmx.AT_VECTOR3_ARRAY)
-		for _, value := range ll.values {
-			values.PushVector3(any(value).(vector.Vector3[float32]))
+		for _, time := range keys {
+			times.PushTime(time)
+			values.PushVector3(any(ll.values[time]).(vector.Vector3[float32]))
 		}
 	case *LogLayer[vector.Quaternion[float32]]:
 		values := e.CreateAttribute("values", dmx.AT_QUATERNION_ARRAY)
-		for _, value := range ll.values {
-			values.PushQuaternion(any(value).(vector.Quaternion[float32]))
+		for _, time := range keys {
+			times.PushTime(time)
+			values.PushQuaternion(any(ll.values[time]).(vector.Quaternion[float32]))
 		}
 	/*case *Log[vector.Quaternion[float32]]:
 	return dmx.NewDmElement("quaternion log", "DmeQuaternionLog")*/

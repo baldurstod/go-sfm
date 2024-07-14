@@ -96,9 +96,9 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	channelsClip.AddChannel(&tc.PositionChannel)
 
 	posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-	posLayer.AddValue(0, vector.Vector3[float32]{})
+	posLayer.SetValue(0, vector.Vector3[float32]{})
 	rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-	rotLayer.AddValue(0, vector.Quaternion[float32]{})
+	rotLayer.SetValue(0, vector.Quaternion[float32]{})
 
 	//layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
 	//log.Println(layer)
@@ -127,9 +127,9 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 		channelsClip.AddChannel(&tc.PositionChannel)
 
 		posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-		posLayer.AddValue(0, bone.Transform.Position)
+		posLayer.SetValue(0, bone.Transform.Position)
 		rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-		rotLayer.AddValue(0, bone.Transform.Orientation)
+		rotLayer.SetValue(0, bone.Transform.Orientation)
 	}
 
 	for _, v := range skel.GetBones() {
