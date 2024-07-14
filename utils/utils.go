@@ -7,6 +7,7 @@ import (
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-source2-tools/parser"
+	"github.com/baldurstod/go-vector"
 )
 
 var animSetEditorChannels *sfm.Track
@@ -94,6 +95,11 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	channelsClip.AddChannel(&tc.OrientationChannel)
 	channelsClip.AddChannel(&tc.PositionChannel)
 
+	posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
+	posLayer.AddValue(0, vector.Vector3[float32]{})
+	rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
+	rotLayer.AddValue(0, vector.Quaternion[float32]{})
+
 	//layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
 	//log.Println(layer)
 
@@ -119,6 +125,11 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 
 		channelsClip.AddChannel(&tc.OrientationChannel)
 		channelsClip.AddChannel(&tc.PositionChannel)
+
+		posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
+		posLayer.AddValue(0, bone.Transform.Position)
+		rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
+		rotLayer.AddValue(0, bone.Transform.Orientation)
 	}
 
 	for _, v := range skel.GetBones() {
