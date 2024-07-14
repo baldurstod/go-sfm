@@ -68,21 +68,25 @@ func TestMovement(t *testing.T) {
 	}
 
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
-	shot1.Camera.Transform.Position.Set(200, 0, 60)
+	shot1.Camera.Transform.Position.Set(500, 0, 60)
 
-	as, err := utils.AddModel(shot1, "Tiny", "dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
+	filename := "models/heroes/shadow_fiend/shadow_fiend"
+	filename = "models/heroes/tiny/tiny_01/tiny_01"
+	filename = "models/heroes/dawnbreaker/dawnbreaker"
+
+	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	tiny, err := utils.GetModel("dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
+	tiny, err := utils.GetModel("dota2", filename)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	seq, err := tiny.GetSequence("ACT_DOTA_RUN", nil)
+	seq, err := tiny.GetSequence("ACT_DOTA_IDLE_RARE", nil)
 	if err != nil {
 		t.Error(err)
 		return

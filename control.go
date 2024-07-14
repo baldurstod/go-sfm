@@ -8,15 +8,22 @@ type Control struct {
 	Name         string
 	Value        float32
 	DefaultValue float32
-	Channel      *Channel
+	Channel      Channel
 }
 
 func (*Control) isControl() {}
 
 func NewControl(name string) *Control {
-	return &Control{
-		Name: name,
+	c := &Control{
+		Name:    name + "_flex_channel",
+		Channel: *NewChannel[float32](name),
 	}
+
+	c.Channel.FromElement = c
+	c.Channel.FromAttribute = "value"
+	c.Channel.Mode = 3
+
+	return c
 }
 
 func (c *Control) createDmElement(serializer *Serializer) *dmx.DmElement {
@@ -26,7 +33,7 @@ func (c *Control) createDmElement(serializer *Serializer) *dmx.DmElement {
 func (c *Control) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("value", c.Value)
 	e.CreateFloatAttribute("defaultValue", c.DefaultValue)
-	e.CreateElementAttribute("channel", serializer.GetElement(c.Channel))
+	e.CreateElementAttribute("channel", serializer.GetElement(&c.Channel))
 }
 
 /*

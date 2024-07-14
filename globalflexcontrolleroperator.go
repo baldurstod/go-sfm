@@ -23,7 +23,7 @@ func (o *GlobalFlexControllerOperator) createDmElement(serializer *Serializer) *
 }
 
 func (o *GlobalFlexControllerOperator) toDmElement(serializer *Serializer, e *dmx.DmElement) {
-	e.CreateFloatAttribute("position", o.FlexWeight)
+	e.CreateFloatAttribute("flexWeight", o.FlexWeight)
 	e.CreateElementAttribute("gameModel", serializer.GetElement(o.GameModel))
 }
 

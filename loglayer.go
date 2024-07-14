@@ -71,9 +71,13 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 
 	switch any(ll).(type) {
 	/*case *Log[bool]:
-		return dmx.NewDmElement("bool log", "DmeBoolLog")
-	case *Log[float32]:
-		return dmx.NewDmElement("float log", "DmeFloatLog")*/
+	return dmx.NewDmElement("bool log", "DmeBoolLog")*/
+	case *LogLayer[float32]:
+		values := e.CreateAttribute("values", dmx.AT_FLOAT_ARRAY)
+		for _, time := range keys {
+			times.PushTime(time)
+			values.PushFloat(any(ll.values[time]).(float32))
+		}
 	case *LogLayer[vector.Vector3[float32]]:
 		values := e.CreateAttribute("values", dmx.AT_VECTOR3_ARRAY)
 		for _, time := range keys {

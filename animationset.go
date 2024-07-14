@@ -29,6 +29,13 @@ func (as *AnimationSet) AddControl(name string, c IControl) {
 	as.controls[name] = c
 }
 
+func (as *AnimationSet) CreateControl(name string) *Control {
+	cg := as.RootControlGroup.GetSubGroup(name)
+	c := cg.CreateControl(name)
+	as.AddControl(name, c)
+	return c
+}
+
 func (as *AnimationSet) CreateTransformControl(name string) *TransformControl {
 	cg := as.RootControlGroup.GetSubGroup(name)
 	c := cg.CreateTransformControl(name)

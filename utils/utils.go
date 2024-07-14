@@ -86,6 +86,7 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 
 	bones := make(map[*model.Bone]*sfm.Bone)
 	as := createAnimationSet(name)
+	as.GameModel = model1
 
 	channelsClip := sfm.NewChannelsClip(name)
 	animSetEditorChannels.AddChildren(channelsClip)
@@ -145,8 +146,12 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 		}
 	}
 
+	err = initFlexes(as, s2Model, channelsClip)
+	if err != nil {
+		return nil, fmt.Errorf("failed to init flexes: <%w>", err)
+	}
+
 	clip.AddAnimationSet(as)
-	as.GameModel = model1
 
 	return as, nil
 }
@@ -198,4 +203,27 @@ func GetModel(repository string, filename string) (*model.Model, error) {
 	return m, nil
 
 	//log.Println(model.GetSkeleton())
+}
+
+func initFlexes(as *sfm.AnimationSet, s2Model *model.Model, channelsClip *sfm.ChannelsClip) error {
+	flexes, err := s2Model.GetFlexes()
+	if err != nil {
+		return fmt.Errorf("failed to get model flexes: <%w>", err)
+	}
+
+	gameModel := as.GameModel
+	for _, v := range flexes {
+		ope := gameModel.CreateGlobalFlexControllerOperator(v.Name, 0)
+		c := as.CreateControl(v.Name)
+		c.Channel.ToElement = ope
+		c.Channel.ToAttribute = "flexWeight"
+
+		layer := any(c.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
+		layer.SetValue(0, 0)
+
+		channelsClip.AddChannel(&c.Channel)
+	}
+
+	//	CreateGlobalFlexControllerOperator
+	return nil
 }
