@@ -213,16 +213,17 @@ func initFlexes(as *sfm.AnimationSet, s2Model *model.Model, channelsClip *sfm.Ch
 
 	gameModel := as.GameModel
 	for _, v := range flexes {
-		ope := gameModel.CreateGlobalFlexControllerOperator(v.Name, 0.5)
+		defaultValue := v.GetDefaultValue()
+		ope := gameModel.CreateGlobalFlexControllerOperator(v.Name, defaultValue)
 		c := as.CreateControl(v.Name)
 		c.Channel.ToElement = ope
 		c.Channel.ToAttribute = "flexWeight"
 
 		layer := any(c.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
-		layer.SetValue(0, 0.5)
+		layer.SetValue(0, defaultValue)
 
-		c.DefaultValue = 0.5
-		c.Value = 0.5
+		c.DefaultValue = defaultValue
+		c.Value = defaultValue
 
 		channelsClip.AddChannel(&c.Channel)
 	}

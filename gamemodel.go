@@ -50,7 +50,7 @@ func (gm *GameModel) CreateBone(name string) *Bone {
 func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float32) *GlobalFlexControllerOperator {
 	o := NewGlobalFlexControllerOperator(name, flexWeight, gm)
 	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
-	gm.flexWeights = append(gm.flexWeights, 0.5)
+	gm.flexWeights = append(gm.flexWeights, flexWeight)
 	return o
 }
 
