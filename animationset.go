@@ -43,6 +43,20 @@ func (as *AnimationSet) CreateTransformControl(name string) *TransformControl {
 	return c
 }
 
+func (as *AnimationSet) GetControl(name string) *Control {
+	v, ok := as.controls[name]
+	if !ok {
+		return nil
+	}
+
+	c, ok := v.(*Control)
+	if !ok {
+		return nil
+	}
+
+	return c
+}
+
 func (as *AnimationSet) GetTransformControl(name string) *TransformControl {
 	v, ok := as.controls[name]
 	if !ok {
