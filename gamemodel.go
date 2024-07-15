@@ -8,7 +8,7 @@ type GameModel struct {
 	*Node
 	ModelName               string
 	Skin                    int32
-	FlexWeights             []float32
+	flexWeights             []float32
 	MeshGroupMask           uint64
 	bones                   []*Bone
 	globalFlexControllers   []*GlobalFlexControllerOperator
@@ -21,7 +21,7 @@ func NewGameModel(name string, modelName string) *GameModel {
 		Node:                    NewNode(name),
 		ModelName:               modelName,
 		Skin:                    0,
-		FlexWeights:             make([]float32, 0),
+		flexWeights:             make([]float32, 0),
 		bones:                   make([]*Bone, 0),
 		MeshGroupMask:           0xffffffffffffffff,
 		globalFlexControllers:   make([]*GlobalFlexControllerOperator, 0),
@@ -47,13 +47,10 @@ func (gm *GameModel) CreateBone(name string) *Bone {
 	return bone
 }
 
-func (gm *GameModel) AddGlobalFlexControllerOperator(o *GlobalFlexControllerOperator) {
-	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
-}
-
 func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float32) *GlobalFlexControllerOperator {
 	o := NewGlobalFlexControllerOperator(name, flexWeight, gm)
 	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
+	gm.flexWeights = append(gm.flexWeights, 0.5)
 	return o
 }
 
@@ -76,7 +73,7 @@ func (gm *GameModel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	}
 
 	flexWeights := e.CreateAttribute("flexWeights", dmx.AT_FLOAT_ARRAY)
-	for _, weights := range gm.FlexWeights {
+	for _, weights := range gm.flexWeights {
 		flexWeights.PushFloat(weights)
 	}
 
