@@ -8,6 +8,10 @@ github.com/baldurstod/go-source2-tools v0.0.14 h1:bBuGgtpiO1pmEdPTR9+n+yEIYckJc/
 github.com/baldurstod/go-source2-tools v0.0.14/go.mod h1:cf7lt2mRqkxLnmfekCsUftJg469+qvviWsk9N4skDw0=
 github.com/baldurstod/go-source2-tools v0.0.16 h1:g2RgOaAqQgM4g0MStH5NooslwJ+ynzYtGBMAuBsykSA=
 github.com/baldurstod/go-source2-tools v0.0.16/go.mod h1:cf7lt2mRqkxLnmfekCsUftJg469+qvviWsk9N4skDw0=
+github.com/baldurstod/go-source2-tools v0.0.17 h1:7Hrc70wmNrMVxpznxVIvHQNg8K7iQKa86TDQxt/BOgw=
+github.com/baldurstod/go-source2-tools v0.0.17/go.mod h1:cf7lt2mRqkxLnmfekCsUftJg469+qvviWsk9N4skDw0=
+github.com/baldurstod/go-source2-tools v0.0.18 h1:LH7Jb3h9TZKZhc8JH1U01Q38rRpnMVc/tuRYxmxGZrk=
+github.com/baldurstod/go-source2-tools v0.0.18/go.mod h1:cf7lt2mRqkxLnmfekCsUftJg469+qvviWsk9N4skDw0=
 github.com/baldurstod/go-vector v0.0.5 h1:ED6rM+homVhEv/GZ9ApZtB44ASkyzenGt/LImAPhy1E=
 github.com/baldurstod/go-vector v0.0.5/go.mod h1:B1yNl2t+n/Zf+pR/hdLCYpUvd+FAHt/Cx9kqVKNsN1o=
 github.com/baldurstod/vdf v0.0.2 h1:Dn4Cx1aOsB8t77CgiNtCy1n4pYFdg6K78HTrOxB3ZwU=

@@ -4,7 +4,7 @@ go 1.22.4
 
 require (
 	github.com/baldurstod/go-dmx v0.0.19
-	github.com/baldurstod/go-source2-tools v0.0.16
+	github.com/baldurstod/go-source2-tools v0.0.18
 	github.com/baldurstod/go-vector v0.0.5
 	github.com/baldurstod/vdf v0.0.2
 )

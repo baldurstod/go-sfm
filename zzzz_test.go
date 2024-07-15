@@ -87,6 +87,9 @@ func TestMovement(t *testing.T) {
 	}
 
 	seq, err := tiny.GetSequence("ACT_DOTA_IDLE_RARE", nil)
+	modifiers := make(map[string]struct{})
+	modifiers["PostGameIdle"] = struct{}{}
+	seq, err = tiny.GetSequence("ACT_DOTA_LOADOUT", modifiers)
 	if err != nil {
 		t.Error(err)
 		return
@@ -94,6 +97,12 @@ func TestMovement(t *testing.T) {
 
 	frames := seq.GetFrameCount()
 	fps := seq.GetFps()
+
+	flexes, err := tiny.GetFlexes()
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	for frameId := 0; frameId < frames; frameId++ {
 		frame, err := seq.GetFrame(frameId)
@@ -119,6 +128,24 @@ func TestMovement(t *testing.T) {
 			if tc != nil {
 				layer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
 				layer.SetValue(frameTime, (element.Datas.(vector.Quaternion[float32])))
+			}
+		}
+
+		morphChannel := frame.GetChannel("MorphChannel", "data")
+		for _, element := range morphChannel.Datas {
+
+			value := float32(0)
+			for _, flex := range flexes {
+				if flex.Name == element.Name {
+					value = flex.GetControllerValue((element.Datas.(float32))) //((element.Datas.(float32)) - flex.Min) / (flex.Max - flex.Min)
+					break
+				}
+			}
+
+			tc := as.GetControl(element.Name)
+			if tc != nil {
+				layer := any(tc.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
+				layer.SetValue(frameTime, value)
 			}
 		}
 	}
