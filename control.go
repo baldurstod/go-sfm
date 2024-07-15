@@ -15,8 +15,8 @@ func (*Control) isControl() {}
 
 func NewControl(name string) *Control {
 	c := &Control{
-		Name:    name + "_flex_channel",
-		Channel: *NewChannel[float32](name),
+		Name:    name,
+		Channel: *NewChannel[float32](name + "_flex_channel"),
 	}
 
 	c.Channel.FromElement = c

@@ -68,7 +68,7 @@ func TestMovement(t *testing.T) {
 	}
 
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
-	shot1.Camera.Transform.Position.Set(500, 0, 60)
+	shot1.Camera.Transform.Position.Set(200, 0, 150)
 
 	filename := "models/heroes/shadow_fiend/shadow_fiend"
 	filename = "models/heroes/tiny/tiny_01/tiny_01"

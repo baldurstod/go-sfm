@@ -21,7 +21,7 @@ type ProgressiveRefinementSettings struct {
 func NewProgressiveRefinementSettings() *ProgressiveRefinementSettings {
 	return &ProgressiveRefinementSettings{
 		Name:                             "ProgressiveRefinementSettings",
-		On:                               true,
+		On:                               false,
 		UseDepthOfField:                  true,
 		OverrideDepthOfFieldSamplesValue: 64,
 		UseMotionBlur:                    true,
