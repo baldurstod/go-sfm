@@ -73,19 +73,27 @@ func TestMovement(t *testing.T) {
 	filename := "models/heroes/shadow_fiend/shadow_fiend"
 	filename = "models/heroes/tiny/tiny_01/tiny_01"
 	filename = "models/heroes/dawnbreaker/dawnbreaker"
-	filename2 := "models/heroes/dawnbreaker/dawnbreaker_head"
+	items := [...]string{
+		"models/heroes/dawnbreaker/dawnbreaker_head",
+		"models/heroes/dawnbreaker/dawnbreaker_weapon",
+		"models/heroes/dawnbreaker/dawnbreaker_arms",
+		"models/heroes/dawnbreaker/dawnbreaker_armor",
+	}
 
 	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	as2, err := utils.AddModel(shot1, "Tiny", "dota2", filename2)
-	if err != nil {
-		t.Error(err)
-		return
+
+	for _, item := range items {
+		as2, err := utils.AddModel(shot1, "Tiny", "dota2", item)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		as2.GameModel.SetParentModel(as.GameModel)
 	}
-	as2.GameModel.SetParentModel(as.GameModel)
 
 	tiny, err := utils.GetModel("dota2", filename)
 	if err != nil {

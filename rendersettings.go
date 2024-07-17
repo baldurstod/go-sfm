@@ -17,6 +17,7 @@ type RenderSettings struct {
 	GlobalLightShadowEnabled bool
 	PlaybackClampFrameCount  int32
 	IgnoreAlphaFade          bool
+	DrawGrid                 bool
 	ProgressiveRefinement    *ProgressiveRefinementSettings
 }
 
@@ -57,6 +58,7 @@ func (rs *RenderSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) 
 	e.CreateBoolAttribute("globalLightShadowEnabled", rs.GlobalLightShadowEnabled)
 	e.CreateIntAttribute("playbackClampFrameCount", rs.PlaybackClampFrameCount)
 	e.CreateBoolAttribute("ignoreAlphaFade", rs.IgnoreAlphaFade)
+	e.CreateBoolAttribute("drawGrid", rs.DrawGrid)
 	e.CreateElementAttribute("ProgressiveRefinement", serializer.GetElement(rs.ProgressiveRefinement))
 }
 
