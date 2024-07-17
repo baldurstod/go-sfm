@@ -48,6 +48,10 @@ func (s *Session) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(s.Name, "DmElement")
 }
 
+func (s *Session) isExportable() bool {
+	return true
+}
+
 func (s *Session) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	if s.activeClip != nil {
 		e.CreateElementAttribute("activeClip", serializer.GetElement(s.activeClip))

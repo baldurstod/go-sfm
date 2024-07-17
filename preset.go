@@ -30,6 +30,10 @@ func (p *Preset) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(p.Name, "DmePreset")
 }
 
+func (p *Preset) isExportable() bool {
+	return true
+}
+
 func (p *Preset) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateStringAttribute("description", p.Description)
 

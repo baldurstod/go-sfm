@@ -22,6 +22,10 @@ func (o *GlobalFlexControllerOperator) createDmElement(serializer *Serializer) *
 	return dmx.NewDmElement(o.Name, "DmeGlobalFlexControllerOperator")
 }
 
+func (o *GlobalFlexControllerOperator) isExportable() bool {
+	return true
+}
+
 func (o *GlobalFlexControllerOperator) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("flexWeight", o.FlexWeight)
 	e.CreateElementAttribute("gameModel", serializer.GetElement(o.GameModel))

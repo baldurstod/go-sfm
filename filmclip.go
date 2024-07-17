@@ -40,6 +40,10 @@ func (fc *FilmClip) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return fc.Clip.getDmElement(serializer, "DmeFilmClip")
 }
 
+func (fc *FilmClip) isExportable() bool {
+	return true
+}
+
 func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("scene", serializer.GetElement(fc.Scene))
 

@@ -35,6 +35,10 @@ func (bs *BookmarkSet) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement("", "DmeAnimationSet")
 }
 
+func (bs *BookmarkSet) isExportable() bool {
+	return true
+}
+
 func (bs *BookmarkSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	/*
 		e.CreateElementAttribute("timeFrame", serializer.GetElement(c.TimeFrame))

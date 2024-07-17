@@ -41,6 +41,10 @@ func (rs *RenderSettings) createDmElement(serializer *Serializer) *dmx.DmElement
 	return dmx.NewDmElement(rs.Name, "DmElement")
 }
 
+func (rs *RenderSettings) isExportable() bool {
+	return true
+}
+
 func (rs *RenderSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateIntAttribute("width", rs.Width)
 	e.CreateIntAttribute("height", rs.Height)

@@ -48,6 +48,10 @@ func (c *Camera) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(c.Name, "DmeCamera")
 }
 
+func (c *Camera) isExportable() bool {
+	return true
+}
+
 func (c *Camera) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("transform", serializer.GetElement(c.Transform))
 	e.CreateBoolAttribute("visible", c.Visible)

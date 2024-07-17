@@ -22,6 +22,10 @@ func (tf *TimeFrame) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement("", "DmeTimeFrame")
 }
 
+func (tf *TimeFrame) isExportable() bool {
+	return true
+}
+
 func (tf *TimeFrame) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateTimeAttribute("start", tf.Start)
 	e.CreateTimeAttribute("duration", tf.Duration)

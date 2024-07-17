@@ -39,6 +39,10 @@ func (ts *TimeSelection) createDmElement(serializer *Serializer) *dmx.DmElement 
 	return dmx.NewDmElement(ts.Name, "DmeTimeSelection")
 }
 
+func (ts *TimeSelection) isExportable() bool {
+	return true
+}
+
 func (ts *TimeSelection) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("enabled", ts.Enabled)
 	e.CreateBoolAttribute("relative", ts.Relative)

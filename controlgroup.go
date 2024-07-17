@@ -69,6 +69,11 @@ func (cg *ControlGroup) GetSubGroup(controlName string) *ControlGroup {
 func (cg *ControlGroup) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(cg.Name, "DmeControlGroup")
 }
+
+func (cg *ControlGroup) isExportable() bool {
+	return true
+}
+
 func (cg *ControlGroup) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
 	for _, child := range cg.children {

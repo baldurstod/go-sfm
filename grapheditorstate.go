@@ -20,6 +20,10 @@ func (ges *GraphEditorState) createDmElement(serializer *Serializer) *dmx.DmElem
 	return dmx.NewDmElement(ges.Name, "DmeGraphEditorState")
 }
 
+func (ges *GraphEditorState) isExportable() bool {
+	return true
+}
+
 func (ges *GraphEditorState) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("displayGrid", ges.DisplayGrid)
 }

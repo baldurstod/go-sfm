@@ -32,6 +32,10 @@ func (pg *PresetGroup) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(pg.Name, "DmeChannel")
 }
 
+func (pg *PresetGroup) isExportable() bool {
+	return true
+}
+
 func (pg *PresetGroup) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	presets := e.CreateAttribute("presets", dmx.AT_ELEMENT_ARRAY)
 	for _, p := range pg.presets {

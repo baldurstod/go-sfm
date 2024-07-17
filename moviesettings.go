@@ -30,6 +30,10 @@ func (ms *MovieSettings) createDmElement(serializer *Serializer) *dmx.DmElement 
 	return dmx.NewDmElement(ms.Name, "DmElement")
 }
 
+func (ms *MovieSettings) isExportable() bool {
+	return true
+}
+
 func (ms *MovieSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateIntAttribute("videoTarget", ms.VideoTarget)
 	e.CreateIntAttribute("audioTarget", ms.AudioTarget)

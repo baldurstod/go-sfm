@@ -32,6 +32,10 @@ func (pps *ProceduralPresetSettings) createDmElement(serializer *Serializer) *dm
 	return dmx.NewDmElement(pps.Name, "DmeProceduralPresetSettings")
 }
 
+func (pps *ProceduralPresetSettings) isExportable() bool {
+	return true
+}
+
 func (pps *ProceduralPresetSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("jitterscale", pps.JitterScale)
 	e.CreateFloatAttribute("smoothscale", pps.SmoothScale)

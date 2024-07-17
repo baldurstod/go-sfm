@@ -30,6 +30,10 @@ func (c *Channel) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(c.Name, "DmeChannel")
 }
 
+func (c *Channel) isExportable() bool {
+	return true
+}
+
 func (c *Channel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	if c.FromElement != nil {
 		e.CreateElementAttribute("fromElement", serializer.GetElement(c.FromElement))

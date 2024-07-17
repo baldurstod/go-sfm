@@ -50,6 +50,10 @@ func (l *Log[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 	}
 }
 
+func (l *Log[T]) isExportable() bool {
+	return true
+}
+
 func (l *Log[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	layers := e.CreateAttribute("layers", dmx.AT_ELEMENT_ARRAY)
 	for _, layer := range l.layers {

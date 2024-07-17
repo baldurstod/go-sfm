@@ -35,6 +35,10 @@ func (prs *ProgressiveRefinementSettings) createDmElement(serializer *Serializer
 	return dmx.NewDmElement(prs.Name, "DmElement")
 }
 
+func (prs *ProgressiveRefinementSettings) isExportable() bool {
+	return true
+}
+
 func (prs *ProgressiveRefinementSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("on", prs.On)
 	e.CreateBoolAttribute("useDepthOfField", prs.UseDepthOfField)

@@ -7,7 +7,11 @@ type Bone struct {
 	*Node
 }
 
-func (n *Bone) isNode() {
+func (b *Bone) isNode() {
+}
+
+func (b *Bone) isExportable() bool {
+	return true
 }
 
 func NewBone(name string, id int) *Bone {

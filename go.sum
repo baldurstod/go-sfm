@@ -2,6 +2,8 @@ github.com/NublyBR/go-vpk v0.0.0-20240228030726-b1042e92ce58 h1:LNmGUHSpLUw3wQBE
 github.com/NublyBR/go-vpk v0.0.0-20240228030726-b1042e92ce58/go.mod h1:bKkLG1OoSAlGpkY/NvnavzvV+xIpQDn4rTggf/jkDwQ=
 github.com/baldurstod/go-dmx v0.0.19 h1:EIcgBHkYLynzDlzjkEl4p6S2XXlyRixuHCjMSFWNEvw=
 github.com/baldurstod/go-dmx v0.0.19/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
+github.com/baldurstod/go-dmx v0.0.20 h1:OQhKzAQTHJ0FFXCkTsa76Ix8R1BQYxWkVoyGWvoxGzQ=
+github.com/baldurstod/go-dmx v0.0.20/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
 github.com/baldurstod/go-source2-tools v0.0.13 h1:opQR5FT5d4yABu4LCan+7QSiVgmYe/0Hlnp9r8gwonM=
 github.com/baldurstod/go-source2-tools v0.0.13/go.mod h1:cf7lt2mRqkxLnmfekCsUftJg469+qvviWsk9N4skDw0=
 github.com/baldurstod/go-source2-tools v0.0.14 h1:bBuGgtpiO1pmEdPTR9+n+yEIYckJc/e4TbpTvam0v7w=

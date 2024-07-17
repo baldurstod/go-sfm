@@ -37,6 +37,10 @@ func (n *Node) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(n.Name, "DmeDag")
 }
 
+func (n *Node) isExportable() bool {
+	return true
+}
+
 func (n *Node) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("transform", serializer.GetElement(n.Transform))
 	e.CreateBoolAttribute("visible", n.Visible)

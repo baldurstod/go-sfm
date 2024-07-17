@@ -54,6 +54,10 @@ func (ll *LogLayer[T]) createDmElement(serializer *Serializer) *dmx.DmElement {
 	}
 }
 
+func (ll *LogLayer[T]) isExportable() bool {
+	return true
+}
+
 func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	times := e.CreateAttribute("times", dmx.AT_TIME_ARRAY)
 	/*for time := range ll.values {

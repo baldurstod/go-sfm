@@ -39,6 +39,10 @@ func (tc *TransformControl) createDmElement(serializer *Serializer) *dmx.DmEleme
 	return dmx.NewDmElement(tc.Name, "DmeTransformControl")
 }
 
+func (tc *TransformControl) isExportable() bool {
+	return true
+}
+
 func (tc *TransformControl) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateVector3Attribute("valuePosition", tc.ValuePosition)
 	e.CreateQuaternionAttribute("valueOrientation", tc.ValueOrientation)

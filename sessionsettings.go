@@ -32,6 +32,10 @@ func (s *SessionSettings) createDmElement(serializer *Serializer) *dmx.DmElement
 	return dmx.NewDmElement(s.Name, "DmElement")
 }
 
+func (s *SessionSettings) isExportable() bool {
+	return true
+}
+
 func (s *SessionSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateElementAttribute("timeSelection", serializer.GetElement(s.TimeSelection))
 	e.CreateElementAttribute("graphEditorState", serializer.GetElement(s.GraphEditorState))

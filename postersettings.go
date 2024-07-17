@@ -31,6 +31,10 @@ func (ps *PosterSettings) createDmElement(serializer *Serializer) *dmx.DmElement
 	return dmx.NewDmElement(ps.Name, "DmElement")
 }
 
+func (ps *PosterSettings) isExportable() bool {
+	return true
+}
+
 func (ps *PosterSettings) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateIntAttribute("width", ps.Width)
 	e.CreateIntAttribute("height", ps.Height)

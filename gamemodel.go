@@ -84,6 +84,10 @@ func (gm *GameModel) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(gm.Name, "DmeGameModel")
 }
 
+func (gm *GameModel) isExportable() bool {
+	return true
+}
+
 func (gm *GameModel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateStringAttribute("modelName", gm.ModelName)
 	e.CreateIntAttribute("skin", gm.Skin)

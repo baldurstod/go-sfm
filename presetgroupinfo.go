@@ -32,6 +32,10 @@ func (pgi *PresetGroupInfo) createDmElement(serializer *Serializer) *dmx.DmEleme
 	return dmx.NewDmElement(pgi.Name, "DmePresetGroupInfo")
 }
 
+func (pgi *PresetGroupInfo) isExportable() bool {
+	return true
+}
+
 func (pgi *PresetGroupInfo) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	presetGroupInfos := e.CreateAttribute("presetGroupInfos", dmx.AT_ELEMENT_ARRAY)
 	for _, pgi := range pgi.presetGroups {

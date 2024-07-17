@@ -37,6 +37,10 @@ func (tg *TrackGroup) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(tg.Name, "DmeTrackGroup")
 }
 
+func (tg *TrackGroup) isExportable() bool {
+	return true
+}
+
 func (tg *TrackGroup) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("mute", tg.Mute)
 	e.CreateBoolAttribute("visible", tg.Visible)

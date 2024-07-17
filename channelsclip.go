@@ -26,6 +26,10 @@ func (cc *ChannelsClip) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return cc.Clip.getDmElement(serializer, "DmeChannelsClip")
 }
 
+func (cc *ChannelsClip) isExportable() bool {
+	return true
+}
+
 func (cc *ChannelsClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	channels := e.CreateAttribute("channels", dmx.AT_ELEMENT_ARRAY)
 	for ch := range cc.channels {

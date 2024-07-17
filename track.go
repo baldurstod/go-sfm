@@ -33,6 +33,10 @@ func (t *Track) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(t.Name, "DmeTrack")
 }
 
+func (t *Track) isExportable() bool {
+	return true
+}
+
 func (t *Track) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateBoolAttribute("synched", t.Synched)
 	e.CreateIntAttribute("clipType", t.ClipType)

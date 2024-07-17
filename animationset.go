@@ -75,6 +75,10 @@ func (as *AnimationSet) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(as.Name, "DmeAnimationSet")
 }
 
+func (as *AnimationSet) isExportable() bool {
+	return true
+}
+
 func (as *AnimationSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
 	for _, c := range as.controls {

@@ -30,6 +30,10 @@ func (c *Control) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(c.Name, "DmElement")
 }
 
+func (c *Control) isExportable() bool {
+	return true
+}
+
 func (c *Control) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("value", c.Value)
 	e.CreateFloatAttribute("defaultValue", c.DefaultValue)
