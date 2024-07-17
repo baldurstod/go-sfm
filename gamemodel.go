@@ -14,6 +14,7 @@ type GameModel struct {
 	globalFlexControllers   []*GlobalFlexControllerOperator
 	ComputeBounds           bool
 	EvaluateProceduralBones bool
+	parentModel             *GameModel
 }
 
 func NewGameModel(name string, modelName string) *GameModel {
@@ -41,9 +42,9 @@ func (gm *GameModel) AddBone(bone *Bone) {
 	gm.bones = append(gm.bones, bone)
 }
 
-func (gm *GameModel) CreateBone(name string) *Bone {
-	bone := NewBone(name)
-	gm.bones = append(gm.bones, bone)
+func (gm *GameModel) CreateBone(name string, id int) *Bone {
+	bone := NewBone(name, id)
+	gm.AddBone(bone)
 	return bone
 }
 
@@ -52,6 +53,31 @@ func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight 
 	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
 	gm.flexWeights = append(gm.flexWeights, flexWeight)
 	return o
+}
+
+func (gm *GameModel) getBoneByName(name string) *Bone {
+	for _, bone := range gm.bones {
+		if bone.boneName == name {
+			return bone
+		}
+	}
+	return nil
+}
+
+func (gm *GameModel) SetParentModel(parent *GameModel) {
+	gm.parentModel = parent
+	for _, bone := range gm.bones {
+		if parent == nil {
+			bone.overrideParent = nil
+		} else {
+			parentBone := parent.getBoneByName(bone.boneName)
+			if parentBone != nil {
+				bone.overrideParent = parentBone
+			} else {
+				bone.overrideParent = nil
+			}
+		}
+	}
 }
 
 func (gm *GameModel) createDmElement(serializer *Serializer) *dmx.DmElement {
@@ -86,6 +112,11 @@ func (gm *GameModel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	for _, gfc := range gm.globalFlexControllers {
 		globalFlexControllers.PushElement(serializer.GetElement(gfc))
 	}
+
+	if gm.parentModel != nil {
+		e.CreateElementAttribute("overrideParent", serializer.GetElement(gm.parentModel))
+	}
+
 	/*
 		controls := e.CreateAttribute("controls", dmx.AT_ELEMENT_ARRAY)
 		for _, c := range gm.controls {

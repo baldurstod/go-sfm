@@ -113,7 +113,7 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	}*/
 
 	for k, v := range skel.GetBones() {
-		bone := sfm.NewBone(fmt.Sprintf("bone %d (%s)", k, v.Name))
+		bone := sfm.NewBone(v.Name, k)
 		bone.Transform.Position = v.PosParent
 		bone.Transform.Orientation = v.RotParent
 		bones[v] = bone

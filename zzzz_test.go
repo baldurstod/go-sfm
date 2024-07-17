@@ -73,12 +73,19 @@ func TestMovement(t *testing.T) {
 	filename := "models/heroes/shadow_fiend/shadow_fiend"
 	filename = "models/heroes/tiny/tiny_01/tiny_01"
 	filename = "models/heroes/dawnbreaker/dawnbreaker"
+	filename2 := "models/heroes/dawnbreaker/dawnbreaker_head"
 
 	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename)
 	if err != nil {
 		t.Error(err)
 		return
 	}
+	as2, err := utils.AddModel(shot1, "Tiny", "dota2", filename2)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	as2.GameModel.SetParentModel(as.GameModel)
 
 	tiny, err := utils.GetModel("dota2", filename)
 	if err != nil {
@@ -87,6 +94,10 @@ func TestMovement(t *testing.T) {
 	}
 
 	seq, err := tiny.GetSequence("ACT_DOTA_IDLE_RARE", nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 	modifiers := make(map[string]struct{})
 	modifiers["PostGameIdle"] = struct{}{}
 	seq, err = tiny.GetSequence("ACT_DOTA_LOADOUT", modifiers)
