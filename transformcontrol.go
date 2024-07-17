@@ -11,6 +11,7 @@ type TransformControl struct {
 	ValueOrientation   vector.Quaternion[float32]
 	PositionChannel    Channel
 	OrientationChannel Channel
+	exportable         bool
 }
 
 func (*TransformControl) isControl() {}
@@ -20,6 +21,7 @@ func NewTransformControl(name string) *TransformControl {
 		Name:               name,
 		PositionChannel:    *NewChannel[vector.Vector3[float32]](name + "_p"),
 		OrientationChannel: *NewChannel[vector.Quaternion[float32]](name + "_o"),
+		exportable:         true,
 	}
 
 	tc.ValueOrientation.Identity()
@@ -40,7 +42,7 @@ func (tc *TransformControl) createDmElement(serializer *Serializer) *dmx.DmEleme
 }
 
 func (tc *TransformControl) isExportable() bool {
-	return true
+	return tc.exportable
 }
 
 func (tc *TransformControl) toDmElement(serializer *Serializer, e *dmx.DmElement) {

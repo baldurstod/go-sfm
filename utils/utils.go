@@ -113,28 +113,12 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	}*/
 
 	for k, v := range skel.GetBones() {
-		bone := sfm.NewBone(v.Name, k)
-		bone.Transform.Position = v.PosParent
-		bone.Transform.Orientation = v.RotParent
+		//bone := sfm.NewBone(v.Name, k)
+		bone, tc := model1.CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
 		bones[v] = bone
-		model1.AddBone(bone)
-		tc := as.CreateTransformControl(v.Name)
-
-		tc.PositionChannel.ToElement = bone.Transform
-		tc.PositionChannel.ToAttribute = "position"
-		tc.OrientationChannel.ToElement = bone.Transform
-		tc.OrientationChannel.ToAttribute = "orientation"
-
-		tc.ValuePosition = v.PosParent
-		tc.ValueOrientation = v.RotParent
 
 		channelsClip.AddChannel(&tc.OrientationChannel)
 		channelsClip.AddChannel(&tc.PositionChannel)
-
-		posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-		posLayer.SetValue(0, bone.Transform.Position)
-		rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-		rotLayer.SetValue(0, bone.Transform.Orientation)
 	}
 
 	for _, v := range skel.GetBones() {

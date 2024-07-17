@@ -10,6 +10,7 @@ type Transform struct {
 	Position    vector.Vector3[float32]
 	Orientation vector.Quaternion[float32]
 	Scale       float32
+	isIdentity  bool
 }
 
 func NewTransform(name string) *Transform {
@@ -29,9 +30,15 @@ func (t *Transform) isExportable() bool {
 }
 
 func (t *Transform) toDmElement(serializer *Serializer, e *dmx.DmElement) {
-	e.CreateVector3Attribute("position", t.Position)
-	e.CreateQuaternionAttribute("orientation", t.Orientation)
-	e.CreateFloatAttribute("scale", t.Scale)
+	if t.isIdentity {
+		e.CreateVector3Attribute("position", [...]float32{0, 0, 0})
+		e.CreateQuaternionAttribute("orientation", [...]float32{0, 0, 0, 1})
+		e.CreateFloatAttribute("scale", 1)
+	} else {
+		e.CreateVector3Attribute("position", t.Position)
+		e.CreateQuaternionAttribute("orientation", t.Orientation)
+		e.CreateFloatAttribute("scale", t.Scale)
+	}
 }
 
 /*

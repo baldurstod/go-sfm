@@ -31,7 +31,10 @@ func (c *Channel) createDmElement(serializer *Serializer) *dmx.DmElement {
 }
 
 func (c *Channel) isExportable() bool {
-	return true
+	if c.FromElement == nil || c.ToElement == nil {
+		return false
+	}
+	return c.FromElement.isExportable() && c.ToElement.isExportable()
 }
 
 func (c *Channel) toDmElement(serializer *Serializer, e *dmx.DmElement) {

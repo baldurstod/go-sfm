@@ -5,6 +5,7 @@ import "fmt"
 type Bone struct {
 	Name string
 	*Node
+	transformControl *TransformControl
 }
 
 func (b *Bone) isNode() {

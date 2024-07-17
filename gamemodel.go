@@ -2,6 +2,7 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-vector"
 )
 
 type GameModel struct {
@@ -38,14 +39,29 @@ func (gm *GameModel) AddChildren(child INode) {
 	gm.children = append(gm.children, child)
 }
 
-func (gm *GameModel) AddBone(bone *Bone) {
-	gm.bones = append(gm.bones, bone)
-}
-
-func (gm *GameModel) CreateBone(name string, id int) *Bone {
+func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position vector.Vector3[float32], orientation vector.Quaternion[float32]) (*Bone, *TransformControl) {
 	bone := NewBone(name, id)
-	gm.AddBone(bone)
-	return bone
+	gm.bones = append(gm.bones, bone)
+	bone.Transform.Position = position
+	bone.Transform.Orientation = orientation
+
+	tc := as.CreateTransformControl(name)
+	tc.PositionChannel.ToElement = bone.Transform
+	tc.PositionChannel.ToAttribute = "position"
+	tc.OrientationChannel.ToElement = bone.Transform
+	tc.OrientationChannel.ToAttribute = "orientation"
+
+	tc.ValuePosition = position
+	tc.ValueOrientation = orientation
+
+	bone.transformControl = tc
+
+	posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]])
+	posLayer.SetValue(0, bone.Transform.Position)
+	rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]])
+	rotLayer.SetValue(0, bone.Transform.Orientation)
+
+	return bone, tc
 }
 
 func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float32) *GlobalFlexControllerOperator {
@@ -73,6 +89,8 @@ func (gm *GameModel) SetParentModel(parent *GameModel) {
 			parentBone := parent.getBoneByName(bone.Name)
 			if parentBone != nil {
 				bone.overrideParent = parentBone
+				bone.transformControl.exportable = false
+				bone.Transform.isIdentity = true
 			} else {
 				bone.overrideParent = nil
 			}
