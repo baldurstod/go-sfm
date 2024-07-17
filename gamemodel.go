@@ -57,7 +57,7 @@ func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight 
 
 func (gm *GameModel) getBoneByName(name string) *Bone {
 	for _, bone := range gm.bones {
-		if bone.boneName == name {
+		if bone.Name == name {
 			return bone
 		}
 	}
@@ -70,7 +70,7 @@ func (gm *GameModel) SetParentModel(parent *GameModel) {
 		if parent == nil {
 			bone.overrideParent = nil
 		} else {
-			parentBone := parent.getBoneByName(bone.boneName)
+			parentBone := parent.getBoneByName(bone.Name)
 			if parentBone != nil {
 				bone.overrideParent = parentBone
 			} else {
