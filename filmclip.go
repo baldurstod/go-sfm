@@ -26,10 +26,6 @@ func NewFilmClip(name string) *FilmClip {
 	}
 }
 
-func (fc *FilmClip) AddAnimationSet(as *AnimationSet) {
-	fc.animationSets[as] = struct{}{}
-}
-
 /*
 func (fc *FilmClip) CreateAnimationSet(name string) *AnimationSet {
 	as := newAnimationSet(name)
@@ -82,6 +78,8 @@ func (fc *FilmClip) CreateAnimationSetForModel(name string, filename string) *An
 
 	dag.AddChildren(as.GetGameModel())
 	fc.Scene.AddChildren(dag)
+
+	fc.animationSets[as] = struct{}{}
 
 	return as
 }
