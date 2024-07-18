@@ -81,8 +81,6 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	}
 
 	bones := make(map[*model.Bone]*sfm.Bone)
-	//as := createAnimationSet(name)
-	//as.SetGameModel(model1)
 
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
 	channelsClip.AddAnimationSet(as)
@@ -105,8 +103,6 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	if err != nil {
 		return nil, fmt.Errorf("failed to init flexes: <%w>", err)
 	}
-
-	clip.AddAnimationSet(as)
 
 	return as, nil
 }
