@@ -66,11 +66,7 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	filename = strings.TrimSuffix(filename, ".vmdl")
 	filename += ".vmdl"
 
-	dag := sfm.NewNode(name)
-
-	as := sfm.CreateAnimationSetForModel(name, filename) //sfm.NewGameModel(name, filename)
-	dag.AddChildren(as.GetGameModel())
-	clip.Scene.AddChildren(dag)
+	as := clip.CreateAnimationSetForModel(name, filename)
 
 	s2Model, err := GetModel(repository, filename)
 
