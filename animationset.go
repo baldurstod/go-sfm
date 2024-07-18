@@ -2,7 +2,6 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
-	"github.com/baldurstod/go-vector"
 )
 
 type AnimationSet struct {
@@ -24,10 +23,8 @@ func newAnimationSet(name string) *AnimationSet {
 
 	as.rootTransformControl = as.CreateTransformControl("rootTransform")
 
-	posLayer := any(as.rootTransformControl.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]])
-	posLayer.SetValue(0, vector.Vector3[float32]{})
-	rotLayer := any(as.rootTransformControl.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]])
-	rotLayer.SetValue(0, vector.Quaternion[float32]{})
+	as.rootTransformControl.PositionChannel.Log.GetLayer("vector3 log")
+	as.rootTransformControl.OrientationChannel.Log.GetLayer("quaternion log")
 
 	return &as
 }

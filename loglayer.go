@@ -12,9 +12,10 @@ type Loggable interface {
 }
 
 type LogLayer[T Loggable] struct {
-	times      []float32
-	curveTypes []int
-	values     map[float32]T
+	times        []float32
+	curveTypes   []int
+	values       map[float32]T
+	defaultValue T
 	/*
 			CDmeLog *m_pOwnerLog;
 
@@ -82,11 +83,20 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 			times.PushTime(time)
 			values.PushFloat(any(ll.values[time]).(float32))
 		}
+		if len(keys) == 0 {
+			times.PushTime(0)
+			values.PushFloat(any(ll.defaultValue).(float32))
+		}
+
 	case *LogLayer[vector.Vector3[float32]]:
 		values := e.CreateAttribute("values", dmx.AT_VECTOR3_ARRAY)
 		for _, time := range keys {
 			times.PushTime(time)
 			values.PushVector3(any(ll.values[time]).(vector.Vector3[float32]))
+		}
+		if len(keys) == 0 {
+			times.PushTime(0)
+			values.PushVector3(any(ll.defaultValue).(vector.Vector3[float32]))
 		}
 	case *LogLayer[vector.Quaternion[float32]]:
 		values := e.CreateAttribute("values", dmx.AT_QUATERNION_ARRAY)
@@ -94,8 +104,10 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 			times.PushTime(time)
 			values.PushQuaternion(any(ll.values[time]).(vector.Quaternion[float32]))
 		}
-	/*case *Log[vector.Quaternion[float32]]:
-	return dmx.NewDmElement("quaternion log", "DmeQuaternionLog")*/
+		if len(keys) == 0 {
+			times.PushTime(0)
+			values.PushQuaternion(any(ll.defaultValue).(vector.Quaternion[float32]))
+		}
 	default:
 		panic("code this case")
 	}
