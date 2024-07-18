@@ -47,9 +47,9 @@ func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position 
 
 	tc := as.CreateTransformControl(name)
 	tc.PositionChannel.ToElement = bone.Transform
-	tc.PositionChannel.ToAttribute = "position"
+	//tc.PositionChannel.ToAttribute = "position"
 	tc.OrientationChannel.ToElement = bone.Transform
-	tc.OrientationChannel.ToAttribute = "orientation"
+	//tc.OrientationChannel.ToAttribute = "orientation"
 
 	tc.ValuePosition = position
 	tc.ValueOrientation = orientation

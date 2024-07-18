@@ -23,8 +23,8 @@ func NewAnimationSet(name string) *AnimationSet {
 	}
 
 	as.rootTransformControl = as.CreateTransformControl("rootTransform")
-	as.rootTransformControl.PositionChannel.ToAttribute = "position"
-	as.rootTransformControl.OrientationChannel.ToAttribute = "orientation"
+	//as.rootTransformControl.PositionChannel.ToAttribute = "position"
+	//as.rootTransformControl.OrientationChannel.ToAttribute = "orientation"
 
 	posLayer := any(as.rootTransformControl.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]])
 	posLayer.SetValue(0, vector.Vector3[float32]{})
@@ -52,6 +52,10 @@ func (as *AnimationSet) CreateControl(name string) *Control {
 func (as *AnimationSet) CreateTransformControl(name string) *TransformControl {
 	cg := as.RootControlGroup.GetSubGroup(name)
 	c := cg.CreateTransformControl(name)
+
+	c.PositionChannel.ToAttribute = "position"
+	c.OrientationChannel.ToAttribute = "orientation"
+
 	as.AddControl(name, c)
 	return c
 }
@@ -128,7 +132,19 @@ func (as *AnimationSet) GetGameModel() *GameModel {
 	return as.gameModel
 }
 
-func (as *AnimationSet) AddToChannelsClip(clip *ChannelsClip) {
-	clip.AddChannel(&as.rootTransformControl.OrientationChannel)
-	clip.AddChannel(&as.rootTransformControl.PositionChannel)
+func (as *AnimationSet) getChannels() []*Channel {
+	ret := []*Channel{}
+	/*
+		ret = append(ret, &as.rootTransformControl.PositionChannel)
+		ret = append(ret, &as.rootTransformControl.OrientationChannel)
+	*/
+	for _, c := range as.controls {
+		switch c := c.(type) {
+		case *TransformControl:
+			ret = append(ret, &c.PositionChannel)
+			ret = append(ret, &c.OrientationChannel)
+		}
+	}
+
+	return ret
 }

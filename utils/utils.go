@@ -99,7 +99,8 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	////////////channelsClip.AddChannel(&tc.OrientationChannel)
 	////////////channelsClip.AddChannel(&tc.PositionChannel)
 
-	as.AddToChannelsClip(channelsClip)
+	//as.AddToChannelsClip(channelsClip)
+	channelsClip.AddAnimationSet(as)
 
 	//layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
 	//log.Println(layer)
@@ -110,11 +111,11 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 
 	for k, v := range skel.GetBones() {
 		//bone := sfm.NewBone(v.Name, k)
-		bone, tc := model1.CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
+		bone, _ := model1.CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
 		bones[v] = bone
 
-		channelsClip.AddChannel(&tc.OrientationChannel)
-		channelsClip.AddChannel(&tc.PositionChannel)
+		//channelsClip.AddChannel(&tc.OrientationChannel)
+		//channelsClip.AddChannel(&tc.PositionChannel)
 	}
 
 	for _, v := range skel.GetBones() {
