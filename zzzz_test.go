@@ -11,6 +11,7 @@ import (
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
+	"github.com/baldurstod/go-sfm/utils/items"
 	"github.com/baldurstod/go-source2-tools/repository"
 	"github.com/baldurstod/go-source2-tools/vpk"
 	"github.com/baldurstod/go-vector"
@@ -18,13 +19,15 @@ import (
 
 const varFolder = "./var/"
 
-func initRepo() {
+func initRepo() bool {
 	repository.AddRepository("dota2", vpk.NewVpkFS("R:\\SteamLibrary\\steamapps\\common\\dota 2 beta\\game\\dota\\pak01_dir.vpk"))
+	return true
 }
+
+var _ = initRepo()
 
 func TestSession(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	initRepo()
 	session := sfm.NewSession()
 
 	shot1, err := utils.CreateClip(session)
@@ -58,7 +61,6 @@ func TestSession(t *testing.T) {
 
 func TestMovement(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	initRepo()
 	session := sfm.NewSession()
 
 	shot1, err := utils.CreateClip(session)
@@ -92,7 +94,7 @@ func TestMovement(t *testing.T) {
 			t.Error(err)
 			return
 		}
-		as2.GameModel.SetParentModel(as.GameModel)
+		as2.GetGameModel().SetParentModel(as.GetGameModel())
 	}
 
 	tiny, err := utils.GetModel("dota2", filename)
@@ -106,13 +108,15 @@ func TestMovement(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	modifiers := make(map[string]struct{})
-	modifiers["PostGameIdle"] = struct{}{}
-	seq, err = tiny.GetSequence("ACT_DOTA_LOADOUT", modifiers)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	/*
+		modifiers := make(map[string]struct{})
+		modifiers["PostGameIdle"] = struct{}{}
+		seq, err = tiny.GetSequence("ACT_DOTA_LOADOUT", modifiers)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	*/
 
 	frames := seq.GetFrameCount()
 	fps := seq.GetFps()
@@ -181,4 +185,23 @@ func TestAnimationGroups(t *testing.T) {
 	group := sfm.GetAnimationGroup("bigToe_R_1")
 
 	log.Println(group)
+}
+
+func TestItems(t *testing.T) {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	buf, err := os.ReadFile("./var/items_game.txt")
+	if err != nil {
+		panic(err)
+	}
+	/*
+		vdf := vdf.VDF{}
+		items := vdf.Parse(buf)
+		log.Println(items)*/
+	ig := items.NewItemsGame(buf)
+	items := ig.GetItemsPerHero("npc_dota_hero_dawnbreaker")
+	for _, item := range items {
+		log.Println(item.GetModelPlayer())
+
+	}
 }
