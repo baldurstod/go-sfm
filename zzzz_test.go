@@ -135,43 +135,9 @@ func TestMovement(t *testing.T) {
 			t.Error(err)
 			return
 		}
+
+		as.SetFrame(frameTime, frame, flexes)
 		//log.Println(frame)
-		positionChannel := frame.GetChannel("BoneChannel", "Position")
-		for _, element := range positionChannel.Datas {
-
-			tc := as.GetTransformControl(element.Name)
-			if tc != nil {
-				layer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-				layer.SetValue(frameTime, element.Datas.(vector.Vector3[float32]))
-			}
-		}
-		orientationChannel := frame.GetChannel("BoneChannel", "Angle")
-		for _, element := range orientationChannel.Datas {
-
-			tc := as.GetTransformControl(element.Name)
-			if tc != nil {
-				layer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-				layer.SetValue(frameTime, (element.Datas.(vector.Quaternion[float32])))
-			}
-		}
-
-		morphChannel := frame.GetChannel("MorphChannel", "data")
-		for _, element := range morphChannel.Datas {
-
-			value := float32(0)
-			for _, flex := range flexes {
-				if flex.Name == element.Name {
-					value = flex.GetControllerValue((element.Datas.(float32))) //((element.Datas.(float32)) - flex.Min) / (flex.Max - flex.Min)
-					break
-				}
-			}
-
-			tc := as.GetControl(element.Name)
-			if tc != nil {
-				layer := any(tc.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
-				layer.SetValue(frameTime, value)
-			}
-		}
 	}
 
 	buf := new(bytes.Buffer)

@@ -2,6 +2,8 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-source2-tools/model"
+	"github.com/baldurstod/go-vector"
 )
 
 type AnimationSet struct {
@@ -151,4 +153,43 @@ func (as *AnimationSet) getChannels() []*Channel {
 	}
 
 	return ret
+}
+
+func (as *AnimationSet) SetFrame(time float32, frame *model.Frame, flexes []model.FlexController) {
+	positionChannel := frame.GetChannel("BoneChannel", "Position")
+	for _, element := range positionChannel.Datas {
+
+		tc := as.GetTransformControl(element.Name)
+		if tc != nil {
+			layer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]])
+			layer.SetValue(time, element.Datas.(vector.Vector3[float32]))
+		}
+	}
+	orientationChannel := frame.GetChannel("BoneChannel", "Angle")
+	for _, element := range orientationChannel.Datas {
+
+		tc := as.GetTransformControl(element.Name)
+		if tc != nil {
+			layer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]])
+			layer.SetValue(time, (element.Datas.(vector.Quaternion[float32])))
+		}
+	}
+
+	morphChannel := frame.GetChannel("MorphChannel", "data")
+	for _, element := range morphChannel.Datas {
+
+		value := float32(0)
+		for _, flex := range flexes {
+			if flex.Name == element.Name {
+				value = flex.GetControllerValue((element.Datas.(float32)))
+				break
+			}
+		}
+
+		tc := as.GetControl(element.Name)
+		if tc != nil {
+			layer := any(tc.Channel.Log.GetLayer("float log")).(*LogLayer[float32])
+			layer.SetValue(time, value)
+		}
+	}
 }
