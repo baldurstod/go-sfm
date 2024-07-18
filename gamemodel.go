@@ -18,7 +18,7 @@ type GameModel struct {
 	parentModel             *GameModel
 }
 
-func NewGameModel(name string, modelName string) *GameModel {
+func newGameModel(name string, modelName string) *GameModel {
 	return &GameModel{
 		Node:                    NewNode(name),
 		ModelName:               modelName,

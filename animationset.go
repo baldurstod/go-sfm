@@ -15,7 +15,7 @@ type AnimationSet struct {
 	rootTransformControl *TransformControl
 }
 
-func NewAnimationSet(name string) *AnimationSet {
+func newAnimationSet(name string) *AnimationSet {
 	as := AnimationSet{
 		Name:             name,
 		controls:         make(map[string]IControl),
@@ -23,8 +23,6 @@ func NewAnimationSet(name string) *AnimationSet {
 	}
 
 	as.rootTransformControl = as.CreateTransformControl("rootTransform")
-	//as.rootTransformControl.PositionChannel.ToAttribute = "position"
-	//as.rootTransformControl.OrientationChannel.ToAttribute = "orientation"
 
 	posLayer := any(as.rootTransformControl.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]])
 	posLayer.SetValue(0, vector.Vector3[float32]{})
@@ -32,6 +30,15 @@ func NewAnimationSet(name string) *AnimationSet {
 	rotLayer.SetValue(0, vector.Quaternion[float32]{})
 
 	return &as
+}
+
+func CreateAnimationSetForModel(name string, filename string) *AnimationSet {
+	as := newAnimationSet(name)
+
+	model := newGameModel(name, filename)
+	as.setGameModel(model)
+
+	return as
 }
 
 func (as *AnimationSet) AddOperator(o Operator) {
@@ -121,7 +128,7 @@ func (as *AnimationSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	}
 }
 
-func (as *AnimationSet) SetGameModel(model *GameModel) {
+func (as *AnimationSet) setGameModel(model *GameModel) {
 	as.gameModel = model
 
 	as.rootTransformControl.PositionChannel.ToElement = model.Transform

@@ -51,6 +51,7 @@ func createScene() (*sfm.Node, error) {
 	return scene, nil
 }
 
+/*
 func createAnimationSet(name string) *sfm.AnimationSet {
 	animationSet := sfm.NewAnimationSet(name)
 
@@ -58,7 +59,7 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 	animationSet.AddOperator(channel)
 
 	return animationSet
-}
+}*/
 
 func AddModel(clip *sfm.FilmClip, name string, repository string, filename string) (*sfm.AnimationSet, error) {
 	filename = strings.TrimSuffix(filename, ".vmdl_c")
@@ -67,8 +68,8 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 
 	dag := sfm.NewNode(name)
 
-	model1 := sfm.NewGameModel(name, filename)
-	dag.AddChildren(model1)
+	as := sfm.CreateAnimationSetForModel(name, filename) //sfm.NewGameModel(name, filename)
+	dag.AddChildren(as.GetGameModel())
 	clip.Scene.AddChildren(dag)
 
 	s2Model, err := GetModel(repository, filename)
@@ -84,21 +85,21 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	}
 
 	bones := make(map[*model.Bone]*sfm.Bone)
-	as := createAnimationSet(name)
-	as.SetGameModel(model1)
+	//as := createAnimationSet(name)
+	//as.SetGameModel(model1)
 
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
 	channelsClip.AddAnimationSet(as)
 
 	for k, v := range skel.GetBones() {
-		bone := model1.CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
+		bone := as.GetGameModel().CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
 		bones[v] = bone
 	}
 
 	for _, v := range skel.GetBones() {
 		bone := bones[v]
 		if v.ParentBone == nil {
-			model1.AddChildren(bone)
+			as.GetGameModel().AddChildren(bone)
 		} else {
 			bones[v.ParentBone].AddChildren(bone)
 		}
