@@ -39,7 +39,7 @@ func (gm *GameModel) AddChildren(child INode) {
 	gm.children = append(gm.children, child)
 }
 
-func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position vector.Vector3[float32], orientation vector.Quaternion[float32]) (*Bone, *TransformControl) {
+func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position vector.Vector3[float32], orientation vector.Quaternion[float32]) *Bone {
 	bone := NewBone(name, id)
 	gm.bones = append(gm.bones, bone)
 	bone.Transform.Position = position
@@ -61,7 +61,7 @@ func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position 
 	rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]])
 	rotLayer.SetValue(0, bone.Transform.Orientation)
 
-	return bone, tc
+	return bone
 }
 
 func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float32) *GlobalFlexControllerOperator {

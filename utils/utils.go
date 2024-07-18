@@ -87,35 +87,12 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	as := createAnimationSet(name)
 	as.SetGameModel(model1)
 
-	//channelsClip := sfm.NewChannelsClip(name)
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
-	/*tc := as.CreateTransformControl("rootTransform")
-
-	tc.PositionChannel.ToElement = model1.Transform
-	tc.PositionChannel.ToAttribute = "position"
-	tc.OrientationChannel.ToElement = model1.Transform
-	tc.OrientationChannel.ToAttribute = "orientation"*/
-
-	////////////channelsClip.AddChannel(&tc.OrientationChannel)
-	////////////channelsClip.AddChannel(&tc.PositionChannel)
-
-	//as.AddToChannelsClip(channelsClip)
 	channelsClip.AddAnimationSet(as)
 
-	//layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
-	//log.Println(layer)
-
-	/*for i := 0; i < 100; i++ {
-		layer.AddValue(int32(i), vector.Vector3[float32]{float32(i), 0, 0})
-	}*/
-
 	for k, v := range skel.GetBones() {
-		//bone := sfm.NewBone(v.Name, k)
-		bone, _ := model1.CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
+		bone := model1.CreateBone(as, v.Name, k, v.PosParent, v.RotParent)
 		bones[v] = bone
-
-		//channelsClip.AddChannel(&tc.OrientationChannel)
-		//channelsClip.AddChannel(&tc.PositionChannel)
 	}
 
 	for _, v := range skel.GetBones() {
