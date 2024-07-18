@@ -11,7 +11,7 @@ type ChannelsClip struct {
 
 func (*ChannelsClip) isClip() {}
 
-func NewChannelsClip(name string) *ChannelsClip {
+func newChannelsClip(name string) *ChannelsClip {
 	return &ChannelsClip{
 		Clip:     newClip(name),
 		channels: make(map[*Channel]struct{}),

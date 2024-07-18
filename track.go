@@ -29,6 +29,12 @@ func (t *Track) AddChildren(child Element) {
 	t.children = append(t.children, child)
 }
 
+func (t *Track) AddChannelsClip(name string) *ChannelsClip {
+	channelsClip := newChannelsClip(name)
+	t.AddChildren(channelsClip)
+	return channelsClip
+}
+
 func (t *Track) createDmElement(serializer *Serializer) *dmx.DmElement {
 	return dmx.NewDmElement(t.Name, "DmeTrack")
 }

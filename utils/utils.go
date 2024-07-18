@@ -88,8 +88,8 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	as := createAnimationSet(name)
 	as.GameModel = model1
 
-	channelsClip := sfm.NewChannelsClip(name)
-	animSetEditorChannels.AddChildren(channelsClip)
+	//channelsClip := sfm.NewChannelsClip(name)
+	channelsClip := animSetEditorChannels.AddChannelsClip(name)
 	tc := as.CreateTransformControl("rootTransform")
 
 	tc.PositionChannel.ToElement = model1.Transform
