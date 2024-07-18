@@ -7,7 +7,6 @@ import (
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-source2-tools/parser"
-	"github.com/baldurstod/go-vector"
 )
 
 var animSetEditorChannels *sfm.Track
@@ -86,24 +85,21 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 
 	bones := make(map[*model.Bone]*sfm.Bone)
 	as := createAnimationSet(name)
-	as.GameModel = model1
+	as.SetGameModel(model1)
 
 	//channelsClip := sfm.NewChannelsClip(name)
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
-	tc := as.CreateTransformControl("rootTransform")
+	/*tc := as.CreateTransformControl("rootTransform")
 
 	tc.PositionChannel.ToElement = model1.Transform
 	tc.PositionChannel.ToAttribute = "position"
 	tc.OrientationChannel.ToElement = model1.Transform
-	tc.OrientationChannel.ToAttribute = "orientation"
+	tc.OrientationChannel.ToAttribute = "orientation"*/
 
-	channelsClip.AddChannel(&tc.OrientationChannel)
-	channelsClip.AddChannel(&tc.PositionChannel)
+	////////////channelsClip.AddChannel(&tc.OrientationChannel)
+	////////////channelsClip.AddChannel(&tc.PositionChannel)
 
-	posLayer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
-	posLayer.SetValue(0, vector.Vector3[float32]{})
-	rotLayer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
-	rotLayer.SetValue(0, vector.Quaternion[float32]{})
+	as.AddToChannelsClip(channelsClip)
 
 	//layer := any(tc.PositionChannel.Log.AddLayer()).(*sfm.LogLayer[vector.Vector3[float32]])
 	//log.Println(layer)
@@ -195,7 +191,7 @@ func initFlexes(as *sfm.AnimationSet, s2Model *model.Model, channelsClip *sfm.Ch
 		return fmt.Errorf("failed to get model flexes: <%w>", err)
 	}
 
-	gameModel := as.GameModel
+	gameModel := as.GetGameModel()
 	for _, v := range flexes {
 		defaultValue := v.GetDefaultValue()
 		ope := gameModel.CreateGlobalFlexControllerOperator(v.Name, defaultValue)

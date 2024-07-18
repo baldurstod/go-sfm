@@ -2,23 +2,36 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-vector"
 )
 
 type AnimationSet struct {
-	Name             string
-	controls         map[string]IControl
-	presetGroups     []*PresetGroup
-	operators        []Operator
-	RootControlGroup ControlGroup
-	GameModel        *GameModel
+	Name                 string
+	controls             map[string]IControl
+	presetGroups         []*PresetGroup
+	operators            []Operator
+	RootControlGroup     ControlGroup
+	gameModel            *GameModel
+	rootTransformControl *TransformControl
 }
 
 func NewAnimationSet(name string) *AnimationSet {
-	return &AnimationSet{
+	as := AnimationSet{
 		Name:             name,
 		controls:         make(map[string]IControl),
 		RootControlGroup: *NewControlGroup(""),
 	}
+
+	as.rootTransformControl = as.CreateTransformControl("rootTransform")
+	as.rootTransformControl.PositionChannel.ToAttribute = "position"
+	as.rootTransformControl.OrientationChannel.ToAttribute = "orientation"
+
+	posLayer := any(as.rootTransformControl.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]])
+	posLayer.SetValue(0, vector.Vector3[float32]{})
+	rotLayer := any(as.rootTransformControl.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]])
+	rotLayer.SetValue(0, vector.Quaternion[float32]{})
+
+	return &as
 }
 
 func (as *AnimationSet) AddOperator(o Operator) {
@@ -97,9 +110,25 @@ func (as *AnimationSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 
 	e.CreateElementAttribute("rootControlGroup", serializer.GetElement(&as.RootControlGroup))
 
-	if as.GameModel != nil {
-		e.CreateElementAttribute("gameModel", serializer.GetElement(as.GameModel))
+	if as.gameModel != nil {
+		e.CreateElementAttribute("gameModel", serializer.GetElement(as.gameModel))
 	} else {
 		e.CreateElementAttribute("gameModel", nil)
 	}
+}
+
+func (as *AnimationSet) SetGameModel(model *GameModel) {
+	as.gameModel = model
+
+	as.rootTransformControl.PositionChannel.ToElement = model.Transform
+	as.rootTransformControl.OrientationChannel.ToElement = model.Transform
+}
+
+func (as *AnimationSet) GetGameModel() *GameModel {
+	return as.gameModel
+}
+
+func (as *AnimationSet) AddToChannelsClip(clip *ChannelsClip) {
+	clip.AddChannel(&as.rootTransformControl.OrientationChannel)
+	clip.AddChannel(&as.rootTransformControl.PositionChannel)
 }
