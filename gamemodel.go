@@ -91,6 +91,8 @@ func (gm *GameModel) SetParentModel(parent *GameModel) {
 				bone.Transform.isIdentity = true
 			} else {
 				bone.overrideParent = nil
+				bone.transformControl.exportable = true
+				bone.Transform.isIdentity = false
 			}
 		}
 	}
