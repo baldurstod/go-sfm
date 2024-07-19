@@ -175,7 +175,19 @@ func (as *AnimationSet) SetFrame(time float32, frame *model.Frame, flexes []mode
 		}
 	}
 
+	as.setMorph(time, frame, flexes)
+}
+
+func (as *AnimationSet) setMorph(time float32, frame *model.Frame, flexes []model.FlexController) {
+	if flexes == nil {
+		return
+	}
+
 	morphChannel := frame.GetChannel("MorphChannel", "data")
+	if morphChannel == nil {
+		return
+	}
+
 	for _, element := range morphChannel.Datas {
 
 		value := float32(0)
