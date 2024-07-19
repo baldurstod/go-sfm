@@ -75,12 +75,14 @@ func TestMovement(t *testing.T) {
 	filename := "models/heroes/shadow_fiend/shadow_fiend"
 	filename = "models/heroes/tiny/tiny_01/tiny_01"
 	filename = "models/heroes/dawnbreaker/dawnbreaker"
+	filename = "models/heroes/slardar/slardar"
 	items := [...]string{
-		"models/heroes/dawnbreaker/dawnbreaker_head",
-		"models/heroes/dawnbreaker/dawnbreaker_weapon",
-		"models/heroes/dawnbreaker/dawnbreaker_arms",
+		//"models/heroes/dawnbreaker/dawnbreaker_head",
+		//"models/heroes/dawnbreaker/dawnbreaker_weapon",
+		//"models/heroes/dawnbreaker/dawnbreaker_arms",
 		//"models/heroes/dawnbreaker/dawnbreaker_armor",
-		"models/items/dawnbreaker/dawnbreaker_astral_angel_armor/dawnbreaker_astral_angel_armor.vmdl_c",
+		//"models/items/dawnbreaker/dawnbreaker_astral_angel_armor/dawnbreaker_astral_angel_armor.vmdl_c",
+		"models/items/slardar/takoyaki/slardar_takoyaki.vmdl_c",
 	}
 
 	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename)
@@ -96,6 +98,33 @@ func TestMovement(t *testing.T) {
 			return
 		}
 		as2.GetGameModel().SetParentModel(as.GetGameModel())
+
+		model, err := utils.GetModel("dota2", item)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		seq, err := model.GetSequence("ACT_DOTA_IDLE", nil)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		frames := seq.GetFrameCount()
+		fps := seq.GetFps()
+
+		for frameId := 0; frameId < frames; frameId++ {
+			frame, err := seq.GetFrame(frameId)
+			frameTime := float32(frameId) / float32(fps)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			as2.SetFrame(frameTime, frame, nil)
+		}
+
 	}
 
 	tiny, err := utils.GetModel("dota2", filename)
@@ -104,7 +133,9 @@ func TestMovement(t *testing.T) {
 		return
 	}
 
-	seq, err := tiny.GetSequence("ACT_DOTA_IDLE_RARE", nil)
+	modifiers := make(map[string]struct{})
+	modifiers["tako"] = struct{}{}
+	seq, err := tiny.GetSequence("ACT_DOTA_IDLE", modifiers)
 	if err != nil {
 		t.Error(err)
 		return
