@@ -12,19 +12,8 @@ import (
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
 	"github.com/baldurstod/go-sfm/utils/items"
-	"github.com/baldurstod/go-source2-tools/repository"
-	"github.com/baldurstod/go-source2-tools/vpk"
 	"github.com/baldurstod/go-vector"
 )
-
-const varFolder = "./var/"
-
-func initRepo() bool {
-	repository.AddRepository("dota2", vpk.NewVpkFS("R:\\SteamLibrary\\steamapps\\common\\dota 2 beta\\game\\dota\\pak01_dir.vpk"))
-	return true
-}
-
-var _ = initRepo()
 
 func TestSession(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
