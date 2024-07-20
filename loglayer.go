@@ -15,7 +15,7 @@ type LogLayer[T Loggable] struct {
 	times        []float32
 	curveTypes   []int
 	values       map[float32]T
-	defaultValue T
+	DefaultValue T
 	/*
 			CDmeLog *m_pOwnerLog;
 
@@ -85,7 +85,7 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 		}
 		if len(keys) == 0 {
 			times.PushTime(0)
-			values.PushFloat(any(ll.defaultValue).(float32))
+			values.PushFloat(any(ll.DefaultValue).(float32))
 		}
 
 	case *LogLayer[vector.Vector3[float32]]:
@@ -96,7 +96,7 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 		}
 		if len(keys) == 0 {
 			times.PushTime(0)
-			values.PushVector3(any(ll.defaultValue).(vector.Vector3[float32]))
+			values.PushVector3(any(ll.DefaultValue).(vector.Vector3[float32]))
 		}
 	case *LogLayer[vector.Quaternion[float32]]:
 		values := e.CreateAttribute("values", dmx.AT_QUATERNION_ARRAY)
@@ -106,7 +106,7 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 		}
 		if len(keys) == 0 {
 			times.PushTime(0)
-			values.PushQuaternion(any(ll.defaultValue).(vector.Quaternion[float32]))
+			values.PushQuaternion(any(ll.DefaultValue).(vector.Quaternion[float32]))
 		}
 	default:
 		panic("code this case")

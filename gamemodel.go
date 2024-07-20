@@ -56,8 +56,8 @@ func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position 
 
 	bone.transformControl = tc
 
-	any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]]).defaultValue = bone.Transform.Position
-	any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]]).defaultValue = bone.Transform.Orientation
+	any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]]).DefaultValue = bone.Transform.Position
+	any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]]).DefaultValue = bone.Transform.Orientation
 
 	return bone
 }
