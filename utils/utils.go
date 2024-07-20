@@ -99,7 +99,7 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 		}
 	}
 
-	err = initFlexes(as, s2Model, channelsClip)
+	err = initFlexes(as, s2Model)
 	if err != nil {
 		return nil, fmt.Errorf("failed to init flexes: <%w>", err)
 	}
@@ -156,7 +156,7 @@ func GetModel(repository string, filename string) (*model.Model, error) {
 	//log.Println(model.GetSkeleton())
 }
 
-func initFlexes(as *sfm.AnimationSet, s2Model *model.Model, channelsClip *sfm.ChannelsClip) error {
+func initFlexes(as *sfm.AnimationSet, s2Model *model.Model) error {
 	flexes, err := s2Model.GetFlexes()
 	if err != nil {
 		return fmt.Errorf("failed to get model flexes: <%w>", err)
@@ -175,8 +175,6 @@ func initFlexes(as *sfm.AnimationSet, s2Model *model.Model, channelsClip *sfm.Ch
 
 		c.DefaultValue = defaultValue
 		c.Value = defaultValue
-
-		channelsClip.AddChannel(&c.Channel)
 	}
 
 	//	CreateGlobalFlexControllerOperator

@@ -172,6 +172,10 @@ func (as *AnimationSet) getChannels() []*Channel {
 		case *TransformControl:
 			ret = append(ret, &c.PositionChannel)
 			ret = append(ret, &c.OrientationChannel)
+		case *Control:
+			ret = append(ret, &c.Channel)
+		default:
+			panic("unknown control type")
 		}
 	}
 
