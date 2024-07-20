@@ -87,7 +87,7 @@ func (gps *GameParticleSystem) toDmElement(serializer *Serializer, e *dmx.DmElem
 	e.CreateBoolAttribute("inEndCap", false)
 	e.CreateBoolAttribute("visible", gps.Visible)
 	e.CreateIntAttribute("randomSeed", 0)
-	e.CreateFloatAttribute("simulationTimeScale", 0)
+	e.CreateFloatAttribute("simulationTimeScale", 1)
 	e.CreateFloatAttribute("depthSortBias", 0)
 
 	children := e.CreateAttribute("children", dmx.AT_ELEMENT_ARRAY)
