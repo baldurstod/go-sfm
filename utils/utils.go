@@ -192,5 +192,20 @@ func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filen
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
 	channelsClip.AddAnimationSet(as)
 
+	ch := sfm.NewChannel[bool]("simulating channel")
+	ch.ToElement = as.GetParticleSystem()
+	ch.FromElement = as.GetParticleSystem()
+	ch.ToAttribute = "simulating"
+	ch.FromAttribute = "simulating"
+
+	layer := any(ch.Log.GetLayer("bool log")).(*sfm.LogLayer[bool])
+	layer.SetValue(0, true)
+	layer.DefaultValue = true
+
+	channelsClip.AddChannel(ch)
+
+	/*c.DefaultValue = true
+	c.Value = true*/
+
 	return as, nil
 }
