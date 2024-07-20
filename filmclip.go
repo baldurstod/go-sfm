@@ -83,3 +83,16 @@ func (fc *FilmClip) CreateAnimationSetForModel(name string, filename string) *An
 
 	return as
 }
+
+func (fc *FilmClip) CreateAnimationSetForParticleSystem(name string, filename string) *AnimationSet {
+	as := CreateAnimationSetForParticleSystem(name, filename)
+
+	dag := NewNode(name)
+
+	dag.AddChildren(as.GetParticleSystem())
+	fc.Scene.AddChildren(dag)
+
+	fc.animationSets[as] = struct{}{}
+
+	return as
+}

@@ -13,6 +13,7 @@ type AnimationSet struct {
 	operators            []Operator
 	RootControlGroup     ControlGroup
 	gameModel            *GameModel
+	particleSystem       *GameParticleSystem
 	rootTransformControl *TransformControl
 }
 
@@ -36,6 +37,15 @@ func CreateAnimationSetForModel(name string, filename string) *AnimationSet {
 
 	model := newGameModel(name, filename)
 	as.setGameModel(model)
+
+	return as
+}
+
+func CreateAnimationSetForParticleSystem(name string, systemName string) *AnimationSet {
+	as := newAnimationSet(name)
+
+	system := newGameParticleSystem(name, systemName)
+	as.setParticleSystem(system)
 
 	return as
 }
@@ -122,8 +132,10 @@ func (as *AnimationSet) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 
 	if as.gameModel != nil {
 		e.CreateElementAttribute("gameModel", serializer.GetElement(as.gameModel))
-	} else {
-		e.CreateElementAttribute("gameModel", nil)
+	}
+
+	if as.particleSystem != nil {
+		e.CreateElementAttribute("particle system", serializer.GetElement(as.particleSystem))
 	}
 }
 
@@ -134,8 +146,19 @@ func (as *AnimationSet) setGameModel(model *GameModel) {
 	as.rootTransformControl.OrientationChannel.ToElement = model.Transform
 }
 
+func (as *AnimationSet) setParticleSystem(system *GameParticleSystem) {
+	as.particleSystem = system
+
+	as.rootTransformControl.PositionChannel.ToElement = system.Transform
+	as.rootTransformControl.OrientationChannel.ToElement = system.Transform
+}
+
 func (as *AnimationSet) GetGameModel() *GameModel {
 	return as.gameModel
+}
+
+func (as *AnimationSet) GetParticleSystem() *GameParticleSystem {
+	return as.particleSystem
 }
 
 func (as *AnimationSet) getChannels() []*Channel {

@@ -182,3 +182,17 @@ func initFlexes(as *sfm.AnimationSet, s2Model *model.Model, channelsClip *sfm.Ch
 	//	CreateGlobalFlexControllerOperator
 	return nil
 }
+
+func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filename string) (*sfm.AnimationSet, error) {
+	filename = strings.TrimSuffix(filename, ".vpcf_c")
+	filename = strings.TrimSuffix(filename, ".vpcf")
+	filename += ".vpcf"
+
+	as := clip.CreateAnimationSetForParticleSystem(name, filename)
+	as.GetParticleSystem().CreateControlPoint(as, 0)
+
+	channelsClip := animSetEditorChannels.AddChannelsClip(name)
+	channelsClip.AddAnimationSet(as)
+
+	return as, nil
+}

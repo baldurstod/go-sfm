@@ -340,3 +340,30 @@ func TestItems(t *testing.T) {
 
 	}
 }
+
+func TestEffect(t *testing.T) {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	session := sfm.NewSession()
+
+	shot1, err := utils.CreateClip(session)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
+	shot1.Camera.Transform.Position.Set(200, 0, 150)
+
+	filename := "particles/units/heroes/hero_dark_willow/dark_willow_head_ambient.vpcf"
+
+	_, err = utils.AddParticleSystem(shot1, "Tiny", "dota2", filename)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	buf := new(bytes.Buffer)
+	dmx.SerializeText(buf, sfm.NewSerializer().Serialize(session))
+
+	os.WriteFile(path.Join(varFolder, "test_session.dmx"), buf.Bytes(), 0666)
+}
