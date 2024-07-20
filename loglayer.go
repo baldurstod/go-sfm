@@ -108,6 +108,16 @@ func (ll *LogLayer[T]) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 			times.PushTime(0)
 			values.PushQuaternion(any(ll.DefaultValue).(vector.Quaternion[float32]))
 		}
+	case *LogLayer[bool]:
+		values := e.CreateAttribute("values", dmx.AT_BOOL_ARRAY)
+		for _, time := range keys {
+			times.PushTime(time)
+			values.PushBool(any(ll.values[time]).(bool))
+		}
+		if len(keys) == 0 {
+			times.PushTime(0)
+			values.PushBool(any(ll.DefaultValue).(bool))
+		}
 	default:
 		panic("code this case")
 	}
