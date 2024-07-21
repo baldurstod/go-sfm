@@ -1,8 +1,9 @@
 package dota2
 
 import (
-	"errors"
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/baldurstod/vdf"
 )
@@ -28,18 +29,41 @@ func NewHero(entity string) *Hero {
 func (h *Hero) initFromData(data *vdf.KeyValue) error {
 	var err error
 	if h.Model, err = data.GetString("Model"); err != nil {
-		return errors.New("can't find Model key")
+		return err
 	}
 
 	if h.HeroID, err = data.GetInt("HeroID"); err != nil {
-		return errors.New("can't find HeroID key")
+		return err
+	}
+
+	if personas, err := data.Get("Persona"); err == nil {
+		for _, p := range personas.GetChilds() {
+			persona := Persona{}
+			err = persona.initFromData(p)
+			if err != nil {
+				return fmt.Errorf("error while initializing persona: <%w>", err)
+			}
+			h.Personas = append(h.Personas, persona)
+		}
+		//log.Println(personas)
 	}
 
 	return nil
 }
 
 func (h *Hero) String() string {
-	return "Model: " + h.Model + "HeroID" + strconv.Itoa(h.HeroID)
+	var sb strings.Builder
+
+	sb.WriteString("Model: " + h.Model + "\n")
+	sb.WriteString("HeroID " + strconv.Itoa(h.HeroID) + "\n")
+
+	for _, p := range h.Personas {
+		sb.WriteString("Persona " + p.String())
+
+	}
+	//Personas
+
+	return sb.String()
 }
 
 /*

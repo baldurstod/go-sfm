@@ -1,8 +1,37 @@
 package dota2
 
+import (
+	"strings"
+
+	"github.com/baldurstod/vdf"
+)
+
 type Persona struct {
 	Name  string
 	Model string
+}
+
+func (p *Persona) initFromData(data *vdf.KeyValue) error {
+	var err error
+
+	if p.Name, err = data.GetString("name"); err != nil {
+		return err
+	}
+
+	if p.Model, err = data.GetString("Model"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *Persona) String() string {
+	var sb strings.Builder
+
+	sb.WriteString("Name: " + p.Name + "\n")
+	sb.WriteString("Model: " + p.Model + "\n")
+
+	return sb.String()
 }
 
 /*

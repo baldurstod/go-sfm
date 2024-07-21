@@ -30,7 +30,7 @@ func InitHeroes(buf []byte) error {
 		}
 	}
 
-	log.Println(heroes)
+	//log.Println(heroes)
 
 	return nil
 }
