@@ -35,6 +35,7 @@ func NewRenderSettings() *RenderSettings {
 		PlaybackClampFrameCount:  5,
 		IgnoreAlphaFade:          true,
 		ProgressiveRefinement:    NewProgressiveRefinementSettings(),
+		DrawGrid:                 true,
 	}
 }
 

@@ -1,3 +1,5 @@
+//go:build sfm
+
 package sfm_test
 
 import (
