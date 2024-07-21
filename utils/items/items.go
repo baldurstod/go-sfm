@@ -22,7 +22,7 @@ func (i *item) init(ig *itemsGame, kv *vdf.KeyValue) bool {
 }
 
 func (i *item) initPrefabs() {
-	if s, ok := i.kv.GetString("prefab"); ok {
+	if s, err := i.kv.GetString("prefab"); err != nil {
 		prefabs := strings.Split(s, " ")
 		for _, prefabName := range prefabs {
 			prefab := i.ig.getPrefab(prefabName)
@@ -35,7 +35,7 @@ func (i *item) initPrefabs() {
 func (i *item) getUsedByHeroes() []string {
 	ret := []string{}
 
-	if usedByHeroes, ok := i.kv.GetStringMap("used_by_heroes"); ok {
+	if usedByHeroes, err := i.kv.GetStringMap("used_by_heroes"); err != nil {
 		for key, val := range *usedByHeroes {
 			if val == "1" {
 				ret = append(ret, key)
@@ -50,7 +50,7 @@ func (i *item) GetModelPlayer() (string, bool) {
 }
 
 func (i *item) getStringAttribute(attributeName string) (string, bool) {
-	if s, ok := i.kv.GetString(attributeName); ok {
+	if s, err := i.kv.GetString(attributeName); err != nil {
 		return s, true
 	}
 

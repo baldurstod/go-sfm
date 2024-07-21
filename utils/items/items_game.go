@@ -25,7 +25,7 @@ func (ig *itemsGame) init(dat []byte) {
 	ig.prefabs = make(itemMap)
 	ig.items = make(itemMap)
 
-	if prefabs, ok := ig.vdf.Get("prefabs"); ok {
+	if prefabs, err := ig.vdf.Get("prefabs"); err != nil {
 		for _, val := range prefabs.GetChilds() {
 			var it = item{}
 			if it.init(ig, val) {
@@ -34,7 +34,7 @@ func (ig *itemsGame) init(dat []byte) {
 		}
 	}
 
-	if items, ok := ig.vdf.Get("items"); ok {
+	if items, err := ig.vdf.Get("items"); err != nil {
 		for _, val := range items.GetChilds() {
 			var it = item{}
 			if it.init(ig, val) {

@@ -1,7 +1,6 @@
 package sfm
 
 import (
-	"errors"
 	"fmt"
 	"io/fs"
 
@@ -54,9 +53,9 @@ func parseAnimationGroups() error {
 }
 
 func initAnimationGroups(root vdf.KeyValue) error {
-	groupFile, ok := root.Get("groupFile")
-	if !ok {
-		return errors.New("unable to find groupFile")
+	groupFile, err := root.Get("groupFile")
+	if err != nil {
+		return err
 	}
 
 	for _, val := range groupFile.GetChilds() {
@@ -89,7 +88,7 @@ func initAnimationGroup(group *vdf.KeyValue, st []string) error {
 
 func addAnimationGroup(gr *vdf.KeyValue, st []string) error {
 	var r, g, b, a uint8
-	if color, ok := gr.GetString("groupColor"); ok {
+	if color, err := gr.GetString("groupColor"); err != nil {
 		_, err := fmt.Sscanf(color, "%d %d %d %d", &r, &g, &b, &a)
 		if err != nil {
 			r = 255
@@ -107,9 +106,9 @@ func addAnimationGroup(gr *vdf.KeyValue, st []string) error {
 	controls, _ := gr.GetAll("control")
 
 	for _, val := range controls {
-		s, ok := val.ToString()
-		if !ok {
-			return errors.New("value is not of type string")
+		s, err := val.ToString()
+		if err != nil {
+			return err
 		}
 		groups[s] = group{root: st, Color: [4]uint8{r, g, b, a}}
 	}
