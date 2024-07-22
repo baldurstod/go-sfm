@@ -4,6 +4,8 @@ import (
 	"errors"
 
 	"github.com/baldurstod/go-dota2"
+	"github.com/baldurstod/go-sfm"
+	"github.com/baldurstod/go-sfm/utils"
 )
 
 type Character struct {
@@ -37,4 +39,26 @@ func NewCharacter(name string) (*Character, error) {
 	}
 
 	return &c, nil
+}
+
+func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
+	as, err := utils.AddModel(clip, c.hero.Entity, "dota2", c.hero.Model)
+	if err != nil {
+		return err
+	}
+	return nil
+
+	for _, item := range c.slots {
+		if item == nil || item.ModelPlayer == "" {
+			continue
+		}
+
+		as2, err := utils.AddModel(clip, "Tiny", "dota2", item.ModelPlayer)
+		if err != nil {
+			return err
+		}
+		as2.GetGameModel().SetParentModel(as.GetGameModel())
+	}
+
+	return nil
 }
