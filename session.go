@@ -1,7 +1,9 @@
 package sfm
 
 import (
+	"bytes"
 	"errors"
+	"os"
 
 	"github.com/baldurstod/go-dmx"
 )
@@ -64,4 +66,12 @@ func (s *Session) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	for k := range s.clips {
 		clipBin.PushElement(serializer.GetElement(k))
 	}
+}
+
+func (s *Session) WriteFile(name string) error {
+	buf := new(bytes.Buffer)
+	dmx.SerializeText(buf, NewSerializer().Serialize(s))
+
+	os.WriteFile(name, buf.Bytes(), 0666)
+	return nil
 }
