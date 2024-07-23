@@ -42,11 +42,15 @@ func NewCharacter(name string) (*Character, error) {
 }
 
 func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
+	dag := sfm.NewNode(c.hero.Entity)
+	clip.Scene.AddChildren(dag)
+
 	as, err := utils.AddModel(clip, c.hero.Entity, "dota2", c.hero.Model)
 	if err != nil {
 		return err
 	}
-	return nil
+
+	dag.AddChildren(as.GetGameModel())
 
 	for _, item := range c.slots {
 		if item == nil || item.ModelPlayer == "" {
@@ -58,6 +62,7 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
 			return err
 		}
 		as2.GetGameModel().SetParentModel(as.GetGameModel())
+		dag.AddChildren(as2.GetGameModel())
 	}
 
 	return nil
