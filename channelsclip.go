@@ -13,11 +13,16 @@ type ChannelsClip struct {
 func (*ChannelsClip) isClip() {}
 
 func newChannelsClip(name string) *ChannelsClip {
-	return &ChannelsClip{
+	cc := ChannelsClip{
 		Clip:          newClip(name),
 		channels:      make(map[*Channel]struct{}),
 		animationSets: make(map[*AnimationSet]struct{}),
 	}
+
+	cc.TimeFrame.Start = -5
+	cc.TimeFrame.Duration = 70
+
+	return &cc
 }
 
 func (cc *ChannelsClip) AddChannel(ch *Channel) {
