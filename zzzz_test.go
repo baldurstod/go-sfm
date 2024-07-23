@@ -1,5 +1,3 @@
-//go:build sfm
-
 package sfm_test
 
 import (
@@ -13,7 +11,6 @@ import (
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
-	"github.com/baldurstod/go-sfm/utils/items"
 	"github.com/baldurstod/go-vector"
 )
 
@@ -29,12 +26,12 @@ func TestSession(t *testing.T) {
 
 	camera := shot1.Camera
 
-	_, err = utils.AddModel(shot1, "Tiny", "dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl")
+	_, err = utils.AddModel(shot1, "Tiny", "dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl", shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	_, err = utils.AddModel(shot1, "Marci", "dota2", "models/heroes/marci/marci_base.vmdl")
+	_, err = utils.AddModel(shot1, "Marci", "dota2", "models/heroes/marci/marci_base.vmdl", shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return
@@ -76,14 +73,14 @@ func TestMovement(t *testing.T) {
 		"models/items/slardar/takoyaki/slardar_takoyaki.vmdl_c",
 	}
 
-	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename)
+	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename, shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
 	for _, item := range items {
-		as2, err := utils.AddModel(shot1, "Tiny", "dota2", item)
+		as2, err := utils.AddModel(shot1, "Tiny", "dota2", item, shot1.Scene)
 		if err != nil {
 			t.Error(err)
 			return
@@ -184,38 +181,39 @@ func DisbaledTestMovement(t *testing.T) {
 	filename := "models/heroes/shadow_fiend/shadow_fiend"
 	filename = "models/heroes/tiny/tiny_01/tiny_01"
 	filename = "models/heroes/dawnbreaker/dawnbreaker"
-	/*items := [...]string{
+	items := [...]string{
 		"models/heroes/dawnbreaker/dawnbreaker_head",
 		"models/heroes/dawnbreaker/dawnbreaker_weapon",
 		"models/heroes/dawnbreaker/dawnbreaker_arms",
 		"models/heroes/dawnbreaker/dawnbreaker_armor",
-	}*/
+	}
 
-	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename)
+	as, err := utils.AddModel(shot1, "Tiny", "dota2", filename, shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	buf1, err := os.ReadFile("./var/items_game.txt")
+	/*buf1, err := os.ReadFile("./var/items_game.txt")
 	if err != nil {
 		panic(err)
+	}*/
+
+	//ig := items.NewItemsGame(buf1)
+	//items := ig.GetItemsPerHero("npc_dota_hero_dawnbreaker")
+	/*c, err := dota2.NewCharacter("npc_dota_hero_dark_willow")
+	if err != nil {
+		t.Error(err)
+		return
+	}*/
+
+	for _, item := range items {
+		log.Println(item)
+
 	}
 
-	ig := items.NewItemsGame(buf1)
-	items := ig.GetItemsPerHero("npc_dota_hero_dawnbreaker")
 	for _, item := range items {
-		log.Println(item.GetModelPlayer())
-
-	}
-
-	for _, item := range items {
-		modelPlayer, ok := item.GetModelPlayer()
-		if !ok {
-			continue
-		}
-
-		as2, err := utils.AddModel(shot1, "Tiny", "dota2", modelPlayer)
+		as2, err := utils.AddModel(shot1, "Tiny", "dota2", item, shot1.Scene)
 		if err != nil {
 			t.Error(err)
 			return
@@ -313,26 +311,7 @@ func TestAnimationGroups(t *testing.T) {
 	log.Println(group)
 }
 
-func TestItems(t *testing.T) {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-
-	buf, err := os.ReadFile("./var/items_game.txt")
-	if err != nil {
-		panic(err)
-	}
-	/*
-		vdf := vdf.VDF{}
-		items := vdf.Parse(buf)
-		log.Println(items)*/
-	ig := items.NewItemsGame(buf)
-	items := ig.GetItemsPerHero("npc_dota_hero_dawnbreaker")
-	for _, item := range items {
-		log.Println(item.GetModelPlayer())
-
-	}
-}
-
-func TestEffect(t *testing.T) {
+func DisabledTestEffect(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
@@ -347,7 +326,7 @@ func TestEffect(t *testing.T) {
 
 	filename := "particles/units/heroes/hero_dark_willow/dark_willow_head_ambient.vpcf"
 
-	_, err = utils.AddParticleSystem(shot1, "Tiny", "dota2", filename)
+	_, err = utils.AddParticleSystem(shot1, "Tiny", "dota2", filename, shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return

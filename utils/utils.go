@@ -61,12 +61,12 @@ func createAnimationSet(name string) *sfm.AnimationSet {
 	return animationSet
 }*/
 
-func AddModel(clip *sfm.FilmClip, name string, repository string, filename string) (*sfm.AnimationSet, error) {
+func AddModel(clip *sfm.FilmClip, name string, repository string, filename string, parent sfm.INode) (*sfm.AnimationSet, error) {
 	filename = strings.TrimSuffix(filename, ".vmdl_c")
 	filename = strings.TrimSuffix(filename, ".vmdl")
 	filename += ".vmdl"
 
-	as := clip.CreateAnimationSetForModel(name, filename)
+	as := clip.CreateAnimationSetForModel(name, filename, parent)
 
 	s2Model, err := GetModel(repository, filename)
 
@@ -181,12 +181,12 @@ func initFlexes(as *sfm.AnimationSet, s2Model *model.Model) error {
 	return nil
 }
 
-func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filename string) (*sfm.AnimationSet, error) {
+func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filename string, parent sfm.INode) (*sfm.AnimationSet, error) {
 	filename = strings.TrimSuffix(filename, ".vpcf_c")
 	filename = strings.TrimSuffix(filename, ".vpcf")
 	filename += ".vpcf"
 
-	as := clip.CreateAnimationSetForParticleSystem(name, filename)
+	as := clip.CreateAnimationSetForParticleSystem(name, filename, parent)
 	as.GetParticleSystem().CreateControlPoint(as, 0)
 
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)

@@ -71,26 +71,30 @@ func (fc *FilmClip) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	}
 }
 
-func (fc *FilmClip) CreateAnimationSetForModel(name string, filename string) *AnimationSet {
+func (fc *FilmClip) CreateAnimationSetForModel(name string, filename string, parent INode) *AnimationSet {
 	as := CreateAnimationSetForModel(name, filename)
 
 	dag := NewNode(name)
 
 	dag.AddChildren(as.GetGameModel())
-	fc.Scene.AddChildren(dag)
+	if parent != nil {
+		parent.AddChildren(dag)
+	}
 
 	fc.animationSets[as] = struct{}{}
 
 	return as
 }
 
-func (fc *FilmClip) CreateAnimationSetForParticleSystem(name string, filename string) *AnimationSet {
+func (fc *FilmClip) CreateAnimationSetForParticleSystem(name string, filename string, parent INode) *AnimationSet {
 	as := CreateAnimationSetForParticleSystem(name, filename)
 
 	dag := NewNode(name)
 
 	dag.AddChildren(as.GetParticleSystem())
-	fc.Scene.AddChildren(dag)
+	if parent != nil {
+		parent.AddChildren(dag)
+	}
 
 	fc.animationSets[as] = struct{}{}
 
