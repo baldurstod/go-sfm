@@ -187,7 +187,7 @@ func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filen
 	filename += ".vpcf"
 
 	as := clip.CreateAnimationSetForParticleSystem(name, filename, parent)
-	as.GetParticleSystem().CreateControlPoint(as, 0)
+	as.GetParticleSystem().CreateControlPoint(as, 0, nil)
 
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
 	channelsClip.AddAnimationSet(as)

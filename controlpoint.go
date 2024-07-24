@@ -6,6 +6,7 @@ type ControlPoint struct {
 	Name string
 	*Node
 	transformControl *TransformControl
+	ControlModel     *GameModel
 }
 
 func (cp *ControlPoint) isNode() {

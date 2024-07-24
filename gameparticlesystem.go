@@ -24,9 +24,11 @@ func newGameParticleSystem(name string, systemName string) *GameParticleSystem {
 func (gps *GameParticleSystem) isNode() {
 }
 
-func (gps *GameParticleSystem) CreateControlPoint(as *AnimationSet, id int) *ControlPoint {
+func (gps *GameParticleSystem) CreateControlPoint(as *AnimationSet, id int, controlModel *GameModel) *ControlPoint {
 	cp := newControlPoint(id)
 	gps.controlPoints = append(gps.controlPoints, cp)
+
+	cp.ControlModel = controlModel
 
 	name := fmt.Sprintf("controlPoint%d", id)
 	tc := as.CreateTransformControl(name)
@@ -52,6 +54,7 @@ func (gps *GameParticleSystem) getControlPoint(id int) *ControlPoint {
 func (gps *GameParticleSystem) SetParentModel(parent *GameModel) {
 	gps.parentModel = parent
 	for _, controlPoint := range gps.controlPoints {
+		controlPoint.ControlModel = parent
 		if parent == nil {
 			controlPoint.overrideParent = nil
 		} else {
@@ -95,9 +98,11 @@ func (gps *GameParticleSystem) toDmElement(serializer *Serializer, e *dmx.DmElem
 		children.PushElement(serializer.GetElement(child))
 	}
 
-	bones := e.CreateAttribute("controlPoints", dmx.AT_ELEMENT_ARRAY)
+	controlPoints := e.CreateAttribute("controlPoints", dmx.AT_ELEMENT_ARRAY)
+	controlModels := e.CreateAttribute("controlModels", dmx.AT_ELEMENT_ARRAY)
 	for _, cp := range gps.controlPoints {
-		bones.PushElement(serializer.GetElement(cp.Transform))
+		controlPoints.PushElement(serializer.GetElement(cp.Transform))
+		controlModels.PushElement(serializer.GetElement(cp.ControlModel))
 	}
 
 	if gps.parentModel != nil {
