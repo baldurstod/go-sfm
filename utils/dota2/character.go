@@ -2,6 +2,7 @@ package dota2
 
 import (
 	"errors"
+	"log"
 
 	"github.com/baldurstod/go-dota2"
 	"github.com/baldurstod/go-sfm"
@@ -51,15 +52,32 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
 	}
 
 	for _, item := range c.slots {
-		if item == nil || item.ModelPlayer == "" {
+		if item == nil {
 			continue
 		}
 
-		as2, err := utils.AddModel(clip, "Tiny", "dota2", item.ModelPlayer, dag)
-		if err != nil {
-			return err
+		if item.ModelPlayer != "" {
+			as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, dag)
+			if err != nil {
+				return err
+			}
+			as2.GetGameModel().SetParentModel(as.GetGameModel())
 		}
-		as2.GetGameModel().SetParentModel(as.GetGameModel())
+
+		modifiers := item.GetAssetModifiers(0)
+		for _, modifier := range modifiers {
+			log.Println(modifier)
+			switch modifier.Type {
+			case "particle_create":
+				as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, dag)
+				if err != nil {
+					return err
+				}
+				as2.GetParticleSystem().SetParentModel(as.GetGameModel())
+
+			}
+
+		}
 	}
 
 	return nil
