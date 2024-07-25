@@ -78,5 +78,5 @@ func TestSfmHeroes(t *testing.T) {
 
 	c.CreateGameModel(shot1)
 
-	session.WriteFile(path.Join(varFolder, "test_session.dmx"))
+	session.WriteBinaryFile(path.Join(varFolder, "test_session.dmx"))
 }

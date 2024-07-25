@@ -2,6 +2,10 @@ github.com/NublyBR/go-vpk v0.0.0-20240228030726-b1042e92ce58 h1:LNmGUHSpLUw3wQBE
 github.com/NublyBR/go-vpk v0.0.0-20240228030726-b1042e92ce58/go.mod h1:bKkLG1OoSAlGpkY/NvnavzvV+xIpQDn4rTggf/jkDwQ=
 github.com/baldurstod/go-dmx v0.0.21 h1:kMEkI8WtwDwCtQ3d0nGkSMMQE29ULj60av+dqAhnExw=
 github.com/baldurstod/go-dmx v0.0.21/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
+github.com/baldurstod/go-dmx v0.0.22 h1:pM73ZxKB1usphDVNHr/+cwfjDS9nycl20qNZpDicFCE=
+github.com/baldurstod/go-dmx v0.0.22/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
+github.com/baldurstod/go-dmx v0.0.23 h1:uIE8tWVbPAkcsMKjDtBEtgpeimT5EKDPB1niJNeI4io=
+github.com/baldurstod/go-dmx v0.0.23/go.mod h1:BS5jlvFMs3liLaqusTuBGeMyz1HmeXzbKp6DhZ+AwU8=
 github.com/baldurstod/go-dota2 v0.0.2 h1:AC3zbtrsM7jqoFIOK0L8iCduPwiAiNxWFHia3sRGYTg=
 github.com/baldurstod/go-dota2 v0.0.2/go.mod h1:3fc0wG6CLGG8vjGCaht/CUfiQgBSnRz7L06v/1Svjs8=
 github.com/baldurstod/go-dota2 v0.0.3 h1:926QIdB+QaXUp7C+J3GeDjO+3OelRA1rrPXVE+XH/xg=

@@ -68,9 +68,17 @@ func (s *Session) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	}
 }
 
-func (s *Session) WriteFile(name string) error {
+func (s *Session) WriteTextFile(name string) error {
 	buf := new(bytes.Buffer)
 	dmx.SerializeText(buf, NewSerializer().Serialize(s))
+
+	os.WriteFile(name, buf.Bytes(), 0666)
+	return nil
+}
+
+func (s *Session) WriteBinaryFile(name string) error {
+	buf := new(bytes.Buffer)
+	dmx.SerializeBinary(buf, NewSerializer().Serialize(s), "sfm_session", 22)
 
 	os.WriteFile(name, buf.Bytes(), 0666)
 	return nil
