@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -107,9 +108,13 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	return as, nil
 }
 
-var models = func() map[string]map[string]*model.Model { return make(map[string]map[string]*model.Model) }()
+var models = func() map[string]map[string]any { return make(map[string]map[string]any) }()
 
-func findModel(repository string, filename string) *model.Model {
+/*var systems = func() map[string]map[string]*particles.ParticleSystem {
+	return make(map[string]map[string]*particles.ParticleSystem)
+}()*/
+
+func findModel(repository string, filename string) any {
 	r, ok := models[repository]
 	if !ok {
 		return nil
@@ -124,7 +129,7 @@ func findModel(repository string, filename string) *model.Model {
 func addModel(repository string, filename string, m *model.Model) {
 	r, ok := models[repository]
 	if !ok {
-		r = make(map[string]*model.Model)
+		r = make(map[string]any)
 		models[repository] = r
 	}
 
@@ -136,9 +141,12 @@ func GetModel(repository string, filename string) (*model.Model, error) {
 	filename = strings.TrimSuffix(filename, ".vmdl")
 	filename += ".vmdl_c"
 
-	m := findModel(repository, filename)
-	if m != nil {
-		return m, nil
+	if m := findModel(repository, filename); m != nil {
+		if model, ok := m.(*model.Model); ok {
+			return model, nil
+		} else {
+			return nil, errors.New("can't convert to *model.Model")
+		}
 	}
 
 	file, err := parser.Parse(repository, filename)
@@ -146,14 +154,12 @@ func GetModel(repository string, filename string) (*model.Model, error) {
 		return nil, err
 	}
 
-	m = model.NewModel()
+	m := model.NewModel()
 	m.SetFile(file)
 
 	addModel(repository, filename, m)
 
 	return m, nil
-
-	//log.Println(model.GetSkeleton())
 }
 
 func initFlexes(as *sfm.AnimationSet, s2Model *model.Model) error {
