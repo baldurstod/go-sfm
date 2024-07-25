@@ -17,32 +17,45 @@ func newGameParticleSystem(name string, systemName string) *GameParticleSystem {
 	return &GameParticleSystem{
 		Node:          NewNode(name),
 		systemName:    systemName,
-		controlPoints: make([]*ControlPoint, 0, 1),
+		controlPoints: make([]*ControlPoint, 0, 10),
 	}
 }
 
 func (gps *GameParticleSystem) isNode() {
 }
 
-func (gps *GameParticleSystem) CreateControlPoint(as *AnimationSet, id int, controlModel *GameModel) *ControlPoint {
-	cp := newControlPoint(id)
-	gps.controlPoints = append(gps.controlPoints, cp)
+func (gps *GameParticleSystem) CreateControlPoint(as *AnimationSet, id uint, controlModel *GameModel) *ControlPoint {
+
+	// Create missing points
+	l := uint(len(gps.controlPoints))
+	if id >= l {
+		for i := l; i <= id; i++ {
+			cp := newControlPoint(id)
+			gps.children = append(gps.children, cp)
+			gps.controlPoints = append(gps.controlPoints, cp)
+
+			name := fmt.Sprintf("controlPoint%d", i)
+			tc := as.CreateTransformControl(name)
+			tc.PositionChannel.ToElement = cp.Transform
+			tc.OrientationChannel.ToElement = cp.Transform
+
+			cp.transformControl = tc
+
+			tc.PositionChannel.Log.GetLayer("vector3 log")
+			tc.OrientationChannel.Log.GetLayer("quaternion log")
+		}
+	}
+
+	cp := gps.controlPoints[id]
+	//if id >= uint(len(gps.controlPoints)) {
+	/*if cp == nil {
+		cp = newControlPoint(id)
+		//gps.controlPoints = append(gps.controlPoints, cp)
+		gps.controlPoints[id] = cp
+		gps.children = append(gps.children, cp)
+	}*/
 
 	cp.ControlModel = controlModel
-
-	name := fmt.Sprintf("controlPoint%d", id)
-	tc := as.CreateTransformControl(name)
-	tc.PositionChannel.ToElement = cp.Transform
-	tc.OrientationChannel.ToElement = cp.Transform
-
-	cp.transformControl = tc
-
-	tc.PositionChannel.Log.GetLayer("vector3 log")
-	tc.OrientationChannel.Log.GetLayer("quaternion log")
-
-	gps.children = append(gps.children, cp)
-	//any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*LogLayer[vector.Vector3[float32]]).defaultValue = cp.Transform.Position
-	//any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*LogLayer[vector.Quaternion[float32]]).defaultValue = cp.Transform.Orientation
 
 	return cp
 }
@@ -58,16 +71,21 @@ func (gps *GameParticleSystem) SetParentModel(parent *GameModel) {
 		if parent == nil {
 			controlPoint.overrideParent = nil
 		} else {
-			parentBone := parent.getBoneByName(controlPoint.Name)
-			if parentBone != nil {
-				controlPoint.overrideParent = parentBone
-				controlPoint.transformControl.exportable = false
-				controlPoint.Transform.isIdentity = true
-			} else {
-				controlPoint.overrideParent = nil
-				controlPoint.transformControl.exportable = true
-				controlPoint.Transform.isIdentity = false
+			attachement := parent.getAttachmentByName(controlPoint.AttachmentName)
+			if attachement != nil {
+				parentBone := parent.getBoneByName(attachement.ParentBone)
+				if parentBone != nil {
+					controlPoint.overrideParent = parentBone
+					//controlPoint.transformControl.exportable = false
+					//controlPoint.Transform.isIdentity = true
+					controlPoint.Transform.Position = attachement.Position
+					controlPoint.Transform.Orientation = attachement.Orientation
+					continue
+				}
 			}
+			controlPoint.overrideParent = nil
+			controlPoint.transformControl.exportable = true
+			controlPoint.Transform.isIdentity = false
 		}
 	}
 }

@@ -2,6 +2,7 @@ package sfm
 
 import (
 	"github.com/baldurstod/go-dmx"
+	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-vector"
 )
 
@@ -12,6 +13,7 @@ type GameModel struct {
 	flexWeights             []float32
 	MeshGroupMask           uint64
 	bones                   []*Bone
+	attachments             map[string]*Attachment
 	globalFlexControllers   []*GlobalFlexControllerOperator
 	ComputeBounds           bool
 	EvaluateProceduralBones bool
@@ -25,6 +27,7 @@ func newGameModel(name string, modelName string) *GameModel {
 		Skin:                    0,
 		flexWeights:             make([]float32, 0),
 		bones:                   make([]*Bone, 0),
+		attachments:             make(map[string]*Attachment, 0),
 		MeshGroupMask:           0xffffffffffffffff,
 		globalFlexControllers:   make([]*GlobalFlexControllerOperator, 0),
 		ComputeBounds:           true,
@@ -62,6 +65,23 @@ func (gm *GameModel) CreateBone(as *AnimationSet, name string, id int, position 
 	return bone
 }
 
+func (gm *GameModel) CreateAttachment(src *model.Attachment) *Attachment {
+	attachment := Attachment{}
+
+	attachment.Name = src.Name
+	if len(src.Influences) > 0 {
+		// we can only use one influence ?
+		influence := src.Influences[0]
+
+		attachment.ParentBone = influence.Name
+		attachment.Position = influence.Offset
+		attachment.Orientation = influence.Rotation
+	}
+
+	gm.attachments[attachment.Name] = &attachment
+	return &attachment
+}
+
 func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight float32) *GlobalFlexControllerOperator {
 	o := NewGlobalFlexControllerOperator(name, flexWeight, gm)
 	gm.globalFlexControllers = append(gm.globalFlexControllers, o)
@@ -76,6 +96,10 @@ func (gm *GameModel) getBoneByName(name string) *Bone {
 		}
 	}
 	return nil
+}
+
+func (gm *GameModel) getAttachmentByName(name string) *Attachment {
+	return gm.attachments[name]
 }
 
 func (gm *GameModel) SetParentModel(parent *GameModel) {

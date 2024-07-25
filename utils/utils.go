@@ -3,11 +3,13 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-source2-tools/parser"
+	"github.com/baldurstod/go-source2-tools/particles"
 )
 
 var animSetEditorChannels *sfm.Track
@@ -105,6 +107,11 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 		return nil, fmt.Errorf("failed to init flexes: <%w>", err)
 	}
 
+	err = initAttachments(as, s2Model)
+	if err != nil {
+		return nil, fmt.Errorf("failed to init attachments: <%w>", err)
+	}
+
 	return as, nil
 }
 
@@ -126,7 +133,7 @@ func findModel(repository string, filename string) any {
 	return m
 }
 
-func addModel(repository string, filename string, m *model.Model) {
+func addModel(repository string, filename string, m any) {
 	r, ok := models[repository]
 	if !ok {
 		r = make(map[string]any)
@@ -162,6 +169,32 @@ func GetModel(repository string, filename string) (*model.Model, error) {
 	return m, nil
 }
 
+func GetSystem(repository string, filename string) (*particles.ParticleSystem, error) {
+	filename = strings.TrimSuffix(filename, ".vpcf_c")
+	filename = strings.TrimSuffix(filename, ".vpcf")
+	filename += ".vpcf_c"
+
+	if s := findModel(repository, filename); s != nil {
+		if system, ok := s.(*particles.ParticleSystem); ok {
+			return system, nil
+		} else {
+			return nil, errors.New("can't convert to *model.Model")
+		}
+	}
+
+	file, err := parser.Parse(repository, filename)
+	if err != nil {
+		return nil, err
+	}
+
+	s := particles.NewParticleSystem()
+	s.SetFile(file)
+
+	addModel(repository, filename, s)
+
+	return s, nil
+}
+
 func initFlexes(as *sfm.AnimationSet, s2Model *model.Model) error {
 	flexes, err := s2Model.GetFlexes()
 	if err != nil {
@@ -187,6 +220,33 @@ func initFlexes(as *sfm.AnimationSet, s2Model *model.Model) error {
 	return nil
 }
 
+func initAttachments(as *sfm.AnimationSet, s2Model *model.Model) error {
+	attachements, err := s2Model.GetAttachements()
+	if err != nil {
+		return fmt.Errorf("failed to get model attachements: <%w>", err)
+	}
+
+	gameModel := as.GetGameModel()
+	for _, v := range attachements {
+
+		gameModel.CreateAttachment(v)
+		/*
+			defaultValue := v.GetDefaultValue()
+			ope := gameModel.CreateGlobalFlexControllerOperator(v.Name, defaultValue)
+			c := as.CreateControl(v.Name)
+			c.Channel.ToElement = ope
+			c.Channel.ToAttribute = "flexWeight"
+
+			layer := any(c.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
+			layer.SetValue(0, defaultValue)
+
+			c.DefaultValue = defaultValue
+			c.Value = defaultValue*/
+	}
+
+	return nil
+}
+
 func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filename string, parent sfm.INode) (*sfm.AnimationSet, error) {
 	filename = strings.TrimSuffix(filename, ".vpcf_c")
 	filename = strings.TrimSuffix(filename, ".vpcf")
@@ -194,6 +254,11 @@ func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filen
 
 	as := clip.CreateAnimationSetForParticleSystem(name, filename, parent)
 	as.GetParticleSystem().CreateControlPoint(as, 0, nil)
+
+	s2system, err := GetSystem(repository, filename)
+	if err != nil {
+		return nil, err
+	}
 
 	channelsClip := animSetEditorChannels.AddChannelsClip(name)
 	channelsClip.AddAnimationSet(as)
@@ -212,6 +277,23 @@ func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filen
 
 	/*c.DefaultValue = true
 	c.Value = true*/
+
+	log.Println(s2system.GetControlPointConfigurationById(0))
+	controlPointConfig, err := s2system.GetControlPointConfigurationById(0)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, driver := range controlPointConfig.Drivers {
+		cp := as.GetParticleSystem().CreateControlPoint(as, uint(driver.ControlPoint), nil)
+		if cp == nil {
+			continue
+		}
+
+		cp.AttachType = driver.AttachType
+		cp.AttachmentName = driver.AttachmentName
+		cp.EntityName = driver.EntityName
+	}
 
 	return as, nil
 }
