@@ -42,13 +42,13 @@ func NewCharacter(name string) (*Character, error) {
 	return &c, nil
 }
 
-func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
+func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, error) {
 	dag := sfm.NewNode(c.hero.Entity)
 	clip.Scene.AddChildren(dag)
 
 	as, err := utils.AddModel(clip, c.hero.Entity, "dota2", c.hero.Model, dag)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for _, item := range c.slots {
@@ -59,7 +59,7 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
 		if item.ModelPlayer != "" {
 			as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, dag)
 			if err != nil {
-				return err
+				return nil, err
 			}
 			as2.GetGameModel().SetParentModel(as.GetGameModel())
 		}
@@ -71,7 +71,7 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
 			case "particle_create":
 				as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, dag)
 				if err != nil {
-					return err
+					return nil, err
 				}
 				as2.GetParticleSystem().SetParentModel(as.GetGameModel())
 
@@ -80,5 +80,5 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) error {
 		}
 	}
 
-	return nil
+	return as, nil
 }
