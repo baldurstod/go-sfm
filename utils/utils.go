@@ -10,6 +10,7 @@ import (
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-source2-tools/parser"
 	"github.com/baldurstod/go-source2-tools/particles"
+	"github.com/baldurstod/go-vector"
 )
 
 var animSetEditorChannels *sfm.Track
@@ -115,11 +116,91 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	return as, nil
 }
 
-var models = func() map[string]map[string]any { return make(map[string]map[string]any) }()
+func PlaySequence(as *sfm.AnimationSet, animation string, duration float32) error {
+	if as == nil {
+		return errors.New("empty animation set")
+	}
 
-/*var systems = func() map[string]map[string]*particles.ParticleSystem {
-	return make(map[string]map[string]*particles.ParticleSystem)
-}()*/
+	model := as.GetGameModel()
+	if model == nil {
+		return errors.New("animation set doesn't have any model")
+	}
+
+	s2Model, err := GetModel("dota2", model.ModelName)
+	if err != nil {
+		return err
+	}
+
+	seq, err := s2Model.GetSequenceByName(animation)
+	if err != nil {
+		return err
+	}
+	playSequence(as, s2Model, seq, duration)
+
+	log.Println(seq)
+
+	return nil
+}
+
+func playSequence(as *sfm.AnimationSet, model *model.Model, sequence *model.Sequence, duration float32) error {
+	fps := sequence.GetFps()
+
+	frames := int(duration * float32(fps))
+
+	flexes, err := model.GetFlexes()
+	if err != nil {
+		return err
+	}
+
+	for frameId := 0; frameId < frames; frameId++ {
+		frame, err := sequence.GetFrame(frameId)
+		frameTime := float32(frameId) / float32(fps)
+		if err != nil {
+			return err
+		}
+		//log.Println(frame)
+		positionChannel := frame.GetChannel("BoneChannel", "Position")
+		for _, element := range positionChannel.Datas {
+
+			tc := as.GetTransformControl(element.Name)
+			if tc != nil {
+				layer := any(tc.PositionChannel.Log.GetLayer("vector3 log")).(*sfm.LogLayer[vector.Vector3[float32]])
+				layer.SetValue(frameTime, element.Datas.(vector.Vector3[float32]))
+			}
+		}
+		orientationChannel := frame.GetChannel("BoneChannel", "Angle")
+		for _, element := range orientationChannel.Datas {
+
+			tc := as.GetTransformControl(element.Name)
+			if tc != nil {
+				layer := any(tc.OrientationChannel.Log.GetLayer("quaternion log")).(*sfm.LogLayer[vector.Quaternion[float32]])
+				layer.SetValue(frameTime, (element.Datas.(vector.Quaternion[float32])))
+			}
+		}
+
+		morphChannel := frame.GetChannel("MorphChannel", "data")
+		for _, element := range morphChannel.Datas {
+
+			value := float32(0)
+			for _, flex := range flexes {
+				if flex.Name == element.Name {
+					value = flex.GetControllerValue((element.Datas.(float32))) //((element.Datas.(float32)) - flex.Min) / (flex.Max - flex.Min)
+					break
+				}
+			}
+
+			tc := as.GetControl(element.Name)
+			if tc != nil {
+				layer := any(tc.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
+				layer.SetValue(frameTime, value)
+			}
+		}
+	}
+
+	return nil
+}
+
+var models = func() map[string]map[string]any { return make(map[string]map[string]any) }()
 
 func findModel(repository string, filename string) any {
 	r, ok := models[repository]

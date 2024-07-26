@@ -76,7 +76,21 @@ func TestSfmHeroes(t *testing.T) {
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
 	shot1.Camera.Transform.Position.Set(200, 0, 150)
 
-	c.CreateGameModel(shot1)
+	as, err := c.CreateGameModel(shot1)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
-	session.WriteBinaryFile(path.Join(varFolder, "test_session.dmx"))
+	err = utils.PlaySequence(as, "idle", shot1.GetDuration())
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	err = session.WriteBinaryFile(path.Join(varFolder, "test_session.dmx"))
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }
