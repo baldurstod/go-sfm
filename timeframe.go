@@ -33,6 +33,10 @@ func (tf *TimeFrame) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateFloatAttribute("scale", tf.Scale)
 }
 
+func (tf *TimeFrame) GetDuration() float32 {
+	return tf.Duration
+}
+
 /*
 	"timeFrame" "DmeTimeFrame"
 	{

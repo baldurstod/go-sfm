@@ -100,3 +100,7 @@ func (fc *FilmClip) CreateAnimationSetForParticleSystem(name string, filename st
 
 	return as
 }
+
+func (fc *FilmClip) GetDuration() float32 {
+	return fc.TimeFrame.GetDuration()
+}
