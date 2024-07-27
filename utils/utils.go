@@ -15,7 +15,7 @@ import (
 
 var animSetEditorChannels *sfm.Track
 
-func CreateClip(session *sfm.Session) (*sfm.FilmClip, error) {
+func CreateClip(session *sfm.Session) *sfm.FilmClip {
 	clip := session.CreateFilmClip("SFM")
 
 	sound := clip.CreateTrackGroup("Sound")
@@ -34,25 +34,18 @@ func CreateClip(session *sfm.Session) (*sfm.FilmClip, error) {
 	filmTrack.AddChildren(shot1)
 	shot1.Camera = sfm.NewCamera("camera1")
 
-	var err error
-	scene, err := createScene()
-	if err != nil {
-		return nil, err
-	}
-	shot1.Scene = scene
+	shot1.Scene = createScene()
 	//shot1.MapName = "maps/dota.vmap"
 
 	//shot1.AddAnimationSet(createAnimationSet())
 
 	//log.Println(shot1.Camera)
 
-	return shot1, nil
+	return shot1
 }
 
-func createScene() (*sfm.Node, error) {
-	scene := sfm.NewNode("scene")
-
-	return scene, nil
+func createScene() *sfm.Node {
+	return sfm.NewNode("scene")
 }
 
 /*

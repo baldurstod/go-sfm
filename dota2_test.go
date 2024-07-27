@@ -67,11 +67,7 @@ func TestSfmHeroes(t *testing.T) {
 
 	session := sfm.NewSession()
 
-	shot1, err := utils.CreateClip(session)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	shot1 := utils.CreateClip(session)
 
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
 	shot1.Camera.Transform.Position.Set(200, 0, 150)

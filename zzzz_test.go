@@ -18,15 +18,11 @@ func TestSession(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
-	shot1, err := utils.CreateClip(session)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	shot1 := utils.CreateClip(session)
 
 	camera := shot1.Camera
 
-	_, err = utils.AddModel(shot1, "Tiny", "dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl", shot1.Scene)
+	_, err := utils.AddModel(shot1, "Tiny", "dota2", "models/heroes/tiny/tiny_01/tiny_01.vmdl", shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return
@@ -51,11 +47,7 @@ func TestMovement(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
-	shot1, err := utils.CreateClip(session)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	shot1 := utils.CreateClip(session)
 
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
 	shot1.Camera.Transform.Position.Set(200, 0, 150)
@@ -169,11 +161,7 @@ func DisbaledTestMovement(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
-	shot1, err := utils.CreateClip(session)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	shot1 := utils.CreateClip(session)
 
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
 	shot1.Camera.Transform.Position.Set(200, 0, 150)
@@ -315,18 +303,14 @@ func DisabledTestEffect(t *testing.T) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	session := sfm.NewSession()
 
-	shot1, err := utils.CreateClip(session)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	shot1 := utils.CreateClip(session)
 
 	shot1.Camera.Transform.Orientation.RotateZ(math.Pi)
 	shot1.Camera.Transform.Position.Set(200, 0, 150)
 
 	filename := "particles/units/heroes/hero_dark_willow/dark_willow_head_ambient.vpcf"
 
-	_, err = utils.AddParticleSystem(shot1, "Tiny", "dota2", filename, shot1.Scene)
+	_, err := utils.AddParticleSystem(shot1, "Tiny", "dota2", filename, shot1.Scene)
 	if err != nil {
 		t.Error(err)
 		return
