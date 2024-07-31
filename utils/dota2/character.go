@@ -10,8 +10,9 @@ import (
 )
 
 type Character struct {
-	slots map[string]*dota2.Item
-	hero  *dota2.Hero
+	slots   map[string]*dota2.Item
+	hero    *dota2.Hero
+	persona int
 }
 
 func NewCharacter(name string) (*Character, error) {
@@ -31,7 +32,7 @@ func NewCharacter(name string) (*Character, error) {
 	}
 
 	// Init base items
-	for _, item := range dota2.GetBaseItems(name) {
+	for _, item := range h.GetItems(c.persona) {
 		if _, ok := c.slots[item.ItemSlot]; !ok {
 			return nil, errors.New("unknown slot : " + item.ItemSlot)
 		}
@@ -42,7 +43,15 @@ func NewCharacter(name string) (*Character, error) {
 	return &c, nil
 }
 
+func (c *Character) SetPersona(persona int) {
+	c.persona = persona
+}
+
 func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, error) {
+	if c.hero == nil {
+		return nil, errors.New("character doesn't have a hero")
+	}
+
 	dag := sfm.NewNode(c.hero.Entity)
 	clip.Scene.AddChildren(dag)
 
@@ -51,7 +60,8 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 		return nil, err
 	}
 
-	for _, item := range c.slots {
+	//for _, item := range c.slots {
+	for _, item := range c.hero.GetItems(c.persona) {
 		if item == nil {
 			continue
 		}
