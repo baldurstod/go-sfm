@@ -10,14 +10,13 @@ import (
 )
 
 type Character struct {
-	slots   map[string]*dota2.Item
-	hero    *dota2.Hero
-	persona int
+	//slots map[string]*dota2.Item
+	hero *dota2.Hero
 }
 
 func NewCharacter(name string) (*Character, error) {
 	c := Character{
-		slots: make(map[string]*dota2.Item),
+		//slots: make(map[string]*dota2.Item),
 	}
 
 	h, err := dota2.GetHero(name)
@@ -27,24 +26,23 @@ func NewCharacter(name string) (*Character, error) {
 	c.hero = h
 
 	// Init slots
-	for _, slot := range h.ItemSlots {
-		c.slots[slot.SlotName] = nil
-	}
+	/*
+		for _, slot := range h.ItemSlots {
+			c.slots[slot.SlotName] = nil
+		}
+	*/
 
 	// Init base items
-	for _, item := range h.GetItems(c.persona) {
-		if _, ok := c.slots[item.ItemSlot]; !ok {
-			return nil, errors.New("unknown slot : " + item.ItemSlot)
-		}
+	/*
+		for _, item := range h.GetItems() {
+			if _, ok := c.slots[item.ItemSlot]; !ok {
+				return nil, errors.New("unknown slot : " + item.ItemSlot)
+			}
 
-		c.slots[item.ItemSlot] = item
-	}
+			c.slots[item.ItemSlot] = item
+		}*/
 
 	return &c, nil
-}
-
-func (c *Character) SetPersona(persona int) {
-	c.persona = persona
 }
 
 func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, error) {
@@ -52,16 +50,20 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 		return nil, errors.New("character doesn't have a hero")
 	}
 
-	dag := sfm.NewNode(c.hero.Entity)
+	entity := c.hero.GetEntity()
+
+	dag := sfm.NewNode(entity)
 	clip.Scene.AddChildren(dag)
 
-	as, err := utils.AddModel(clip, c.hero.Entity, "dota2", c.hero.Model, dag)
+	c.hero.EquipItem("19205") // cm persona
+
+	as, err := utils.AddModel(clip, entity, "dota2", c.hero.GetModel(), dag)
 	if err != nil {
 		return nil, err
 	}
 
 	//for _, item := range c.slots {
-	for _, item := range c.hero.GetItems(c.persona) {
+	for _, item := range c.hero.GetItems() {
 		if item == nil {
 			continue
 		}
@@ -78,7 +80,7 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 		for _, modifier := range modifiers {
 			log.Println(modifier)
 			switch modifier.Type {
-			case "particle_create":
+			case dota2.MODIFIER_PARTICLE_CREATE:
 				as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, dag)
 				if err != nil {
 					return nil, err
