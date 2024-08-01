@@ -12,6 +12,9 @@ import (
 type Character struct {
 	//slots map[string]*dota2.Item
 	hero *dota2.Hero
+
+	animationSet *sfm.AnimationSet
+	dag          *sfm.Node
 }
 
 func NewCharacter(name string) (*Character, error) {
@@ -52,26 +55,63 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 
 	entity := c.hero.GetEntity()
 
-	dag := sfm.NewNode(entity)
-	clip.Scene.AddChildren(dag)
+	c.dag = sfm.NewNode(entity)
+	clip.Scene.AddChildren(c.dag)
 
-	as, err := utils.AddModel(clip, entity, "dota2", c.hero.GetModel(), dag)
+	var err error
+	c.animationSet, err = utils.AddModel(clip, entity, "dota2", c.hero.GetModel(), c.dag)
 	if err != nil {
 		return nil, err
 	}
+	/*
+		for _, item := range c.hero.GetItems() {
+			if item == nil {
+				continue
+			}
 
-	//for _, item := range c.slots {
+			if item.ModelPlayer != "" {
+				as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, dag)
+				if err != nil {
+					return nil, err
+				}
+				as2.GetGameModel().SetParentModel(as.GetGameModel())
+			}
+
+			modifiers := item.GetAssetModifiers(0)
+			for _, modifier := range modifiers {
+				log.Println(modifier)
+				switch modifier.Type {
+				case dota2.MODIFIER_PARTICLE_CREATE:
+					as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, dag)
+					if err != nil {
+						return nil, err
+					}
+					as2.GetParticleSystem().SetParentModel(as.GetGameModel())
+
+				}
+
+			}
+		}
+	*/
+	return c.animationSet, nil
+}
+
+func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
+	if c.hero == nil {
+		return errors.New("character doesn't have a hero")
+	}
+
 	for _, item := range c.hero.GetItems() {
 		if item == nil {
 			continue
 		}
 
 		if item.ModelPlayer != "" {
-			as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, dag)
+			as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, c.dag)
 			if err != nil {
-				return nil, err
+				return err
 			}
-			as2.GetGameModel().SetParentModel(as.GetGameModel())
+			as2.GetGameModel().SetParentModel(c.animationSet.GetGameModel())
 		}
 
 		modifiers := item.GetAssetModifiers(0)
@@ -79,16 +119,15 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 			log.Println(modifier)
 			switch modifier.Type {
 			case dota2.MODIFIER_PARTICLE_CREATE:
-				as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, dag)
+				as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, c.dag)
 				if err != nil {
-					return nil, err
+					return err
 				}
-				as2.GetParticleSystem().SetParentModel(as.GetGameModel())
+				as2.GetParticleSystem().SetParentModel(c.animationSet.GetGameModel())
 
 			}
 
 		}
 	}
-
-	return as, nil
+	return nil
 }
