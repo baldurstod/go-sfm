@@ -131,3 +131,18 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 	}
 	return nil
 }
+
+func (c *Character) GetEntity() string {
+	if c.hero == nil {
+		return ""
+	}
+	return c.hero.GetEntity()
+}
+
+func (c *Character) EquipItem(index string) error {
+	if c.hero == nil {
+		return errors.New("character doesn't have a hero")
+	}
+
+	return c.hero.EquipItem(index)
+}
