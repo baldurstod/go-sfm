@@ -91,7 +91,7 @@ func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight 
 
 func (gm *GameModel) getBoneByName(name string) *Bone {
 	for _, bone := range gm.bones {
-		if bone.Name == name {
+		if bone.NameLower == name {
 			return bone
 		}
 	}
@@ -108,7 +108,7 @@ func (gm *GameModel) SetParentModel(parent *GameModel) {
 		if parent == nil {
 			bone.overrideParent = nil
 		} else {
-			parentBone := parent.getBoneByName(bone.Name)
+			parentBone := parent.getBoneByName(bone.NameLower)
 			if parentBone != nil {
 				bone.overrideParent = parentBone
 				bone.transformControl.exportable = false
