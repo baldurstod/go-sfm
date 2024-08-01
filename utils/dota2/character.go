@@ -55,8 +55,6 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 	dag := sfm.NewNode(entity)
 	clip.Scene.AddChildren(dag)
 
-	c.hero.EquipItem("19205") // cm persona
-
 	as, err := utils.AddModel(clip, entity, "dota2", c.hero.GetModel(), dag)
 	if err != nil {
 		return nil, err
