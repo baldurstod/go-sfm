@@ -73,7 +73,7 @@ func (gm *GameModel) CreateAttachment(src *model.Attachment) *Attachment {
 		// we can only use one influence ?
 		influence := src.Influences[0]
 
-		attachment.ParentBone = influence.Name
+		attachment.SetParentBone(influence.Name)
 		attachment.Position = influence.Offset
 		attachment.Orientation = influence.Rotation
 	}
