@@ -101,6 +101,8 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 		return errors.New("character doesn't have a hero")
 	}
 
+	heroModel := c.animationSet.GetGameModel()
+	var itemModel *sfm.GameModel
 	for _, item := range c.hero.GetItems() {
 		if item == nil {
 			continue
@@ -108,7 +110,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 
 		itemModelPlayer := item.GetModelPlayer()
 		itemName := item.GetName()
-		var itemModel *sfm.GameModel
+		itemModel = nil
 		if itemModelPlayer != "" {
 			as2, err := utils.AddModel(clip, itemName, "dota2", itemModelPlayer, c.dag)
 			if err != nil {
@@ -116,9 +118,13 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			}
 			itemModel = as2.GetGameModel()
 			if itemModel != nil {
-				itemModel.SetParentModel(c.animationSet.GetGameModel())
+				itemModel.SetParentModel(heroModel)
 				itemModel.Skin = int32(item.GetSkin())
 			}
+		}
+
+		if itemModel == nil {
+			itemModel = heroModel
 		}
 
 		modifiers := item.GetAssetModifiers(0)
