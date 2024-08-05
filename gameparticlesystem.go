@@ -71,7 +71,6 @@ func (gps *GameParticleSystem) SetParentModel(parent *GameModel) {
 	gps.parentModel = parent
 	var attachement *Attachment
 	for _, controlPoint := range gps.controlPoints {
-		controlPoint.ControlModel = parent
 		if parent == nil {
 			controlPoint.overrideParent = nil
 		} else {
@@ -80,6 +79,7 @@ func (gps *GameParticleSystem) SetParentModel(parent *GameModel) {
 					parent = parent.parentModel
 				}
 			}
+			controlPoint.ControlModel = parent
 
 			if parent != nil {
 				attachement = parent.getAttachmentByName(controlPoint.AttachmentName)
