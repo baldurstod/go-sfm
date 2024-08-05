@@ -24,7 +24,7 @@ func newAnimationSet(name string) *AnimationSet {
 		RootControlGroup: *NewControlGroup(""),
 	}
 
-	as.rootTransformControl = as.CreateTransformControl("rootTransform")
+	as.rootTransformControl = as.CreateTransformControl(ROOT_TRANSFORM)
 
 	as.rootTransformControl.PositionChannel.Log.GetLayer("vector3 log")
 	as.rootTransformControl.OrientationChannel.Log.GetLayer("quaternion log")
