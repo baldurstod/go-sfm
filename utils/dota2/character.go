@@ -106,12 +106,15 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			continue
 		}
 
-		if item.ModelPlayer != "" {
-			as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, c.dag)
+		itemModelPlayer := item.GetModelPlayer()
+		itemName := item.GetName()
+		if itemModelPlayer != "" {
+			as2, err := utils.AddModel(clip, itemName, "dota2", itemModelPlayer, c.dag)
 			if err != nil {
 				return err
 			}
 			as2.GetGameModel().SetParentModel(c.animationSet.GetGameModel())
+			as2.GetGameModel().Skin = int32(item.GetSkin())
 		}
 
 		modifiers := item.GetAssetModifiers(0)
@@ -119,7 +122,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			log.Println(modifier)
 			switch modifier.Type {
 			case dota2.MODIFIER_PARTICLE_CREATE:
-				as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, c.dag)
+				as2, err := utils.AddParticleSystem(clip, itemName, "dota2", modifier.Modifier, c.dag)
 				if err != nil {
 					return err
 				}
@@ -144,5 +147,6 @@ func (c *Character) EquipItem(index string) error {
 		return errors.New("character doesn't have a hero")
 	}
 
-	return c.hero.EquipItem(index)
+	_, err := c.hero.EquipItem(index)
+	return err
 }
