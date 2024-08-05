@@ -65,13 +65,26 @@ func (gps *GameParticleSystem) getControlPoint(id int) *ControlPoint {
 }
 
 func (gps *GameParticleSystem) SetParentModel(parent *GameModel) {
+	if parent == nil {
+		return
+	}
 	gps.parentModel = parent
+	var attachement *Attachment
 	for _, controlPoint := range gps.controlPoints {
 		controlPoint.ControlModel = parent
 		if parent == nil {
 			controlPoint.overrideParent = nil
 		} else {
-			attachement := parent.getAttachmentByName(controlPoint.AttachmentName)
+			if controlPoint.EntityName == "parent" {
+				if parent.parentModel != nil {
+					parent = parent.parentModel
+				}
+			}
+
+			if parent != nil {
+				attachement = parent.getAttachmentByName(controlPoint.AttachmentName)
+			}
+
 			if attachement != nil {
 				parentBone := parent.getBoneByName(attachement.ParentBone)
 				if parentBone != nil {
@@ -120,7 +133,9 @@ func (gps *GameParticleSystem) toDmElement(serializer *Serializer, e *dmx.DmElem
 	controlModels := e.CreateAttribute("controlModels", dmx.AT_ELEMENT_ARRAY)
 	for _, cp := range gps.controlPoints {
 		controlPoints.PushElement(serializer.GetElement(cp.Transform))
-		controlModels.PushElement(serializer.GetElement(cp.ControlModel))
+		if cp.ControlModel != nil {
+			controlModels.PushElement(serializer.GetElement(cp.ControlModel))
+		}
 	}
 
 	if gps.parentModel != nil {

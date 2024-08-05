@@ -108,13 +108,17 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 
 		itemModelPlayer := item.GetModelPlayer()
 		itemName := item.GetName()
+		var itemModel *sfm.GameModel
 		if itemModelPlayer != "" {
 			as2, err := utils.AddModel(clip, itemName, "dota2", itemModelPlayer, c.dag)
 			if err != nil {
 				return err
 			}
-			as2.GetGameModel().SetParentModel(c.animationSet.GetGameModel())
-			as2.GetGameModel().Skin = int32(item.GetSkin())
+			itemModel = as2.GetGameModel()
+			if itemModel != nil {
+				itemModel.SetParentModel(c.animationSet.GetGameModel())
+				itemModel.Skin = int32(item.GetSkin())
+			}
 		}
 
 		modifiers := item.GetAssetModifiers(0)
@@ -126,8 +130,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 				if err != nil {
 					return err
 				}
-				as2.GetParticleSystem().SetParentModel(c.animationSet.GetGameModel())
-
+				as2.GetParticleSystem().SetParentModel(itemModel)
 			}
 
 		}
