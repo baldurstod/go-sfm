@@ -1,7 +1,6 @@
 package sfm_test
 
 import (
-	"log"
 	"math"
 	"path"
 	"testing"
@@ -11,32 +10,13 @@ import (
 	"github.com/baldurstod/go-sfm/utils/dota2"
 )
 
-func TestHeroes(t *testing.T) {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-
-	if err := initDota(); err != nil {
-		t.Error(err)
-		return
-
-	}
-
-	c, err := dota2.NewCharacter("npc_dota_hero_dark_willow")
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	log.Println(c)
-}
-
-func TestSfmHeroes(t *testing.T) {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-
+func TestParticles(t *testing.T) {
 	if err := initDota(); err != nil {
 		t.Error(err)
 		return
 	}
 
-	c, err := dota2.NewCharacter("npc_dota_hero_dark_willow")
+	c, err := dota2.NewCharacter("npc_dota_hero_ogre_magi")
 	if err != nil {
 		t.Error(err)
 		return
@@ -55,13 +35,19 @@ func TestSfmHeroes(t *testing.T) {
 		return
 	}
 
+	err = c.CreateItemModels(shot1)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	err = utils.PlaySequence(as, "idle", shot1.GetDuration())
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	err = session.WriteBinaryFile(path.Join(varFolder, "test_session.dmx"))
+	err = session.WriteTextFile(path.Join(varFolder, "test_session.dmx"))
 	if err != nil {
 		t.Error(err)
 		return
