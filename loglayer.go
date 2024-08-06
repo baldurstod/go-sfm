@@ -25,7 +25,7 @@ type LogLayer[T Loggable] struct {
 	*/
 }
 
-func newLogLayer[T Loggable]() *LogLayer[T] {
+func NewLogLayer[T Loggable]() *LogLayer[T] {
 	return &LogLayer[T]{
 		times:      make([]float32, 0),
 		curveTypes: make([]int, 0),

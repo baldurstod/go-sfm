@@ -1,6 +1,8 @@
 package sfm
 
 import (
+	"errors"
+
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-vector"
 )
@@ -23,16 +25,26 @@ func newLog[T Loggable]() *Log[T] {
 func (*Log[T]) isLog() {}
 
 func (l *Log[T]) AddLayer(name string) ILogLayer {
-	layer := newLogLayer[T]()
+	layer := NewLogLayer[T]()
 	l.layers[name] = layer
 	return layer
 }
+
 func (l *Log[T]) GetLayer(name string) ILogLayer {
 	layer, ok := l.layers[name]
 	if !ok {
 		return l.AddLayer(name)
 	}
 	return layer
+}
+
+func (l *Log[T]) SetLayer(name string, layer ILogLayer) error {
+	la, ok := layer.(*LogLayer[T])
+	if !ok {
+		return errors.New("can't convert log layer to correct type")
+	}
+	l.layers[name] = la
+	return nil
 }
 
 func (l *Log[T]) createDmElement(serializer *Serializer) *dmx.DmElement {

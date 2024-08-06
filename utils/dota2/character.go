@@ -23,8 +23,8 @@ type Character struct {
 
 func NewCharacter(name string) (*Character, error) {
 	c := Character{
-		PosLayer: &sfm.LogLayer[vector.Vector3[float32]]{},
-		RotLayer: &sfm.LogLayer[vector.Quaternion[float32]]{},
+		PosLayer: sfm.NewLogLayer[vector.Vector3[float32]](),
+		RotLayer: sfm.NewLogLayer[vector.Quaternion[float32]](),
 	}
 
 	h, err := dota2.GetHero(name)
@@ -70,6 +70,11 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 	}
 
 	c.animationSet.GetGameModel().Skin = c.hero.GetSkin()
+
+	tc := c.animationSet.GetTransformControl(sfm.ROOT_TRANSFORM)
+	tc.PositionChannel.Log.SetLayer("vector3 log", c.PosLayer)
+	tc.OrientationChannel.Log.SetLayer("quaternion log", c.RotLayer)
+
 	return c.animationSet, nil
 }
 

@@ -45,6 +45,7 @@ type ILog interface {
 	createDmElement(*Serializer) *dmx.DmElement
 	AddLayer(name string) ILogLayer
 	GetLayer(name string) ILogLayer
+	SetLayer(name string, layer ILogLayer) error
 	isExportable() bool
 }
 
