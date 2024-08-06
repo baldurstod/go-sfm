@@ -7,6 +7,7 @@ import (
 	"github.com/baldurstod/go-dota2"
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
+	"github.com/baldurstod/go-vector"
 )
 
 type Character struct {
@@ -15,11 +16,15 @@ type Character struct {
 
 	animationSet *sfm.AnimationSet
 	dag          *sfm.Node
+
+	PosLayer *sfm.LogLayer[vector.Vector3[float32]]
+	RotLayer *sfm.LogLayer[vector.Quaternion[float32]]
 }
 
 func NewCharacter(name string) (*Character, error) {
 	c := Character{
-		//slots: make(map[string]*dota2.Item),
+		PosLayer: &sfm.LogLayer[vector.Vector3[float32]]{},
+		RotLayer: &sfm.LogLayer[vector.Quaternion[float32]]{},
 	}
 
 	h, err := dota2.GetHero(name)
@@ -65,37 +70,6 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 	}
 
 	c.animationSet.GetGameModel().Skin = c.hero.GetSkin()
-
-	/*
-		for _, item := range c.hero.GetItems() {
-			if item == nil {
-				continue
-			}
-
-			if item.ModelPlayer != "" {
-				as2, err := utils.AddModel(clip, item.Name, "dota2", item.ModelPlayer, dag)
-				if err != nil {
-					return nil, err
-				}
-				as2.GetGameModel().SetParentModel(as.GetGameModel())
-			}
-
-			modifiers := item.GetAssetModifiers(0)
-			for _, modifier := range modifiers {
-				log.Println(modifier)
-				switch modifier.Type {
-				case dota2.MODIFIER_PARTICLE_CREATE:
-					as2, err := utils.AddParticleSystem(clip, item.Name, "dota2", modifier.Modifier, dag)
-					if err != nil {
-						return nil, err
-					}
-					as2.GetParticleSystem().SetParentModel(as.GetGameModel())
-
-				}
-
-			}
-		}
-	*/
 	return c.animationSet, nil
 }
 
