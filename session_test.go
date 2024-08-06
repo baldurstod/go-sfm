@@ -30,7 +30,7 @@ func TestParticles(t *testing.T) {
 		return
 	}
 
-	c.EquipItem("12964")
+	c.EquipItem("12964", true)
 
 	session := sfm.NewSession()
 

@@ -11,6 +11,7 @@ import (
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
+	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-vector"
 )
 
@@ -79,13 +80,13 @@ func TestMovement(t *testing.T) {
 		}
 		as2.GetGameModel().SetParentModel(as.GetGameModel())
 
-		model, err := utils.GetModel("dota2", item)
+		m, err := utils.GetModel("dota2", item)
 		if err != nil {
 			t.Error(err)
 			return
 		}
 
-		seq, err := model.GetSequence("ACT_DOTA_IDLE", nil)
+		seq, err := m.GetSequence(model.NewActivity("ACT_DOTA_IDLE"))
 		if err != nil {
 			t.Error(err)
 			continue
@@ -115,7 +116,7 @@ func TestMovement(t *testing.T) {
 
 	modifiers := make(map[string]struct{})
 	modifiers["tako"] = struct{}{}
-	seq, err := tiny.GetSequence("ACT_DOTA_IDLE", modifiers)
+	seq, err := tiny.GetSequence(model.NewActivity("ACT_DOTA_IDLE", "tako"))
 	if err != nil {
 		t.Error(err)
 		return
@@ -215,7 +216,7 @@ func DisbaledTestMovement(t *testing.T) {
 		return
 	}
 
-	seq, err := tiny.GetSequence("ACT_DOTA_IDLE_RARE", nil)
+	seq, err := tiny.GetSequence(model.NewActivity("ACT_DOTA_IDLE_RARE"))
 	if err != nil {
 		t.Error(err)
 		return
