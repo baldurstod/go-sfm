@@ -112,11 +112,26 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 		}
 
 		modifiers := item.GetAssetModifiers()
+		modelReplacement := make(map[string]string)
+		for _, modifier := range modifiers {
+			switch modifier.Type {
+			case dota2.MODIFIER_MODEL, dota2.MODIFIER_PARTICLE:
+				modelReplacement[modifier.Asset] = modifier.Modifier
+			}
+		}
+
+		getReplacement := func(in string) string {
+			if replacement, ok := modelReplacement[in]; ok {
+				return replacement
+			}
+			return in
+		}
+
 		for _, modifier := range modifiers {
 			log.Println("modifier: ", modifier)
 			switch modifier.Type {
 			case dota2.MODIFIER_PARTICLE_CREATE:
-				as2, err := utils.AddParticleSystem(clip, itemName+" effect", "dota2", modifier.Modifier, c.dag)
+				as2, err := utils.AddParticleSystem(clip, itemName, "dota2", getReplacement(modifier.Modifier), c.dag)
 				if err != nil {
 					return err
 				}
@@ -130,7 +145,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			case dota2.MODIFIER_ENTITY_MODEL, dota2.MODIFIER_HERO_SCALE, dota2.MODIFIER_MODEL_SKIN:
 				//already used for hero model
 			case dota2.MODIFIER_ADDITIONAL_WEARABLE:
-				asWearable, err := utils.AddModel(clip, itemName+" additional wearable", "dota2", modifier.Asset, c.dag)
+				asWearable, err := utils.AddModel(clip, itemName+" additional wearable", "dota2", getReplacement(modifier.Asset), c.dag)
 				if err != nil {
 					return err
 				}
@@ -141,7 +156,6 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			default:
 				log.Println("unknow modifier", modifier.Type)
 			}
-
 		}
 	}
 	return nil
