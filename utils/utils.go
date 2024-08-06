@@ -109,6 +109,32 @@ func AddModel(clip *sfm.FilmClip, name string, repository string, filename strin
 	return as, nil
 }
 
+func PlayActivity(as *sfm.AnimationSet, activity *model.Activity, duration float32) error {
+	if as == nil {
+		return errors.New("empty animation set")
+	}
+
+	model := as.GetGameModel()
+	if model == nil {
+		return errors.New("animation set doesn't have any model")
+	}
+
+	s2Model, err := GetModel("dota2", model.ModelName)
+	if err != nil {
+		return err
+	}
+
+	seq, err := s2Model.GetSequence(activity)
+	if err != nil {
+		return err
+	}
+	playSequence(as, s2Model, seq, duration)
+
+	log.Println(seq)
+
+	return nil
+}
+
 func PlaySequence(as *sfm.AnimationSet, animation string, duration float32) error {
 	if as == nil {
 		return errors.New("empty animation set")

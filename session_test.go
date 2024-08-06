@@ -8,6 +8,7 @@ import (
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
 	"github.com/baldurstod/go-sfm/utils/dota2"
+	"github.com/baldurstod/go-source2-tools/model"
 )
 
 func TestParticles(t *testing.T) {
@@ -15,12 +16,21 @@ func TestParticles(t *testing.T) {
 		t.Error(err)
 		return
 	}
+	/*
+		npc_dota_hero_drow_ranger
+		npc_dota_hero_windrunner
+		npc_dota_hero_ogre_magi
+		npc_dota_hero_axe
+		npc_dota_hero_dawnbreaker
+	*/
 
-	c, err := dota2.NewCharacter("npc_dota_hero_ogre_magi")
+	c, err := dota2.NewCharacter("npc_dota_hero_axe")
 	if err != nil {
 		t.Error(err)
 		return
 	}
+
+	c.EquipItem("12964")
 
 	session := sfm.NewSession()
 
@@ -41,7 +51,7 @@ func TestParticles(t *testing.T) {
 		return
 	}
 
-	err = utils.PlaySequence(as, "idle", shot1.GetDuration())
+	err = utils.PlayActivity(as, model.NewActivity("ACT_DOTA_IDLE"), 0.1)
 	if err != nil {
 		t.Error(err)
 		return
