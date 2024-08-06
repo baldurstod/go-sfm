@@ -102,7 +102,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 	}
 
 	heroModel := c.animationSet.GetGameModel()
-	var itemModel *sfm.GameModel
+	var itemModel, itemOrHeroModel *sfm.GameModel
 	for _, item := range c.hero.GetItems() {
 		if item == nil {
 			continue
@@ -110,7 +110,6 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 
 		itemModelPlayer := item.GetModelPlayer()
 		itemName := item.GetName()
-		itemModel = nil
 		if itemModelPlayer != "" {
 			as2, err := utils.AddModel(clip, itemName, "dota2", itemModelPlayer, c.dag)
 			if err != nil {
@@ -123,20 +122,37 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			}
 		}
 
-		if itemModel == nil {
-			itemModel = heroModel
+		if itemModel != nil {
+			itemOrHeroModel = itemModel
+		} else {
+			itemOrHeroModel = heroModel
 		}
 
-		modifiers := item.GetAssetModifiers(0)
+		modifiers := item.GetAssetModifiers()
 		for _, modifier := range modifiers {
-			log.Println(modifier)
+			log.Println("modifier: ", modifier)
 			switch modifier.Type {
 			case dota2.MODIFIER_PARTICLE_CREATE:
-				as2, err := utils.AddParticleSystem(clip, itemName, "dota2", modifier.Modifier, c.dag)
+				as2, err := utils.AddParticleSystem(clip, itemName+" effect", "dota2", modifier.Modifier, c.dag)
 				if err != nil {
 					return err
 				}
-				as2.GetParticleSystem().SetParentModel(itemModel)
+				as2.GetParticleSystem().SetParentModel(itemOrHeroModel)
+			case dota2.MODIFIER_ABILITY_ICON, dota2.MODIFIER_ANNOUCER_PREVIEW, dota2.MODIFIER_ACTIVITY, dota2.MODIFIER_PARTICLE, dota2.MODIFIER_SOUND, dota2.MODIFIER_RESPONSE_CRITERIA:
+			case dota2.MODIFIER_ICON_REPLACEMENT_HERO, dota2.MODIFIER_ICON_REPLACEMENT_HERO_MINIMAP:
+			case dota2.MODIFIER_ENTITY_MODEL, dota2.MODIFIER_HERO_SCALE:
+				//already used for hero model
+			case dota2.MODIFIER_ADDITIONAL_WEARABLE:
+				asWearable, err := utils.AddModel(clip, itemName+" additional wearable", "dota2", modifier.Asset, c.dag)
+				if err != nil {
+					return err
+				}
+				itemModel = asWearable.GetGameModel()
+				if itemModel != nil {
+					itemModel.SetParentModel(heroModel)
+				}
+			default:
+				log.Println("unknow modifier", modifier.Type)
 			}
 
 		}
