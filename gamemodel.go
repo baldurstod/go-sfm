@@ -9,7 +9,7 @@ import (
 type GameModel struct {
 	*Node
 	ModelName               string
-	Skin                    int32
+	Skin                    int
 	flexWeights             []float32
 	MeshGroupMask           uint64
 	bones                   []*Bone
@@ -132,7 +132,7 @@ func (gm *GameModel) isExportable() bool {
 
 func (gm *GameModel) toDmElement(serializer *Serializer, e *dmx.DmElement) {
 	e.CreateStringAttribute("modelName", gm.ModelName)
-	e.CreateIntAttribute("skin", gm.Skin)
+	e.CreateIntAttribute("skin", int32(gm.Skin))
 	e.CreateElementAttribute("transform", serializer.GetElement(gm.Transform))
 	e.CreateBoolAttribute("visible", gm.Visible)
 	e.CreateUint64Attribute("meshGroupMask", gm.MeshGroupMask)
