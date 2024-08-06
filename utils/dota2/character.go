@@ -63,6 +63,9 @@ func (c *Character) CreateGameModel(clip *sfm.FilmClip) (*sfm.AnimationSet, erro
 	if err != nil {
 		return nil, err
 	}
+
+	c.animationSet.GetGameModel().Skin = c.hero.GetSkin()
+
 	/*
 		for _, item := range c.hero.GetItems() {
 			if item == nil {
@@ -109,6 +112,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 		}
 
 		itemModelPlayer := item.GetModelPlayer()
+
 		itemName := item.GetName()
 		if itemModelPlayer != "" {
 			as2, err := utils.AddModel(clip, itemName, "dota2", itemModelPlayer, c.dag)
@@ -118,7 +122,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 			itemModel = as2.GetGameModel()
 			if itemModel != nil {
 				itemModel.SetParentModel(heroModel)
-				itemModel.Skin = int32(item.GetSkin())
+				itemModel.Skin = item.GetSkin()
 			}
 		}
 
@@ -138,9 +142,13 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 					return err
 				}
 				as2.GetParticleSystem().SetParentModel(itemOrHeroModel)
+			case dota2.MODIFIER_MODEL:
+				//TODO: replace model
 			case dota2.MODIFIER_ABILITY_ICON, dota2.MODIFIER_ANNOUCER_PREVIEW, dota2.MODIFIER_ACTIVITY, dota2.MODIFIER_PARTICLE, dota2.MODIFIER_SOUND, dota2.MODIFIER_RESPONSE_CRITERIA:
 			case dota2.MODIFIER_ICON_REPLACEMENT_HERO, dota2.MODIFIER_ICON_REPLACEMENT_HERO_MINIMAP:
-			case dota2.MODIFIER_ENTITY_MODEL, dota2.MODIFIER_HERO_SCALE:
+			case dota2.MODIFIER_BUFF_MODIFIER, dota2.MODIFIER_CUSTOM_KILL_EFFECT:
+			case dota2.MODIFIER_ARCANA_LEVEL, dota2.MODIFIER_INVENTORY_ICON, dota2.MODIFIER_CHATWHEEL:
+			case dota2.MODIFIER_ENTITY_MODEL, dota2.MODIFIER_HERO_SCALE, dota2.MODIFIER_MODEL_SKIN:
 				//already used for hero model
 			case dota2.MODIFIER_ADDITIONAL_WEARABLE:
 				asWearable, err := utils.AddModel(clip, itemName+" additional wearable", "dota2", modifier.Asset, c.dag)
