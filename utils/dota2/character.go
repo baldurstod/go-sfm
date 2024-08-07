@@ -168,11 +168,16 @@ func (c *Character) GetEntity() string {
 	return c.hero.GetEntity()
 }
 
-func (c *Character) EquipItem(index string, replaceExisting bool) (*dota2.Item, error) {
+func (c *Character) EquipItem(index string, replaceExisting ...bool) (*dota2.Item, error) {
 	if c.hero == nil {
 		return nil, errors.New("character doesn't have a hero")
 	}
 
-	item, err := c.hero.EquipItem(index, replaceExisting)
+	replace := true
+	if len(replaceExisting) == 1 {
+		replace = replaceExisting[0]
+	}
+
+	item, err := c.hero.EquipItem(index, replace)
 	return item, err
 }
