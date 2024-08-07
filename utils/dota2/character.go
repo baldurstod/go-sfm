@@ -85,7 +85,27 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 
 	heroModel := c.animationSet.GetGameModel()
 	var itemModel, itemOrHeroModel *sfm.GameModel
-	for _, item := range c.hero.GetItems() {
+	heroItems := c.hero.GetItems()
+	modelReplacement := make(map[string]string)
+
+	getReplacement := func(in string) string {
+		if replacement, ok := modelReplacement[in]; ok {
+			return replacement
+		}
+		return in
+	}
+
+	for _, item := range heroItems {
+		modifiers := item.GetAssetModifiers()
+		for _, modifier := range modifiers {
+			switch modifier.Type {
+			case dota2.MODIFIER_MODEL, dota2.MODIFIER_PARTICLE:
+				modelReplacement[modifier.Asset] = modifier.Modifier
+			}
+		}
+	}
+
+	for _, item := range heroItems {
 		if item == nil {
 			continue
 		}
@@ -94,7 +114,7 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 
 		itemName := item.GetName()
 		if itemModelPlayer != "" {
-			as2, err := utils.AddModel(clip, itemName, "dota2", itemModelPlayer, c.dag)
+			as2, err := utils.AddModel(clip, itemName, "dota2", getReplacement(itemModelPlayer), c.dag)
 			if err != nil {
 				return err
 			}
@@ -112,21 +132,6 @@ func (c *Character) CreateItemModels(clip *sfm.FilmClip) error {
 		}
 
 		modifiers := item.GetAssetModifiers()
-		modelReplacement := make(map[string]string)
-		for _, modifier := range modifiers {
-			switch modifier.Type {
-			case dota2.MODIFIER_MODEL, dota2.MODIFIER_PARTICLE:
-				modelReplacement[modifier.Asset] = modifier.Modifier
-			}
-		}
-
-		getReplacement := func(in string) string {
-			if replacement, ok := modelReplacement[in]; ok {
-				return replacement
-			}
-			return in
-		}
-
 		for _, modifier := range modifiers {
 			log.Println("modifier: ", modifier)
 			switch modifier.Type {

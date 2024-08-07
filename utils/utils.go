@@ -383,7 +383,7 @@ func AddParticleSystem(clip *sfm.FilmClip, name string, repository string, filen
 	log.Println(s2system.GetControlPointConfigurationById(0))
 	controlPointConfig, err := s2system.GetControlPointConfigurationById(0)
 	if err != nil {
-		return nil, err
+		return as, nil
 	}
 
 	for _, driver := range controlPointConfig.Drivers {
