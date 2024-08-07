@@ -198,20 +198,22 @@ func playSequence(as *sfm.AnimationSet, model *model.Model, sequence *model.Sequ
 		}
 
 		morphChannel := frame.GetChannel("MorphChannel", "data")
-		for _, element := range morphChannel.Datas {
+		if morphChannel != nil {
+			for _, element := range morphChannel.Datas {
 
-			value := float32(0)
-			for _, flex := range flexes {
-				if flex.Name == element.Name {
-					value = flex.GetControllerValue((element.Datas.(float32))) //((element.Datas.(float32)) - flex.Min) / (flex.Max - flex.Min)
-					break
+				value := float32(0)
+				for _, flex := range flexes {
+					if flex.Name == element.Name {
+						value = flex.GetControllerValue((element.Datas.(float32))) //((element.Datas.(float32)) - flex.Min) / (flex.Max - flex.Min)
+						break
+					}
 				}
-			}
 
-			tc := as.GetControl(element.Name)
-			if tc != nil {
-				layer := any(tc.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
-				layer.SetValue(frameTime, value)
+				tc := as.GetControl(element.Name)
+				if tc != nil {
+					layer := any(tc.Channel.Log.GetLayer("float log")).(*sfm.LogLayer[float32])
+					layer.SetValue(frameTime, value)
+				}
 			}
 		}
 	}
