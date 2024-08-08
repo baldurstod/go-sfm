@@ -2,12 +2,10 @@ package sfm
 
 import (
 	"fmt"
-	"strings"
 )
 
 type Bone struct {
-	Name      string
-	NameLower string // For bone merge
+	Name string
 	*Node
 	transformControl *TransformControl
 }
@@ -21,8 +19,7 @@ func (b *Bone) isExportable() bool {
 
 func NewBone(name string, id int) *Bone {
 	return &Bone{
-		Node:      NewNode(fmt.Sprintf("bone %d (%s)", id, name)),
-		Name:      name,
-		NameLower: strings.ToLower(name),
+		Node: NewNode(fmt.Sprintf("bone %d (%s)", id, name)),
+		Name: name,
 	}
 }

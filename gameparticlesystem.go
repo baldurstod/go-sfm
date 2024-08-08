@@ -86,7 +86,7 @@ func (gps *GameParticleSystem) SetParentModel(parent *GameModel) {
 			}
 
 			if attachement != nil {
-				parentBone := parent.getBoneByName(attachement.ParentBoneLower)
+				parentBone := parent.getBoneByName(attachement.ParentBone)
 				if parentBone != nil {
 					controlPoint.overrideParent = parentBone
 					controlPoint.transformControl.exportable = false

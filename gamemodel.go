@@ -1,6 +1,8 @@
 package sfm
 
 import (
+	"strings"
+
 	"github.com/baldurstod/go-dmx"
 	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-vector"
@@ -73,7 +75,7 @@ func (gm *GameModel) CreateAttachment(src *model.Attachment) *Attachment {
 		// we can only use one influence ?
 		influence := src.Influences[0]
 
-		attachment.SetParentBone(influence.Name)
+		attachment.ParentBone = influence.Name
 		attachment.Position = influence.Offset
 		attachment.Orientation = influence.Rotation
 	}
@@ -90,8 +92,9 @@ func (gm *GameModel) CreateGlobalFlexControllerOperator(name string, flexWeight 
 }
 
 func (gm *GameModel) getBoneByName(name string) *Bone {
+	name = strings.ToLower(name)
 	for _, bone := range gm.bones {
-		if bone.NameLower == name {
+		if strings.ToLower(bone.Name) == name {
 			return bone
 		}
 	}
@@ -108,7 +111,7 @@ func (gm *GameModel) SetParentModel(parent *GameModel) {
 		if parent == nil {
 			bone.overrideParent = nil
 		} else {
-			parentBone := parent.getBoneByName(bone.NameLower)
+			parentBone := parent.getBoneByName(bone.Name)
 			if parentBone != nil {
 				bone.overrideParent = parentBone
 				bone.transformControl.exportable = false
