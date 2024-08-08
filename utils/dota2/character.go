@@ -7,6 +7,7 @@ import (
 	"github.com/baldurstod/go-dota2"
 	"github.com/baldurstod/go-sfm"
 	"github.com/baldurstod/go-sfm/utils"
+	"github.com/baldurstod/go-source2-tools/model"
 	"github.com/baldurstod/go-vector"
 )
 
@@ -185,4 +186,20 @@ func (c *Character) EquipItem(index string, replaceExisting ...bool) (*dota2.Ite
 
 	item, err := c.hero.EquipItem(index, replace)
 	return item, err
+}
+
+func (c *Character) CreateActivity(activity string, modifiers ...string) *model.Activity {
+	a := model.NewActivity(activity, modifiers...)
+
+	for _, item := range c.hero.GetItems() {
+		modifiers := item.GetAssetModifiers()
+		for _, modifier := range modifiers {
+			switch modifier.Type {
+			case dota2.MODIFIER_ACTIVITY:
+				a.AddModifier(modifier.Modifier)
+			}
+		}
+	}
+
+	return a
 }
