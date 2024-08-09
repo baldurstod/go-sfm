@@ -30,7 +30,7 @@ func (gps *GameParticleSystem) CreateControlPoint(as *AnimationSet, id uint, con
 	l := uint(len(gps.controlPoints))
 	if id >= l {
 		for i := l; i <= id; i++ {
-			cp := newControlPoint(id)
+			cp := newControlPoint(i)
 			gps.children = append(gps.children, cp)
 			gps.controlPoints = append(gps.controlPoints, cp)
 
